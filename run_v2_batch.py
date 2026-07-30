@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
 Batch runner for handoff_v2.py — saves progress after each run, resumes on restart.
-Run: python3 -u run_v2_batch.py [--batch-size N]
+Runs each condition as a subprocess with timeout for robustness.
+Run: python3 -u run_v2_batch.py
 """
 
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import time
-import traceback
 from pathlib import Path
 from collections import defaultdict
 
@@ -20,6 +21,7 @@ DATA_DIR = Path(__file__).resolve().parent / "data_v2"
 PROGRESS_FILE = DATA_DIR / "_progress.json"
 RESULTS_FILE = DATA_DIR / "results.json"
 CONDITIONS = ["continuous", "raw", "brief", "wake", "no_handoff"]
+RUN_TIMEOUT = 600  # 10 minutes per run
 
 
 def load_progress() -> dict:
@@ -37,6 +39,36 @@ def save_progress(completed: list, results: list):
 
 def build_run_key(seed: int, prob_name: str, cond: str) -> str:
     return f"{prob_name}_{cond}_s{seed}"
+
+
+def run_single(seed: int, prob_name: str, cond: str) -> dict | None:
+    """Run a single condition as a subprocess using handoff_v2.py run_single."""
+    python = v2.VENV_PYTHON if Path(v2.VENV_PYTHON).exists() else "python3"
+    script_path = Path(__file__).resolve().parent / "handoff_v2.py"
+    cmd = [python, str(script_path), "run_single", cond, prob_name, str(seed)]
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True, text=True, timeout=RUN_TIMEOUT,
+            cwd=str(Path(__file__).resolve().parent)
+        )
+        if result.returncode == 0:
+            for line in result.stdout.strip().split('\n'):
+                if line.startswith('RESULT:'):
+                    return json.loads(line[7:])
+            # No RESULT: line found (maybe print only)
+            print(f"  No result marker in output", flush=True)
+            return None
+        else:
+            err = result.stderr.strip()[:500] if result.stderr.strip() else "Unknown error"
+            print(f"  SUBPROCESS ERROR: {err}", flush=True)
+            return None
+    except subprocess.TimeoutExpired:
+        print(f"  TIMEOUT after {RUN_TIMEOUT}s", flush=True)
+        return None
+    except Exception as e:
+        print(f"  SUBPROCESS EXCEPTION: {e}", flush=True)
+        return None
 
 
 def main():
@@ -68,31 +100,25 @@ def main():
         if key in completed_set:
             continue
 
-        work_dir = DATA_DIR / key
         print(f"[{done+1}/{total}] {prob['name']:20s} {cond:15s} seed={seed}", flush=True)
 
-        try:
-            r = v2.run_condition(cond, prob, work_dir, seed)
-            result_compact = {
-                "task_id": f"handoff/{prob['name']}",
-                "condition": cond,
-                "passed": r["passed"],
-                "a_turns": r["a_turns"],
-                "b_turns": r["b_turns"],
-                "handoff_tokens": r["handoff_tokens"],
-                "seed": seed,
-            }
+        # Run with 1 retry
+        r = None
+        for attempt in range(2):
+            if attempt > 0:
+                print(f"  Retry {attempt}...", flush=True)
+                time.sleep(5)
+            r = run_single(seed, prob["name"], cond)
+            if r is not None:
+                break
+
+        if r is not None:
+            result_compact = {k: r[k] for k in ("task_id", "condition", "passed", "a_turns", "b_turns", "handoff_tokens", "seed")}
+            if r.get("raw_truncation_chars"):
+                result_compact["raw_truncation_chars"] = r["raw_truncation_chars"]
             all_results.append(result_compact)
             print(f"  {'PASS' if r['passed'] else 'FAIL'} | A:{r['a_turns']} B:{r['b_turns']} hoff:{r['handoff_tokens']}", flush=True)
-
-            # Also save detailed run data
-            run_file = DATA_DIR / f"{prob['name']}_{cond}_s{seed}.json"
-            run_file.write_text(json.dumps(r, indent=2, default=str))
-
-        except Exception as e:
-            print(f"  ERROR: {e}", flush=True)
-            traceback.print_exc()
-            # Save failure as a result
+        else:
             result_compact = {
                 "task_id": f"handoff/{prob['name']}",
                 "condition": cond,
@@ -101,9 +127,10 @@ def main():
                 "b_turns": -1,
                 "handoff_tokens": -1,
                 "seed": seed,
-                "error": str(e),
+                "error": "failed after 2 attempts",
             }
             all_results.append(result_compact)
+            print(f"  FAIL (error)", flush=True)
 
         completed_set.add(key)
         done += 1

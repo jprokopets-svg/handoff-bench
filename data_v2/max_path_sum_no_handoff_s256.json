@@ -1,0 +1,10 @@
+{
+  "task_id": "handoff/max_path_sum",
+  "condition": "no_handoff",
+  "passed": false,
+  "a_turns": 7,
+  "b_turns": 5,
+  "handoff_tokens": 0,
+  "seed": 256,
+  "raw_truncation_chars": null
+}

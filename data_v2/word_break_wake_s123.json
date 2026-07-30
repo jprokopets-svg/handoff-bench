@@ -1,0 +1,181 @@
+{
+  "task_id": "handoff/word_break",
+  "condition": "wake",
+  "passed": true,
+  "a_turns": 7,
+  "b_turns": 5,
+  "handoff_tokens": 464,
+  "handoff": "# WAKE Briefing\n\n**GOAL:** Implement and test a word break algorithm that determines if a string can be segmented into dictionary words.\n\n**STATE:**\n- File: `word_break.py` exists with complete implementation\n- Algorithm: Dynamic programming solution with O(n\u00b2) time complexity\n- Logic: Uses boolean DP array where `dp[i]` tracks if substring `s[0:i]` is segmentable\n- Word lookup: Converted to set for O(1) lookup\n- Test status: No tests are running (0 items collected)\n\n**BELIEF:** \nThe algorithm logic is correct (85% confidence). The DP approach is sound\u2014it builds up from empty string, checking each position by looking back at all valid split points. The implementation handles the core problem correctly.\n\n**BROKEN:**\nTests aren't running at all. Likely causes:\n1. No test file exists (test_word_break.py missing)\n2. Test file exists but pytest isn't discovering it (naming convention issue)\n3. Test file exists but has syntax errors preventing collection\n4. Tests exist but aren't written yet\n\nThe code itself appears syntactically correct and logically sound.\n\n**NEXT:**\n1. Check if test file exists: `ls test_*.py` or `ls *_test.py`\n2. If missing, create `test_word_break.py` with basic test cases:\n   - `word_break(\"leetcode\", [\"leet\", \"code\"])` \u2192 True\n   - `word_break(\"applepenapple\", [\"apple\", \"pen\"])` \u2192 True\n   - `word_break(\"catsandog\", [\"cat\", \"cats\", \"and\", \"sand\", \"dog\"])` \u2192 False\n   - Edge cases: empty string, single character, word not in dict\n3. Run pytest with verbose flag to see collection details\n4. Verify test file is in same directory or pytest can find it\n\n**WARNING:**\nThe algorithm may be inefficient for very long strings with many overlapping subproblems\u2014O(n\u00b2) time and O(n) space could be problematic at scale. However, this is acceptable for the standard LeetCode version of this problem. More critical: if tests pass",
+  "seed": 123,
+  "a_code": "def word_break(s, word_dict):\n    \"\"\"\n    Determine if a string can be segmented into space-separated words from a given dictionary.\n    \n    Args:\n        s: The string to segment\n        word_dict: A list or set of valid words\n    \n    Returns:\n        True if the string can be segmented into words from the dictionary, False otherwise\n    \"\"\"\n    # Convert word_dict to a set for O(1) lookup\n    word_set = set(word_dict)\n    \n    # dp[i] represents whether s[0:i] can be segmented\n    dp = [False] * (len(s) + 1)\n    dp[0] = True  # Empty string can always be segmented\n    \n    # For each position in the string\n    for i in range(1, len(s) + 1):\n        # Check all possible previous positions\n        for j in range(i):\n            # If s[0:j] can be segmented and s[j:i] is a valid word\n            if dp[j] and s[j:i] in word_set:\n                dp[i] = True\n                break\n    \n    return dp[len(s)]\n",
+  "b_code": "def word_break(s, word_dict):\n    \"\"\"\n    Determine if a string can be segmented into space-separated words from a given dictionary.\n    \n    Args:\n        s: The string to segment\n        word_dict: A list or set of valid words\n    \n    Returns:\n        True if the string can be segmented into words from the dictionary, False otherwise\n    \"\"\"\n    # Convert word_dict to a set for O(1) lookup\n    word_set = set(word_dict)\n    \n    # dp[i] represents whether s[0:i] can be segmented\n    dp = [False] * (len(s) + 1)\n    dp[0] = True  # Empty string can always be segmented\n    \n    # For each position in the string\n    for i in range(1, len(s) + 1):\n        # Check all possible previous positions\n        for j in range(i):\n            # If s[0:j] can be segmented and s[j:i] is a valid word\n            if dp[j] and s[j:i] in word_set:\n                dp[i] = True\n                break\n    \n    return dp[len(s)]\n",
+  "a_log": [
+    {
+      "turn": 1,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01JxGmG6ic4XPHaZYR3GWktm\", \"function\": {\"name\": \"read_file\", \"arguments\": \"{\\\"path\\\": \\\"test_word_break.py\\\"}\"}}]}",
+      "tokens": 985,
+      "tool_calls": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "test_word_break.py"
+          },
+          "result": "ERROR: file not found: test_word_break.py"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01PtWAyV1eB4f5TbYNhcTsS1\", \"function\": {\"name\": \"read_file\", \"arguments\": \"{\\\"path\\\": \\\".\\\"}\"}}]}",
+      "tokens": 1083,
+      "tool_calls": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "."
+          },
+          "result": "ERROR: invalid path '.'"
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01Nwv2tbieidvUvAgQmQx7co\", \"function\": {\"name\": \"read_file\", \"arguments\": \"{\\\"path\\\": \\\"word_break.py\\\"}\"}}]}",
+      "tokens": 1197,
+      "tool_calls": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "word_break.py"
+          },
+          "result": "ERROR: file not found: word_break.py"
+        }
+      ]
+    },
+    {
+      "turn": 4,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01BzCj4arVdSK68oWRDDLs8r\", \"function\": {\"name\": \"write_file\", \"arguments\": \"{\\\"path\\\": \\\"word_break.py\\\", \\\"content\\\": \\\"def word_break(s, word_dict):\\\\n    \\\\\\\"\\\\\\\"\\\\\\\"\\\\n    Determine if a string can be segmented into space-separated words from a given dictionary.\\\\n    \\\\n    Args:\\\\n        s: The string to segment\\\\n        word_dict: A list or set of valid words\\\\n    \\\\n    Returns:\\\\n        True if the string can be segmented into words from the dictionary, False otherwise\\\\n    \\\\\\\"\\\\\\\"\\\\\\\"\\\\n    # Convert word_dict to a set for O(1) lookup\\\\n    word_set = set(word_dict)\\\\n    \\\\n    # dp[i] represents whether s[0:i] can be segmented\\\\n    dp = [False] * (len(s) + 1)\\\\n    dp[0] = True  # Empty string can always be segmented\\\\n    \\\\n    # For each position in the string\\\\n    for i in range(1, len(s) + 1):\\\\n        # Check all possible previous positions\\\\n        for j in range(i):\\\\n            # If s[0:j] can be segmented and s[j:i] is a valid word\\\\n            if dp[j] and s[j:i] in word_set:\\\\n                dp[i] = True\\\\n                break\\\\n    \\\\n    return dp[len(s)]\\\\n\\\"}\"}}]}",
+      "tokens": 1624,
+      "tool_calls": [
+        {
+          "name": "write_file",
+          "args": {
+            "path": "word_break.py",
+            "content": "def word_break(s, word_dict):\n    \"\"\"\n    Determine if a string can be segmented into space-separated words from a given dictionary.\n    \n    Args:\n        s: The string to segment\n        word_dict: A list or set of valid words\n    \n    Returns:\n        True if the string can be segmented into words from the dictionary, False otherwise\n    \"\"\"\n    # Convert word_dict to a set for O(1) lookup\n    word_set = set(word_dict)\n    \n    # dp[i] represents whether s[0:i] can be segmented\n    dp = [False] * (len(s) + 1)\n    dp[0] = True  # Empty string can always be segmented\n    \n    # For each position in the string\n    for i in range(1, len(s) + 1):\n        # Check all possible previous positions\n        for j in range(i):\n            # If s[0:j] can be segmented and s[j:i] is a valid word\n            if dp[j] and s[j:i] in word_set:\n                dp[i] = True\n                break\n    \n    return dp[len(s)]\n"
+          },
+          "result": "Written to word_break.py"
+        }
+      ]
+    },
+    {
+      "turn": 5,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01JjNEjLFwRfJUEhgwo4WNqm\", \"function\": {\"name\": \"run_tests\", \"arguments\": \"{}\"}}]}",
+      "tokens": 1714,
+      "tool_calls": [
+        {
+          "name": "run_tests",
+          "args": {},
+          "result": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.5, pytest-9.1.1, pluggy-1.6.0\nrootdir: /Users/jakeprokopets/handoff-bench\ncollected 0 items\n\n============================ no tests ran in 0.01s =============================\n"
+        }
+      ]
+    },
+    {
+      "turn": 6,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_018DB8rYt9MVuUzcbq8FK1gk\", \"function\": {\"name\": \"read_file\\\", \\\"path\\\": \\\"test_word_break.py\\\"}\\n</invoke>\", \"arguments\": \"{}\"}}]}",
+      "tokens": 1890,
+      "tool_calls": [
+        {
+          "name": "read_file\", \"path\": \"test_word_break.py\"}\n</invoke>",
+          "args": {},
+          "result": "Unknown tool: read_file\", \"path\": \"test_word_break.py\"}\n</invoke>"
+        }
+      ]
+    },
+    {
+      "turn": 7,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_012369mcmgoQp6wywXAMkm2b\", \"function\": {\"name\": \"read_file\", \"arguments\": \"{\\\"path\\\": \\\"test_word_break.py\\\"}\"}}]}",
+      "tokens": 2036,
+      "tool_calls": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "test_word_break.py"
+          },
+          "result": "ERROR: file not found: test_word_break.py"
+        }
+      ]
+    }
+  ],
+  "b_log": [
+    {
+      "turn": 1,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_0177o6rXNCwtm5MNWSFo5E1K\", \"function\": {\"name\": \"read_file\", \"arguments\": \"{\\\"path\\\": \\\"test_word_break.py\\\"}\"}}]}",
+      "tokens": 1813,
+      "tool_calls": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "test_word_break.py"
+          },
+          "result": "ERROR: file not found: test_word_break.py"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01RK2AVJ3U4PiTXU955pT5yQ\", \"function\": {\"name\": \"read_file\", \"arguments\": \"{\\\"path\\\": \\\"word_break.py\\\"}\"}}]}",
+      "tokens": 1913,
+      "tool_calls": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "word_break.py"
+          },
+          "result": "def word_break(s, word_dict):\n    \"\"\"\n    Determine if a string can be segmented into space-separated words from a given dictionary.\n    \n    Args:\n        s: The string to segment\n        word_dict: A list or set of valid words\n    \n    Returns:\n        True if the string can be segmented into words from the dictionary, False otherwise\n    \"\"\"\n    # Convert word_dict to a set for O(1) lookup\n    word_set = set(word_dict)\n    \n    # dp[i] represents whether s[0:i] can be segmented\n    dp = [Fals"
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01ScnEx6Vgbs1dJ8k5XawWYf\", \"function\": {\"name\": \"run_tests\", \"arguments\": \"{}\"}}]}",
+      "tokens": 2269,
+      "tool_calls": [
+        {
+          "name": "run_tests",
+          "args": {},
+          "result": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.5, pytest-9.1.1, pluggy-1.6.0\nrootdir: /Users/jakeprokopets/handoff-bench\ncollected 0 items\n\n============================ no tests ran in 0.01s =============================\n"
+        }
+      ]
+    },
+    {
+      "turn": 4,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01RMzqKRKa9jvmgM1DTwhct4\", \"function\": {\"name\": \"write_file\", \"arguments\": \"{\\\"path\\\": \\\"test_word_break.py\\\", \\\"content\\\": \\\"import pytest\\\\nfrom word_break import word_break\\\\n\\\\n\\\\nclass TestWordBreak:\\\\n    \\\\\\\"\\\\\\\"\\\\\\\"Test cases for the word_break function.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n    \\\\n    def test_basic_true_case(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test a basic case where segmentation is possible.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"leetcode\\\\\\\", [\\\\\\\"leet\\\\\\\", \\\\\\\"code\\\\\\\"]) == True\\\\n    \\\\n    def test_basic_true_case_2(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test another basic case where segmentation is possible.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"applepenapple\\\\\\\", [\\\\\\\"apple\\\\\\\", \\\\\\\"pen\\\\\\\"]) == True\\\\n    \\\\n    def test_basic_false_case(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test a basic case where segmentation is not possible.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"catsandog\\\\\\\", [\\\\\\\"cat\\\\\\\", \\\\\\\"cats\\\\\\\", \\\\\\\"and\\\\\\\", \\\\\\\"sand\\\\\\\", \\\\\\\"dog\\\\\\\"]) == False\\\\n    \\\\n    def test_empty_string(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with an empty string.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"\\\\\\\", []) == True\\\\n    \\\\n    def test_empty_string_with_dict(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with an empty string and non-empty dictionary.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"\\\\\\\", [\\\\\\\"a\\\\\\\", \\\\\\\"b\\\\\\\"]) == True\\\\n    \\\\n    def test_single_character_match(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with a single character that matches.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"a\\\\\\\", [\\\\\\\"a\\\\\\\"]) == True\\\\n    \\\\n    def test_single_character_no_match(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with a single character that doesn't match.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"a\\\\\\\", [\\\\\\\"b\\\\\\\"]) == False\\\\n    \\\\n    def test_word_not_in_dict(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test when the entire string is not in the dictionary.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"hello\\\\\\\", [\\\\\\\"world\\\\\\\"]) == False\\\\n    \\\\n    def test_overlapping_words(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with overlapping word possibilities.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"catsandcatsdog\\\\\\\", [\\\\\\\"cat\\\\\\\", \\\\\\\"cats\\\\\\\", \\\\\\\"and\\\\\\\", \\\\\\\"sand\\\\\\\", \\\\\\\"dog\\\\\\\"]) == True\\\\n    \\\\n    def test_multiple_segmentations(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test a string that can be segmented in multiple ways.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"aaab\\\\\\\", [\\\\\\\"a\\\\\\\", \\\\\\\"aa\\\\\\\", \\\\\\\"aaa\\\\\\\", \\\\\\\"b\\\\\\\"]) == True\\\\n    \\\\n    def test_false_with_similar_words(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test a case that looks like it could work but doesn't.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"aaab\\\\\\\", [\\\\\\\"a\\\\\\\", \\\\\\\"aa\\\\\\\", \\\\\\\"aaa\\\\\\\"]) == False\\\\n    \\\\n    def test_long_string(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with a longer string.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"abcdefghij\\\\\\\", [\\\\\\\"ab\\\\\\\", \\\\\\\"cd\\\\\\\", \\\\\\\"ef\\\\\\\", \\\\\\\"gh\\\\\\\", \\\\\\\"ij\\\\\\\"]) == True\\\\n    \\\\n    def test_long_string_false(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with a longer string that cannot be segmented.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"abcdefghij\\\\\\\", [\\\\\\\"ab\\\\\\\", \\\\\\\"cd\\\\\\\", \\\\\\\"ef\\\\\\\", \\\\\\\"gh\\\\\\\"]) == False\\\\n    \\\\n    def test_repeated_pattern(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test with repeated patterns.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"aaaa\\\\\\\", [\\\\\\\"a\\\\\\\", \\\\\\\"aa\\\\\\\"]) == True\\\\n    \\\\n    def test_word_dict_as_set(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test that word_dict can be a set.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"leetcode\\\\\\\", {\\\\\\\"leet\\\\\\\", \\\\\\\"code\\\\\\\"}) == True\\\\n    \\\\n    def test_case_sensitive(self):\\\\n        \\\\\\\"\\\\\\\"\\\\\\\"Test that matching is case-sensitive.\\\\\\\"\\\\\\\"\\\\\\\"\\\\n        assert word_break(\\\\\\\"LeetCode\\\\\\\", [\\\\\\\"leet\\\\\\\", \\\\\\\"code\\\\\\\"]) == False\\\\n\\\"}\"}}]}",
+      "tokens": 3292,
+      "tool_calls": [
+        {
+          "name": "write_file",
+          "args": {
+            "path": "test_word_break.py",
+            "content": "import pytest\nfrom word_break import word_break\n\n\nclass TestWordBreak:\n    \"\"\"Test cases for the word_break function.\"\"\"\n    \n    def test_basic_true_case(self):\n        \"\"\"Test a basic case where segmentation is possible.\"\"\"\n        assert word_break(\"leetcode\", [\"leet\", \"code\"]) == True\n    \n    def test_basic_true_case_2(self):\n        \"\"\"Test another basic case where segmentation is possible.\"\"\"\n        assert word_break(\"applepenapple\", [\"apple\", \"pen\"]) == True\n    \n    def test_basic_false_case(self):\n        \"\"\"Test a basic case where segmentation is not possible.\"\"\"\n        assert word_break(\"catsandog\", [\"cat\", \"cats\", \"and\", \"sand\", \"dog\"]) == False\n    \n    def test_empty_string(self):\n        \"\"\"Test with an empty string.\"\"\"\n        assert word_break(\"\", []) == True\n    \n    def test_empty_string_with_dict(self):\n        \"\"\"Test with an empty string and non-empty dictionary.\"\"\"\n        assert word_break(\"\", [\"a\", \"b\"]) == True\n    \n    def test_single_character_match(self):\n        \"\"\"Test with a single character that matches.\"\"\"\n        assert word_break(\"a\", [\"a\"]) == True\n    \n    def test_single_character_no_match(self):\n        \"\"\"Test with a single character that doesn't match.\"\"\"\n        assert word_break(\"a\", [\"b\"]) == False\n    \n    def test_word_not_in_dict(self):\n        \"\"\"Test when the entire string is not in the dictionary.\"\"\"\n        assert word_break(\"hello\", [\"world\"]) == False\n    \n    def test_overlapping_words(self):\n        \"\"\"Test with overlapping word possibilities.\"\"\"\n        assert word_break(\"catsandcatsdog\", [\"cat\", \"cats\", \"and\", \"sand\", \"dog\"]) == True\n    \n    def test_multiple_segmentations(self):\n        \"\"\"Test a string that can be segmented in multiple ways.\"\"\"\n        assert word_break(\"aaab\", [\"a\", \"aa\", \"aaa\", \"b\"]) == True\n    \n    def test_false_with_similar_words(self):\n        \"\"\"Test a case that looks like it could work but doesn't.\"\"\"\n        assert word_break(\"aaab\", [\"a\", \"aa\", \"aaa\"]) == False\n    \n    def test_long_string(self):\n        \"\"\"Test with a longer string.\"\"\"\n        assert word_break(\"abcdefghij\", [\"ab\", \"cd\", \"ef\", \"gh\", \"ij\"]) == True\n    \n    def test_long_string_false(self):\n        \"\"\"Test with a longer string that cannot be segmented.\"\"\"\n        assert word_break(\"abcdefghij\", [\"ab\", \"cd\", \"ef\", \"gh\"]) == False\n    \n    def test_repeated_pattern(self):\n        \"\"\"Test with repeated patterns.\"\"\"\n        assert word_break(\"aaaa\", [\"a\", \"aa\"]) == True\n    \n    def test_word_dict_as_set(self):\n        \"\"\"Test that word_dict can be a set.\"\"\"\n        assert word_break(\"leetcode\", {\"leet\", \"code\"}) == True\n    \n    def test_case_sensitive(self):\n        \"\"\"Test that matching is case-sensitive.\"\"\"\n        assert word_break(\"LeetCode\", [\"leet\", \"code\"]) == False\n"
+          },
+          "result": "Written to test_word_break.py"
+        }
+      ]
+    },
+    {
+      "turn": 5,
+      "response": "{\"__tool_calls__\": [{\"type\": \"function\", \"index\": 0, \"id\": \"toolu_bdrk_01Pa8kj5BxxLA7tPRmoewkRm\", \"function\": {\"name\": \"run_tests\", \"arguments\": \"{}\"}}]}",
+      "tokens": 3867,
+      "tool_calls": [
+        {
+          "name": "run_tests",
+          "args": {},
+          "result": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.5, pytest-9.1.1, pluggy-1.6.0\nrootdir: /Users/jakeprokopets/handoff-bench\ncollected 16 items\n\ndata_v2/word_break_wake_s123/b/test_word_break.py ................       [100%]\n\n============================== 16 passed in 0.02s ==============================\n"
+        }
+      ]
+    }
+  ],
+  "a_file_state": {
+    "word_break.py": "def word_break(s, word_dict):\n    \"\"\"\n    Determine if a string can be segmented into space-separated words from a given dictionary.\n    \n    Args:\n        s: The string to segment\n        word_dict: A list or set of valid words\n    \n    Returns:\n        True if the string can be segmented into words from the dictionary, False otherwise\n    \"\"\"\n    # Convert word_dict to a set for O(1) lookup\n    word_set = set(word_dict)\n    \n    # dp[i] represents whether s[0:i] can be segmented\n    dp = [False] * (len(s) + 1)\n    dp[0] = True  # Empty string can always be segmented\n    \n    # For each position in the string\n    for i in range(1, len(s) + 1):\n        # Check all possible previous positions\n        for j in range(i):\n            # If s[0:j] can be segmented and s[j:i] is a valid word\n            if dp[j] and s[j:i] in word_set:\n                dp[i] = True\n                break\n    \n    return dp[len(s)]\n"
+  }
+}

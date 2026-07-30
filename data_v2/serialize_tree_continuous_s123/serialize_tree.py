@@ -1,0 +1,86 @@
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+def serialize(root):
+    """
+    Serialize a binary tree to a string using level-order traversal.
+    Missing nodes are represented as 'null'.
+    
+    Args:
+        root: TreeNode or None
+        
+    Returns:
+        String representation of the tree
+    """
+    if not root:
+        return '[]'
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        node = queue.popleft()
+        
+        if node:
+            result.append(str(node.val))
+            queue.append(node.left)
+            queue.append(node.right)
+        else:
+            result.append('null')
+    
+    # Remove trailing nulls
+    while result and result[-1] == 'null':
+        result.pop()
+    
+    return '[' + ','.join(result) + ']'
+
+
+def deserialize(data):
+    """
+    Deserialize a string to a binary tree using level-order traversal.
+    
+    Args:
+        data: String representation of the tree
+        
+    Returns:
+        TreeNode or None
+    """
+    # Remove brackets and split
+    data = data.strip('[]')
+    
+    if not data:
+        return None
+    
+    values = data.split(',')
+    
+    if values[0] == 'null':
+        return None
+    
+    root = TreeNode(int(values[0]))
+    queue = deque([root])
+    i = 1
+    
+    while queue and i < len(values):
+        node = queue.popleft()
+        
+        # Process left child
+        if i < len(values):
+            if values[i] != 'null':
+                node.left = TreeNode(int(values[i]))
+                queue.append(node.left)
+            i += 1
+        
+        # Process right child
+        if i < len(values):
+            if values[i] != 'null':
+                node.right = TreeNode(int(values[i]))
+                queue.append(node.right)
+            i += 1
+    
+    return root

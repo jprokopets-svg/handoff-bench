@@ -1,0 +1,1228 @@
+{
+  "completed": [
+    "median_stream_no_handoff_s256",
+    "word_break_brief_s123",
+    "serialize_tree_brief_s256",
+    "median_stream_wake_s42",
+    "word_break_continuous_s256",
+    "merge_k_lists_wake_s42",
+    "median_stream_wake_s123",
+    "merge_k_lists_no_handoff_s42",
+    "median_two_sorted_continuous_s256",
+    "median_stream_brief_s256",
+    "serialize_tree_raw_s256",
+    "word_break_raw_s256",
+    "n_queens_wake_s256",
+    "median_two_sorted_continuous_s123",
+    "serialize_tree_raw_s42",
+    "regex_parser_wake_s123",
+    "word_break_wake_s42",
+    "word_break_continuous_s42",
+    "median_stream_no_handoff_s42",
+    "merge_k_lists_raw_s123",
+    "median_two_sorted_continuous_s42",
+    "median_stream_continuous_s123",
+    "serialize_tree_continuous_s256",
+    "serialize_tree_raw_s123",
+    "max_path_sum_wake_s42",
+    "max_path_sum_raw_s123",
+    "median_stream_no_handoff_s123",
+    "regex_parser_wake_s42",
+    "regex_parser_raw_s42",
+    "median_stream_continuous_s42",
+    "regex_parser_brief_s256",
+    "serialize_tree_no_handoff_s123",
+    "max_path_sum_continuous_s123",
+    "regex_parser_raw_s256",
+    "max_path_sum_continuous_s256",
+    "regex_parser_no_handoff_s123",
+    "serialize_tree_brief_s123",
+    "n_queens_brief_s42",
+    "serialize_tree_continuous_s42",
+    "serialize_tree_wake_s123",
+    "regex_parser_continuous_s42",
+    "regex_parser_wake_s256",
+    "regex_parser_no_handoff_s256",
+    "max_path_sum_brief_s256",
+    "serialize_tree_no_handoff_s256",
+    "regex_parser_no_handoff_s42",
+    "median_stream_wake_s256",
+    "n_queens_raw_s123",
+    "merge_k_lists_raw_s42",
+    "max_path_sum_brief_s123",
+    "serialize_tree_brief_s42",
+    "n_queens_wake_s42",
+    "median_stream_raw_s42",
+    "median_two_sorted_brief_s42",
+    "regex_parser_brief_s42",
+    "word_break_brief_s42",
+    "word_break_raw_s42",
+    "n_queens_brief_s256",
+    "median_two_sorted_no_handoff_s256",
+    "regex_parser_continuous_s123",
+    "n_queens_no_handoff_s123",
+    "median_two_sorted_wake_s256",
+    "regex_parser_brief_s123",
+    "median_stream_continuous_s256",
+    "merge_k_lists_brief_s42",
+    "n_queens_no_handoff_s42",
+    "n_queens_raw_s256",
+    "serialize_tree_wake_s256",
+    "median_two_sorted_brief_s123",
+    "regex_parser_raw_s123",
+    "word_break_no_handoff_s42",
+    "median_two_sorted_no_handoff_s123",
+    "n_queens_continuous_s42",
+    "max_path_sum_no_handoff_s42",
+    "median_two_sorted_brief_s256",
+    "serialize_tree_continuous_s123",
+    "median_two_sorted_wake_s42",
+    "median_two_sorted_raw_s256",
+    "max_path_sum_raw_s42",
+    "word_break_no_handoff_s123",
+    "max_path_sum_no_handoff_s123",
+    "n_queens_raw_s42",
+    "merge_k_lists_continuous_s42",
+    "n_queens_wake_s123",
+    "merge_k_lists_no_handoff_s123",
+    "merge_k_lists_continuous_s123",
+    "word_break_continuous_s123",
+    "max_path_sum_continuous_s42",
+    "serialize_tree_wake_s42",
+    "word_break_wake_s123",
+    "median_two_sorted_wake_s123",
+    "median_two_sorted_raw_s42",
+    "n_queens_brief_s123",
+    "median_two_sorted_raw_s123",
+    "median_stream_raw_s256",
+    "word_break_wake_s256",
+    "word_break_no_handoff_s256",
+    "word_break_raw_s123",
+    "regex_parser_continuous_s256",
+    "max_path_sum_raw_s256",
+    "max_path_sum_wake_s123",
+    "median_stream_brief_s42",
+    "word_break_brief_s256",
+    "merge_k_lists_wake_s123",
+    "max_path_sum_brief_s42",
+    "n_queens_no_handoff_s256",
+    "serialize_tree_no_handoff_s42",
+    "median_two_sorted_no_handoff_s42",
+    "n_queens_continuous_s256",
+    "merge_k_lists_brief_s123",
+    "median_stream_brief_s123",
+    "n_queens_continuous_s123",
+    "median_stream_raw_s123",
+    "max_path_sum_wake_s256",
+    "max_path_sum_no_handoff_s256",
+    "merge_k_lists_continuous_s256",
+    "merge_k_lists_raw_s256",
+    "merge_k_lists_brief_s256",
+    "merge_k_lists_wake_s256",
+    "merge_k_lists_no_handoff_s256"
+  ],
+  "results": [
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 11,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 4854,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 4,
+      "b_turns": 5,
+      "handoff_tokens": 304,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 411,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 1286,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 347,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 450,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 1545,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 341,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 453,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "no_handoff",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": -1,
+      "b_turns": -1,
+      "handoff_tokens": -1,
+      "seed": 42,
+      "error": "Invalid control character at: line 1 column 36 (char 35)"
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 347,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 470,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 3,
+      "handoff_tokens": 1423,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 332,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": -1,
+      "b_turns": -1,
+      "handoff_tokens": -1,
+      "seed": 42,
+      "error": "Expecting ',' delimiter: line 1 column 32 (char 31)"
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "no_handoff",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 9,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 959,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 400,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 463,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 2200,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 324,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 3,
+      "handoff_tokens": 439,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "no_handoff",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 3,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 2,
+      "handoff_tokens": 1494,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 357,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 500,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 42
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 944,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 360,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 446,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 856,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 360,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 475,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 3,
+      "handoff_tokens": 1613,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 316,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 408,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 733,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 347,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 464,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 2012,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 333,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 413,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 992,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 400,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 476,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 11,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 970,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 379,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 439,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 9,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 824,
+      "seed": 123,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 388,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 3,
+      "handoff_tokens": 449,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 123
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 920,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 348,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 423,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/regex_parser",
+      "condition": "no_handoff",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 1995,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 396,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 484,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 3,
+      "handoff_tokens": 1411,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 346,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 442,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_stream",
+      "condition": "no_handoff",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 1064,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 369,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 407,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/word_break",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "continuous",
+      "passed": false,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 2158,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 344,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 439,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "raw",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 1026,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 400,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "wake",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 500,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/serialize_tree",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 10,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 2076,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "brief",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 356,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 420,
+      "seed": 256
+    },
+    {
+      "task_id": "handoff/max_path_sum",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 256,
+      "raw_truncation_chars": null
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "continuous",
+      "passed": true,
+      "a_turns": 12,
+      "b_turns": 0,
+      "handoff_tokens": 0,
+      "seed": 256,
+      "raw_truncation_chars": null
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "raw",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 2252,
+      "seed": 256,
+      "raw_truncation_chars": 3000
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "brief",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 367,
+      "seed": 256,
+      "raw_truncation_chars": null
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "wake",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 485,
+      "seed": 256,
+      "raw_truncation_chars": null
+    },
+    {
+      "task_id": "handoff/merge_k_lists",
+      "condition": "no_handoff",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 0,
+      "seed": 256
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "handoff/merge_k_lists",
+  "condition": "wake",
+  "passed": false,
+  "a_turns": 7,
+  "b_turns": 5,
+  "handoff_tokens": 485,
+  "seed": 256,
+  "raw_truncation_chars": null
+}

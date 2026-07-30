@@ -482,5 +482,41 @@ def main():
     print(f"  Total: {len(all_results)} runs")
 
 
+def run_single_cli():
+    """CLI entry point: run a single condition as a subprocess.
+    Usage: python3 handoff_v2.py run_single <cond> <prob_name> <seed>
+    """
+    import sys
+    if len(sys.argv) != 5 or sys.argv[1] != "run_single":
+        print("Usage: python3 handoff_v2.py run_single <cond> <prob_name> <seed>", file=sys.stderr)
+        sys.exit(1)
+    cond = sys.argv[2]
+    prob_name = sys.argv[3]
+    seed = int(sys.argv[4])
+
+    prob = [p for p in HARD_PROBLEMS if p["name"] == prob_name][0]
+    data_dir = Path(__file__).resolve().parent / "data_v2"
+    work_dir = data_dir / f"{prob_name}_{cond}_s{seed}"
+
+    # Clean work dir if partial previous attempt exists
+    if work_dir.exists():
+        import shutil
+        shutil.rmtree(work_dir)
+
+    r = run_condition(cond, prob, work_dir, seed)
+    # Print compact result as JSON for parent to parse
+    compact = {k: r[k] for k in ("task_id", "condition", "passed", "a_turns", "b_turns", "handoff_tokens", "seed")}
+    if r.get("raw_truncation_chars"):
+        compact["raw_truncation_chars"] = r["raw_truncation_chars"]
+    print("RESULT:" + json.dumps(compact))
+
+    # Save detailed run data
+    run_file = work_dir.parent / f"{prob_name}_{cond}_s{seed}.json"
+    run_file.write_text(json.dumps(r, indent=2, default=str))
+
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "run_single":
+        run_single_cli()
+    else:
+        main()
