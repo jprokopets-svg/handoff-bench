@@ -1,0 +1,218 @@
+[
+  {
+    "task_id": "handoff/longest_prefix",
+    "condition": "raw",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 278,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/longest_prefix",
+    "condition": "brief",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 903,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/longest_prefix",
+    "condition": "no_handoff",
+    "passed": true,
+    "a_turns": 0,
+    "b_turns": 6,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/longest_prefix",
+    "condition": "continuous",
+    "passed": true,
+    "a_turns": 10,
+    "b_turns": 0,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/parentheses",
+    "condition": "raw",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 261,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/parentheses",
+    "condition": "brief",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 857,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/parentheses",
+    "condition": "no_handoff",
+    "passed": false,
+    "a_turns": 0,
+    "b_turns": 6,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/parentheses",
+    "condition": "continuous",
+    "passed": false,
+    "a_turns": 10,
+    "b_turns": 0,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/power_set",
+    "condition": "raw",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 248,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/power_set",
+    "condition": "brief",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 5,
+    "handoff_tokens": 763,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/power_set",
+    "condition": "no_handoff",
+    "passed": false,
+    "a_turns": 0,
+    "b_turns": 6,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/power_set",
+    "condition": "continuous",
+    "passed": true,
+    "a_turns": 10,
+    "b_turns": 0,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/palindromic_substring",
+    "condition": "raw",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 299,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/palindromic_substring",
+    "condition": "brief",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 996,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/palindromic_substring",
+    "condition": "no_handoff",
+    "passed": true,
+    "a_turns": 0,
+    "b_turns": 6,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/palindromic_substring",
+    "condition": "continuous",
+    "passed": true,
+    "a_turns": 10,
+    "b_turns": 0,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/three_sum",
+    "condition": "raw",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 346,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/three_sum",
+    "condition": "brief",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 1013,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/three_sum",
+    "condition": "no_handoff",
+    "passed": false,
+    "a_turns": 0,
+    "b_turns": 6,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/three_sum",
+    "condition": "continuous",
+    "passed": true,
+    "a_turns": 10,
+    "b_turns": 0,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/rain_water",
+    "condition": "raw",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 308,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/rain_water",
+    "condition": "brief",
+    "passed": true,
+    "a_turns": 4,
+    "b_turns": 6,
+    "handoff_tokens": 959,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/rain_water",
+    "condition": "no_handoff",
+    "passed": false,
+    "a_turns": 0,
+    "b_turns": 6,
+    "handoff_tokens": 0,
+    "seed": 42
+  },
+  {
+    "task_id": "handoff/rain_water",
+    "condition": "continuous",
+    "passed": true,
+    "a_turns": 10,
+    "b_turns": 0,
+    "handoff_tokens": 0,
+    "seed": 42
+  }
+]
