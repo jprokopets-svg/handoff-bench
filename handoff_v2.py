@@ -240,17 +240,25 @@ def setup_workspace(prob: dict, work_dir: Path):
 
 
 def read_file_content(work_dir: Path, filename: str) -> str:
-    if not filename or filename.strip() in ("/", "."):
+    # Sanitize: agents sometimes hallucinate full/relative paths; always stay
+    # inside work_dir and only touch a single file by basename.
+    name = Path(filename or "").name
+    if not name or name.strip() in ("/", "."):
         return f"ERROR: invalid path '{filename}'"
-    path = work_dir / filename
+    path = work_dir / name
     if path.exists() and path.is_file():
         return path.read_text()
-    return f"ERROR: file not found: {filename}"
+    return f"ERROR: file not found: {name}"
 
 
 def write_file_content(work_dir: Path, filename: str, content: str):
-    (work_dir / filename).write_text(content)
-    return f"Written to {filename}"
+    # Sanitize: never let a hallucinated path escape work_dir.
+    name = Path(filename or "").name
+    if not name:
+        return f"ERROR: invalid path '{filename}'"
+    path = work_dir / name
+    path.write_text(content)
+    return f"Written to {name}"
 
 
 def run_pytest(work_dir: Path) -> str:

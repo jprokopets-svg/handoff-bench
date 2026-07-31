@@ -90,3 +90,31 @@ not inform prediction values.
 - **Experiment B injection:** one plausible factual error into "state of work" section of A's briefing, after A writes it
 - **Detection coding:** script-assisted (search B's transcript for ground-truth-revealing action before first write), plus manual spot-check of 10
 - **Order:** Experiment A before Experiment B
+
+---
+
+## Experiment A results + scoring (added 2026-08-01, all 72 runs complete)
+
+**Experiment A final pass rates (BRIEF-400, 8 tasks × 3 seeds per pair):**
+
+| Pair (A briefs B) | Pass rate |
+|-------------------|-----------|
+| Sonnet → Sonnet (S→S) | 24/24 (100%) |
+| Haiku → Sonnet (H→S) | 23/24 (95.8%) |
+| Sonnet → Haiku (S→H) | 22/24 (91.7%) |
+| Haiku → Haiku (H→H, reused from V2 BRIEF-400) | 16/24 (66.7%) |
+
+**Scoring of Claude's pre-registered claims:**
+
+| Claim | Prediction | Result | Verdict |
+|-------|-----------|--------|---------|
+| Briefing value set more by receiver than writer: S→H ≈ H→H within 8pts AND H→S ≈ S→S within 8pts | 55% | S→H 91.7% vs H→H 66.7% = 25pt gap; H→S 95.8% vs S→S 100% = 4.2pt gap | FALSE (conjunction; receiver-side clause fails) |
+| S→S is the top cell overall | 70% | S→S 100% > H→S 95.8% > S→H 91.7% > H→H 66.7% | TRUE |
+
+**Note:** one cell (median_two_sorted, S→S, seed 42) failed twice with harness bugs
+(assistant-prefill 400, then a hallucinated-path FileNotFoundError); both fixed
+(path handling in handoff_v2.py now sanitized to basename within work_dir) and the
+cell rerun PASSED. All 72 runs counted above are real executions.
+
+---
+
