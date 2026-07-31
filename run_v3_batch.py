@@ -23,6 +23,9 @@ TASKS = ["regex_parser", "n_queens", "median_stream", "word_break",
 CELLS_A = {"s_to_s": ("s", "s"), "s_to_h": ("s", "h"), "h_to_s": ("h", "s")}
 # Experiment B cells
 CELLS_B = {"subtle": ("subtle",), "flagged": ("flagged",)}
+# Condition strings must match handoff_v3.py's run_pair/run_single stamps
+CONDITION_MAP = {"s_to_s": "stos", "s_to_h": "stoh", "h_to_s": "htos",
+                 "subtle": "htoh_subtle", "flagged": "htoh_flagged"}
 
 
 def load_progress(path):
@@ -99,7 +102,7 @@ def run_batch(exp):
                     print(f"  ERROR: {err}", flush=True)
                     prog["completed"].append(key)
                     prog["results"].append({
-                        "task_id": f"handoff/{task}", "condition": cell,
+                        "task_id": f"handoff/{task}", "condition": CONDITION_MAP.get(cell, cell),
                         "passed": False, "a_turns": -1, "b_turns": -1,
                         "handoff_tokens": -1, "seed": seed, "error": err,
                     })

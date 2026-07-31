@@ -83,6 +83,10 @@ def run_agent(prob, init_context, max_turns, work_dir, seed, model, store_log=Tr
         else:
             messages.append({"role": "assistant", "content": response_text})
             tool_calls = []
+            # API requires the conversation to end on a user message; a plain-text
+            # reply (no tool call) otherwise leaves an assistant message last and
+            # the next turn 400s with "assistant message prefill".
+            messages.append({"role": "user", "content": "[Continue]"})
 
         for tc in tool_calls:
             fn_name = tc.get("function", {}).get("name", "")
@@ -340,6 +344,8 @@ def run_single_cli(argv):
             r = run_pair(prob, work_dir, seed, "haiku", "haiku", injection="planted", flagged=True)
         else:
             raise ValueError(f"bad cell {cell}")
+        # Distinguish conditions: run_pair stamps both B cells as htoh_planted.
+        r["condition"] = f"htoh_{cell}"
 
     compact = {k: r[k] for k in ("task_id", "condition", "passed", "a_turns", "b_turns", "handoff_tokens", "seed", "model_a", "model_b")}
     if r.get("injection"):
