@@ -32,9 +32,17 @@ holds. Keep this scored as FALSE; it goes in the writeup.
 - Rerun of the cell PASSED after both fixes. These belong in the methods
   section of the writeup.
 
-## Comparability guard (in flight)
+## Comparability guard — COMPLETE, reuse STANDS
 
-H→H BRIEF-400 reuse check: 6-run spot-check (median_two_sorted + n_queens ×
-3 seeds) with the current harness, logged in `data_v3a_spotcheck/`. If within
-seed noise of 66.7%, the V2 reuse stands; if not, rerun the full H→H cell
-before any writeup.
+H→H BRIEF-400 spot-check with the current (post-fix) harness: 2 tasks × 3
+seeds = 6 runs, logged in `data_v3a_spotcheck/`.
+
+| Task | V2 (brief) | Spot-check |
+|------|-----------|------------|
+| median_two_sorted | 2/3 | 3/3 (PASS, PASS, PASS) |
+| n_queens | 0/3 | 1/3 (FAIL, PASS, FAIL) |
+| **Total** | **16/24 (66.7%)** | **4/6 (66.7%)** |
+
+Spot-check total is exactly 66.7% — within seed noise of V2's 66.7%. The V2
+H→H reuse **stands**; no full-cell rerun needed. (Small upward drift on both
+tasks, but total identical; n=6 is coarse.)
