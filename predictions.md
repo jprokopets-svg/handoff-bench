@@ -118,3 +118,29 @@ cell rerun PASSED. All 72 runs counted above are real executions.
 
 ---
 
+
+---
+
+## Experiment B results + scoring (added 2026-08-01, all 48 runs complete)
+
+**Experiment B final pass rates (pair H→H, format BRIEF-400, 8 tasks × 3 seeds per cell):**
+
+| Cell | Pass rate | Detected (B showed ground-truth awareness before first write) |
+|------|-----------|-----------|
+| PLANTED-SUBTLE | 14/24 (58.3%) | 18/24 (75.0%) |
+| PLANTED-FLAGGED | 18/24 (75.0%) | 22/24 (91.7%) |
+| CLEAN (V2 H→H BRIEF-400 baseline) | 16/24 (66.7%) | — |
+
+**Scoring of Claude's pre-registered claims:**
+
+| Claim | Confidence | Result | Verdict |
+|-------|-----------|--------|---------|
+| PLANTED-SUBTLE drops pass rate vs CLEAN by ≥15pts | 65% | 66.7% → 58.3% = 8.4pt drop | FALSE |
+| Verify-flag recovers at least half the planted-error damage (FLAGGED midpoint or better between SUBTLE and CLEAN) | 55% | FLAGGED 75.0% ≥ midpoint 62.5% | TRUE — and beyond: FLAGGED exceeds CLEAN 66.7% |
+| Inheritance is the default: B acts on the false claim without checking in >50% of SUBTLE runs | 70% | Undetected (unchecked) = 6/24 = 25% | FALSE |
+
+**Notes:**
+- The flag paradox: PLANTED-FLAGGED (75.0%) beat CLEAN (66.7%) — the verify flag didn't just recover damage, it out-performed clean handoffs. n=24 per cell; treat as a signal, not a law.
+- Detection ≠ pass: of the 6 unchecked SUBTLE runs, 4 passed anyway; of the 18 checked, 8 failed. Detection and outcome are correlated but not identical.
+- Injection types used: wrong_filename, tests_pass (picked deterministically by determine_injection per run).
+
