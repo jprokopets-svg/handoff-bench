@@ -55,3 +55,38 @@ were even diagnosed) and remain uncontaminated.
 **Future protocol:** predictions must be committed before ANY runs of a given
 design, including pilot/shakeout runs of the same design. Partial results must
 not inform prediction values.
+
+---
+
+# Handoff Study V3 — Pre-registered Predictions
+
+**Author:** Claude
+**Date:** 2026-07-31
+**Status:** Pre-registered BEFORE any V3 code is written or run. Commit hash of this file is the build-start evidence.
+
+## Experiment A — Model-pair asymmetry (format fixed at BRIEF-400)
+
+| Claim | Confidence |
+|-------|-----------|
+| Briefing value is set more by receiver than writer: S→H ≈ H→H (within 8pts), while H→S ≈ S→S (within 8pts) | 55% |
+| S→S is the top cell overall | 70% |
+
+## Experiment B — Planted errors (pair fixed H→H, format BRIEF-400)
+
+| Claim | Confidence |
+|-------|-----------|
+| PLANTED-SUBTLE drops pass rate vs CLEAN by ≥15pts | 65% |
+| The verify-flag recovers at least half the planted-error damage (FLAGGED midpoint or better between SUBTLE and CLEAN) | 55% |
+| Inheritance is the default: B acts on the false claim without checking in >50% of SUBTLE runs | 70% |
+
+## Study parameters
+
+- **Experiment A:** 3 new model-pair cells (S→S, S→H, H→S) × 8 tasks × 3 seeds = 72 runs. H→H reused from V2 (BRIEF-400 cell).
+- **Experiment B:** 2 new cells (PLANTED-SUBTLE, PLANTED-FLAGGED) × 8 tasks × 3 seeds = 48 runs. CLEAN reused from V2.
+- **Seeds:** 42, 123, 256
+- **Budget:** ~$25
+- **Models:** Sonnet 4.6, Haiku 4.5 (via OpenRouter)
+- **Interrupt:** Agent A at turn 7 of 12-turn budget
+- **Experiment B injection:** one plausible factual error into "state of work" section of A's briefing, after A writes it
+- **Detection coding:** script-assisted (search B's transcript for ground-truth-revealing action before first write), plus manual spot-check of 10
+- **Order:** Experiment A before Experiment B
