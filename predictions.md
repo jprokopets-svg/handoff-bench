@@ -127,9 +127,16 @@ cell rerun PASSED. All 72 runs counted above are real executions.
 
 | Cell | Pass rate | Detected (B showed ground-truth awareness before first write) |
 |------|-----------|-----------|
-| PLANTED-SUBTLE | 14/24 (58.3%) | 18/24 (75.0%) |
-| PLANTED-FLAGGED | 18/24 (75.0%) | 22/24 (91.7%) |
+| PLANTED-SUBTLE | 14/24 (58.3%) | 23/24 (95.8%) |
+| PLANTED-FLAGGED | 18/24 (75.0%) | 23/24 (95.8%) |
 | CLEAN (V2 H→H BRIEF-400 baseline) | 16/24 (66.7%) | — |
+
+**Detection labels audited post-hoc (2026-08-01):** a manual spot-check of 10
+runs surfaced 2 disagreements with the script; root cause was an `endswith`
+false positive that matched `test_<entry>.py` as a solution-file write. Detector
+fixed in handoff_v3.py (exact basename match) and all 48 runs re-coded: 6 labels
+corrected (5 subtle, 1 flagged), all False→True (B ran tests before writing the
+solution file). Pass rates unchanged.
 
 **Scoring of Claude's pre-registered claims:**
 
@@ -137,10 +144,10 @@ cell rerun PASSED. All 72 runs counted above are real executions.
 |-------|-----------|--------|---------|
 | PLANTED-SUBTLE drops pass rate vs CLEAN by ≥15pts | 65% | 66.7% → 58.3% = 8.4pt drop | FALSE |
 | Verify-flag recovers at least half the planted-error damage (FLAGGED midpoint or better between SUBTLE and CLEAN) | 55% | FLAGGED 75.0% ≥ midpoint 62.5% | TRUE — and beyond: FLAGGED exceeds CLEAN 66.7% |
-| Inheritance is the default: B acts on the false claim without checking in >50% of SUBTLE runs | 70% | Undetected (unchecked) = 6/24 = 25% | FALSE |
+| Inheritance is the default: B acts on the false claim without checking in >50% of SUBTLE runs | 70% | Undetected (unchecked) = 1/24 = 4.2% | FALSE |
 
 **Notes:**
 - The flag paradox: PLANTED-FLAGGED (75.0%) beat CLEAN (66.7%) — the verify flag didn't just recover damage, it out-performed clean handoffs. n=24 per cell; treat as a signal, not a law.
-- Detection ≠ pass: of the 6 unchecked SUBTLE runs, 4 passed anyway; of the 18 checked, 8 failed. Detection and outcome are correlated but not identical.
+- Detection ≠ recovery: B checked ground truth before writing in 23/24 SUBTLE runs (95.8%), yet pass rate still dropped (58.3% vs 66.7% clean) and 9/23 checked runs failed anyway. Awareness of the planted error almost never translated into task success.
 - Injection types used: wrong_filename, tests_pass (picked deterministically by determine_injection per run).
 

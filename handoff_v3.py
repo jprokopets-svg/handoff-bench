@@ -210,7 +210,9 @@ def code_detection(b_log, injection, entry_file) -> dict:
     first_write_turn = None
     for i, t in enumerate(b_log):
         for tc in t.get("tool_calls", []):
-            if tc["name"] == "write_file" and (tc["args"].get("path") or "").endswith(f"{entry_file}.py"):
+            # Exact basename match only: endswith(f"{entry_file}.py") would also
+            # match test_<entry>.py, miscounting test-file writes as solution writes.
+            if tc["name"] == "write_file" and (tc["args"].get("path") or "") == f"{entry_file}.py":
                 first_write_turn = i
                 break
         if first_write_turn is not None:

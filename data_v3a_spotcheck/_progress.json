@@ -1,0 +1,78 @@
+{
+  "completed": [
+    "median_two_sorted_s42",
+    "median_two_sorted_s123",
+    "median_two_sorted_s256",
+    "n_queens_s42",
+    "n_queens_s123",
+    "n_queens_s256"
+  ],
+  "results": [
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "htoh",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 330,
+      "seed": 42,
+      "model_a": "haiku",
+      "model_b": "haiku"
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "htoh",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 308,
+      "seed": 123,
+      "model_a": "haiku",
+      "model_b": "haiku"
+    },
+    {
+      "task_id": "handoff/median_two_sorted",
+      "condition": "htoh",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 4,
+      "handoff_tokens": 297,
+      "seed": 256,
+      "model_a": "haiku",
+      "model_b": "haiku"
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "htoh",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 395,
+      "seed": 42,
+      "model_a": "haiku",
+      "model_b": "haiku"
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "htoh",
+      "passed": true,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 388,
+      "seed": 123,
+      "model_a": "haiku",
+      "model_b": "haiku"
+    },
+    {
+      "task_id": "handoff/n_queens",
+      "condition": "htoh",
+      "passed": false,
+      "a_turns": 7,
+      "b_turns": 5,
+      "handoff_tokens": 393,
+      "seed": 256,
+      "model_a": "haiku",
+      "model_b": "haiku"
+    }
+  ]
+}

@@ -188,8 +188,8 @@
     "flagged": false
   },
   "detection": {
-    "detected": false,
-    "evidence": "no ground-truth-revealing action before first write",
-    "action": null
+    "detected": true,
+    "evidence": "turn 4 run_tests before write",
+    "action": "run_tests"
   }
 }
