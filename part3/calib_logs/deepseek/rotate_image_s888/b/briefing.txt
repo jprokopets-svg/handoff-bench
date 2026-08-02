@@ -1,0 +1,5 @@
+GOAL: Rotate an n x n matrix 90 degrees clockwise in-place.
+STATE: Code is complete and passes all tests. The algorithm uses a transpose step followed by reversing each row.
+DONE: Implementation is fully functional and correct.
+BROKEN: Nothing is broken. All tests are passing.
+NEXT: No further action required. The task is complete.

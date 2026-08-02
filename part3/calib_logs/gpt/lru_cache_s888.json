@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "lru_cache",
+  "seed": 888,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0021778,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.0024055,
+    "text": "GOAL: Implement a correct O(1) LRU cache API (get, put, eviction) and have it fully tested.\n\nSTATE: lru_cache.py contains a doubly-linked list + dict LRUCache implementation with Node class and methods: _add_node, _remove_node, _move_to_front, _pop_tail, get, put. Constructor enforces capacity > 0. Dummy head/tail sentinels used. All provided tests currently pass.\n\nDONE:\n- Core data structures present and wired (dict -> Node, sentinel head/tail).\n- get moves accessed node to front and returns value (or -1 if missing).\n- put inserts new nodes, updates existing keys, moves to front, and evicts least-recently-used when capacity exceeded.\n- _add_node/_remove_node correctly maintain pointers and clear removed node pointers.\n- Size bookkeeping and cache dict maintenance work in tests.\n\nBROKEN / UNKNOWN:\n- No failing tests, but some behaviors are unverified:\n  - Concurrency/thread-safety: not safe for concurrent access.\n  - Edge cases not explicitly covered by tests: capacity == 1, many repeated updates, large capacities, non-int keys/values.\n  - Memory behavior: potential retention / GC interactions (circular refs vs __slots__) not validated.\n  - API expectations (should get return None vs -1?) depend on spec; current get returns -1.\n  - No performance profiling for heavy workloads.\n  - No documentation/comments or type-checking beyond simple annotations.\n\nNEXT: Add focused unit tests for edge cases and invariants \u2014 especially capacity=1, repeated put of same key (ensure size doesn't grow), eviction order after sequences of gets/puts, and confirm behavior when cache is empty \u2014 to"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0037287500000000003,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "class LRUCache:\n    \"\"\"A simple LRU (least-recently used) cache.\n\n    get(key) -> value or -1 if not found. Accessing a key marks it as recently used.\n    put(key, value) -> inserts or updates key. If insertion causes size to exceed\n    capacity, evict the least-recently-used item.\n\n    Both operations run in O(1) time on average using a hashmap + doubly-linked list.\n    \"\"\"\n\n    class _Node:\n        __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n\n        def __init__(self, key=None, value=None):\n            self.key = key\n            self.value = value\n            self.prev = None\n            self.next = None\n\n    def __init__(self, capacity: int):\n        if capacity <= 0:\n            raise ValueError(\"capacity must be > 0\")\n        self.capacity = capacity\n        self.cache = {}  # key -> Node\n        # Dummy head and tail to avoid edge-case checks\n        self.head = self._Node()\n        self.tail = self._Node()\n        self.head.next = self.tail\n        self.tail.prev = self.head\n        self.size = 0\n\n    def _add_node(self, node):\n        \"\"\"Add node right after head (most recently used position).\"\"\"\n        node.prev = self.head\n        node.next = self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def _remove_node(self, node):\n        \"\"\"Remove node from the linked list.\"\"\"\n        prev = node.prev\n        nxt = node.next\n        if prev is not None:\n            prev.next = nxt\n        if nxt is not None:\n            nxt.prev = prev\n        node.prev = None\n        node.next = None\n\n    def _move_to_front(self, node):\n        \"\"\"Move an existing node to the front (most recently used).\"\"\"\n        self._remove_node(node)\n        self._add_node(node)\n\n    def _pop_tail(self):\n        \"\"\"Pop the least recently used node (right before tail).\"\"\"\n        node = self.tail.prev\n        if node is self.head:\n            return None\n        self._remove_node(node)\n        return node\n\n    def get(self, key: int) -> int:\n        node = self.cache.get(key)\n        if not node:\n            return -1\n        # move to front and return value\n        self._move_to_front(node)\n        return node.value\n\n    def put(self, key: int, value: int) -> None:\n        node = self.cache.get(key)\n        if node:\n            # update value and mark as recently used\n            node.value = value\n            self._move_to_front(node)\n            return\n        # insert new node\n        new_node = self._Node(key, value)\n        self.cache[key] = new_node\n        self._add_node(new_node)\n        self.size += 1\n        if self.size > self.capacity:\n            # evict LRU\n            tail = self._pop_tail()\n            if tail:\n                # remove from cache dict\n                try:\n                    del self.cache[tail.key]\n                except KeyError:\n                    pass\n                self.size -= 1\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.008312050000000001
+}

@@ -1,0 +1,9 @@
+GOAL: Implement a function that calculates the maximum area of water that can be contained by vertical lines represented by an integer array.
+
+STATE: The function `max_area` is implemented using a two-pointer approach. It iterates from both ends of the array, calculating the area at each step and moving the pointer with the smaller height inward.
+
+DONE: The core algorithm is correctly implemented and passes all provided tests. The logic for area calculation and pointer movement is functional.
+
+BROKEN: Nothing is currently broken. However, the code's robustness for edge cases (e.g., very large input lists) and its absolute performance are unknown without further context or constraints.
+
+NEXT: If optimization is needed, profile the function with large inputs to confirm O(n) time complexity and O(1) space complexity. No immediate code changes are required.

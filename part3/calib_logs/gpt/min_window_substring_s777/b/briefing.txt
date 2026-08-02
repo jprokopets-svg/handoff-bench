@@ -1,0 +1,17 @@
+GOAL: Implement a correct, efficient min_window(s, t) that returns the smallest substring of s containing all characters of t (or "" if none).
+
+STATE: A sliding-window implementation exists in min_window_substring.py. It uses collections.Counter for dict_t, two pointers l/r, a window_counts dict, a formed counter, and tracks the best window in ans. All provided unit tests passed.
+
+DONE: Core algorithm implemented and working for the test suite:
+- Builds and contracts sliding window correctly.
+- Handles multi-occurrence characters via counts.
+- Returns correct substring or empty string when no window exists.
+- Tests report PASS.
+
+BROKEN / UNKNOWN:
+- Early-return clause is slightly awkward (if not t or not s: return "" if t else ""), but currently no failing tests; behaviour for t=="" is to return "" (likely acceptable).
+- No explicit tests for extreme cases: very large s/t, stress/randomized inputs, or non-ASCII/Unicode combining characters.
+- Performance/memory behavior on huge inputs is unverified.
+- No handling/validation for non-string inputs (type hints present but not enforced).
+
+NEXT: The single most important thing to try is run stress/performance tests (large randomized s and t, including pathological cases) to confirm linear-time behavior and check memory/edge-case correctness; if issues appear, profile and optimize or adjust early-return and corner-case handling.

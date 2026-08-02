@@ -1,0 +1,5 @@
+GOAL: Implement `length_of_longest_substring` to find the length of the longest substring without repeating characters.
+STATE: A sliding window approach with a dictionary to track character indices.
+DONE: The current implementation passes all provided test cases. It correctly handles various inputs, including empty strings, strings with no repeats, and strings with repeats.
+BROKEN: Nothing appears broken. The current solution is efficient and correct based on the tests.
+NEXT: Review the code for potential edge cases not covered by existing tests, or consider alternative, potentially more optimized, approaches (e.g., using a set for faster `char in char_map` checks if index tracking isn't strictly needed for `start` adjustment, though the current approach is standard).

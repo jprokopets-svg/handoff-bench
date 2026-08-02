@@ -1,0 +1,5 @@
+GOAL: Implement a function `rotate(matrix)` that rotates a square 2D matrix 90 degrees clockwise in-place.
+STATE: The `rotate` function currently transposes the matrix and then reverses each row.
+DONE: The current implementation successfully rotates the matrix 90 degrees clockwise. All provided test cases pass.
+BROKEN: Nothing is currently broken. The task appears to be complete based on the passing tests.
+NEXT: Verify if there are any edge cases or specific performance requirements not covered by the existing tests. If not, the task is finished.

@@ -1,0 +1,15 @@
+GOAL: Implement a decoder for strings with patterns k[encoded_string], supporting nesting (e.g., "3[a2[b]]" -> "abbabbabb").
+
+STATE: decode_string.py contains a working function decode_string(s: str) that iterates chars, uses num_stack and str_stack, accumulates multi-digit numbers, and builds repeated substrings on closing ']'.
+
+DONE: Core functionality works; nesting and multi-digit repeat counts handled. All provided tests currently pass.
+
+BROKEN: Edge cases and input validation are unclear or not handled explicitly:
+- Unmatched closing ']' is ignored (code continues) per comment; behavior for unmatched '[' (missing closing) is to leave pushed context unresolved (may drop repeat).
+- Bare digits not followed by '[' (e.g., "3a") leave current_num unused, returning incorrect result (e.g., "3a" -> "a").
+- No explicit error reporting for malformed input.
+- No handling for negative repeat counts, whitespace/escaped brackets, or extremely large repeats (memory/performance risk).
+- Performance: repeated string concatenation can be expensive for large repeats/deep nesting.
+- Unicode/multibyte considerations not evaluated.
+
+NEXT: Decide desired spec for malformed inputs and implement/ test it — specifically add unit tests for cases like "3a", "2[ab", "abc]", large repeat counts — then modify decode_string to either: (a) treat stray digits/brackets as literal, or (b) raise a clear ValueError for malformed input; also consider using a list buffer or io.StringIO to improve performance for large outputs.

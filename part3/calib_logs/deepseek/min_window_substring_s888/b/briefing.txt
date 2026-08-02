@@ -1,0 +1,9 @@
+GOAL: Implement a function that returns the minimum window substring of s containing all characters of t (including duplicates), or an empty string if none exists.
+
+STATE: Code is written and all tests are currently passing.
+
+DONE: Sliding window approach using Counter for t and a dictionary for window counts. Logic correctly expands the right pointer, adds characters, and tracks when character requirements from t are met (using `formed`). Contracts from the left when all requirements are satisfied and updates the minimum window.
+
+BROKEN: Nothing is currently failing based on tests. However, the algorithm may be inefficient for some edge cases because `window_counts` tracks all characters in s, not just those in t, leading to unnecessary dictionary operations.
+
+NEXT: Optimize by tracking only the characters that are in t within `window_counts` to reduce overhead and improve performance, especially for large s with many characters not in t.

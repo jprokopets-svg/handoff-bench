@@ -1,0 +1,70 @@
+{
+  "family": "claude",
+  "task": "course_schedule",
+  "seed": 777,
+  "model": "anthropic/claude-haiku-4.5",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.008841,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 335,
+    "cost": 0.00209,
+    "text": "GOAL:\nDetermine if all courses can be completed given prerequisite constraints. Return True if no circular dependencies exist (all courses can be finished), False if a cycle prevents completion.\n\nSTATE:\n- Implementation uses Kahn's algorithm (topological sort via BFS)\n- Graph represented as adjacency list with in-degree tracking\n- All unit tests currently passing\n\nDONE:\n- Core algorithm logic is sound: builds directed graph from prerequisites, calculates in-degrees, performs BFS starting from courses with no prerequisites\n- Correctly identifies cycles by comparing completed courses against total courses\n- Edge cases handled: empty prerequisites, single course, multiple independent courses\n- Time complexity O(V + E) is optimal for this problem\n\nBROKEN:\n- None identified; tests passing\n\nNEXT:\n**Verify edge case handling with manual review:**\n1. Test with num_courses=0 (should return True - no courses to complete)\n2. Test with circular dependency: prerequisites=[[1,0],[0,1]] (should return False)\n3. Test with self-loop: prerequisites=[[0,0]] (should return False)\n4. Confirm queue.pop(0) performance is acceptable (consider deque for production)\n\nIf all manual edge cases pass, code is ready for deployment. Consider minor optimization: replace `queue.pop(0)` with `collections.deque` for O(1) popleft() instead of O(n) list pop."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.014661,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 6
+    },
+    "code": "from collections import deque\n\ndef can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    \"\"\"\n    Determine if all courses can be completed given prerequisite constraints.\n    Uses Kahn's algorithm (topological sort via BFS) to detect cycles.\n    \n    Args:\n        num_courses: Total number of courses (0 to num_courses-1)\n        prerequisites: List of [course, prerequisite] pairs\n    \n    Returns:\n        True if all courses can be finished (no cycles), False otherwise\n    \"\"\"\n    # Edge case: no courses\n    if num_courses == 0:\n        return True\n    \n    # Build adjacency list and in-degree array\n    graph = [[] for _ in range(num_courses)]\n    in_degree = [0] * num_courses\n    \n    for course, prerequisite in prerequisites:\n        graph[prerequisite].append(course)\n        in_degree[course] += 1\n    \n    # Initialize queue with courses that have no prerequisites\n    queue = deque()\n    for i in range(num_courses):\n        if in_degree[i] == 0:\n            queue.append(i)\n    \n    # Process courses in topological order\n    completed = 0\n    while queue:\n        course = queue.popleft()\n        completed += 1\n        \n        # For each course that depends on the current course\n        for next_course in graph[course]:\n            in_degree[next_course] -= 1\n            if in_degree[next_course] == 0:\n                queue.append(next_course)\n    \n    # If we completed all courses, no cycle exists\n    return completed == num_courses\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.025592
+}

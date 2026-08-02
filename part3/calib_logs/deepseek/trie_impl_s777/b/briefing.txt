@@ -1,0 +1,5 @@
+GOAL: Implement a Trie data structure with insert, search, and starts_with methods.  
+STATE: Basic Trie implementation is complete and passes all provided tests.  
+DONE: Core functionality (insert, exact search, prefix check) works correctly.  
+BROKEN: No explicit failures; potential enhancements like delete, iteration, or memory optimization are unknown/untested.  
+NEXT: Implement a `delete` method to remove words from the Trie, ensuring it correctly handles overlapping prefixes and cleans up unused nodes.

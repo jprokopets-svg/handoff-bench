@@ -1,0 +1,9 @@
+GOAL: Merge overlapping and adjacent intervals in a list of [start, end] pairs, returning sorted merged intervals.
+
+STATE: Code is complete and passes all tests. The function sorts intervals, iterates through them, merges when overlapping or adjacent (start <= current_end), and updates the current_end to the maximum end during merges.
+
+DONE: Core merging logic works correctly. Sorting, iteration, and condition for merging (including adjacency) are implemented and validated by tests.
+
+BROKEN: Nothing is currently failing. Edge cases like empty input and single intervals are handled.
+
+NEXT: No immediate action required. The task is complete. If proceeding, consider adding documentation or extending functionality (e.g., support for open/closed intervals) based on new requirements.

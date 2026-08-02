@@ -1,0 +1,34 @@
+# BRIEFING: min_window_substring.py
+
+**GOAL:**
+Implement a minimum window substring algorithm that finds the shortest contiguous substring of `s` containing all characters from `t` with their required frequencies.
+
+**STATE:**
+- Complete implementation using sliding window (two-pointer) technique
+- Code includes:
+  - Character frequency tracking for target string `t`
+  - Dynamic window expansion/contraction logic
+  - Optimization to track only unique characters needed (`formed` counter)
+  - Edge case handling for empty inputs
+
+**DONE:**
+✓ All test cases passing
+✓ Algorithm logic correct:
+  - Right pointer expands window until all required characters present
+  - Left pointer contracts window to find minimum valid substring
+  - Tracks smallest valid window found
+✓ Time complexity: O(|s| + |t|) - optimal for this problem
+✓ Space complexity: O(|alphabet|) - acceptable
+✓ Edge cases handled (empty strings, no valid window)
+
+**BROKEN:**
+- Nothing currently broken; all tests pass
+
+**NEXT:**
+**Code review & documentation only** - No functional changes needed. If continuing:
+1. Add docstring examples showing input/output
+2. Consider adding type hints (Python 3.5+): `def min_window(s: str, t: str) -> str:`
+3. Optional: Add inline comments explaining the `formed` counter logic (most complex part)
+4. Optional: Add performance notes in docstring mentioning O(n) time complexity
+
+**Status:** Ready for production or submission. Task complete.

@@ -1,0 +1,9 @@
+GOAL: Implement a robust string-to-integer conversion function (my_atoi) that mimics atoi behavior with 32-bit clamping.
+
+STATE: Function is written and passes all provided tests. Implementation follows the specified steps: whitespace skipping, sign detection, digit reading, conversion, and range clamping.
+
+DONE: Core logic is functional. Handles empty strings, whitespace, signs, digit sequences, and integer overflow/underflow correctly.
+
+BROKEN: Nothing is known to be failing based on current tests. However, edge-case completeness is unknown (e.g., strings with mixed characters after digits, very large strings, or locale-specific whitespace).
+
+NEXT: The single most important thing is to expand test coverage with edge cases (e.g., "+-2", "  -0012a42", overflow beyond 64-bit during accumulation) to ensure robustness before finalizing.

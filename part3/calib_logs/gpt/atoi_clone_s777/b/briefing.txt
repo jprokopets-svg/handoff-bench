@@ -1,0 +1,20 @@
+GOAL: Implement a safe atoi-like function converting a string to a 32-bit signed integer: skip leading whitespace, optional single '+'/'-' sign, read consecutive digits, clamp to [-2**31, 2**31-1], return 0 if no digits.
+
+STATE: atoi_clone.py contains my_atoi(s: str) implementing the above. It:
+- skips leading whitespace using str.isspace()
+- parses optional '+'/'-' once
+- accumulates digits into an integer with early clamping checks
+- returns clamped 32-bit result or 0 when no digits
+
+DONE:
+- Implementation compiles and runs.
+- All provided unit tests pass.
+
+BROKEN / UNKNOWN:
+- No failing tests reported, but specification edge cases are unverified:
+  - Use of str.isspace() accepts Unicode whitespace (may differ from target spec if only ASCII spaces should be skipped).
+  - Behavior with Unicode digit characters (e.g., fullwidth digits, other numeral scripts) — isdigit() may accept them but spec likely intends ASCII '0'–'9'.
+  - Extremely long inputs / performance on very long numeric prefixes (Python handles big ints; early clamping mitigates but correctness should be confirmed).
+  - Behavior on inputs with embedded nulls or non-printable bytes not covered by tests.
+
+NEXT: Add focused edge-case tests to confirm spec compliance — especially tests for Unicode whitespace and Unicode digits vs ASCII-only behavior, very long numeric strings, and various tricky inputs (e.g., "+-2", "  0000000000012345678", "9223372036854775808", "\u3000-42"). Run the test suite and adjust parsing (use explicit ASCII checks if needed).

@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "lru_cache",
+  "seed": 777,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0008184033,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 222,
+    "cost": 0.0001758092,
+    "text": "GOAL: Implement an LRU cache with O(1) get/put operations using a hash map and doubly linked list.\n\nSTATE: Core implementation is complete and passes all provided tests. The cache maintains capacity, uses dummy head/tail nodes for simpler list operations, and correctly updates the MRU order on get/put.\n\nDONE: Node class, LRUCache initialization, internal _remove, _add_to_front, and _move_to_front helper methods. The get and put methods correctly handle cache hits, updates, insertions, and LRU eviction when capacity is exceeded.\n\nBROKEN: Nothing is currently known to be failing. However, potential edge cases (e.g., capacity of 0 or 1, repeated operations at capacity) may not be fully validated by the passed tests.\n\nNEXT: Run more comprehensive edge-case tests, particularly focusing on minimum capacity (0 or 1) and high-volume operations, to ensure robustness before finalizing."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0009267472500000001,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "class Node:\n    def __init__(self, key: int = 0, value: int = 0):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = {}  # key -> Node\n        # Dummy head and tail nodes for easier list operations\n        self.head = Node()\n        self.tail = Node()\n        self.head.next = self.tail\n        self.tail.prev = self.head\n\n    def _remove(self, node: Node) -> None:\n        \"\"\"Remove a node from the doubly linked list\"\"\"\n        prev_node = node.prev\n        next_node = node.next\n        prev_node.next = next_node\n        next_node.prev = prev_node\n\n    def _add_to_front(self, node: Node) -> None:\n        \"\"\"Add a node to the front (most recently used) position\"\"\"\n        node.next = self.head.next\n        node.prev = self.head\n        self.head.next.prev = node\n        self.head.next = node\n\n    def _move_to_front(self, node: Node) -> None:\n        \"\"\"Move an existing node to the front (most recently used) position\"\"\"\n        self._remove(node)\n        self._add_to_front(node)\n\n    def get(self, key: int) -> int:\n        if key not in self.cache:\n            return -1\n        \n        node = self.cache[key]\n        self._move_to_front(node)\n        return node.value\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.cache:\n            # Update existing key\n            node = self.cache[key]\n            node.value = value\n            self._move_to_front(node)\n        else:\n            # Insert new key\n            if len(self.cache) >= self.capacity:\n                # Remove least recently used (tail.prev)\n                lru_node = self.tail.prev\n                self._remove(lru_node)\n                del self.cache[lru_node.key]\n            \n            new_node = Node(key, value)\n            self.cache[key] = new_node\n            self._add_to_front(new_node)"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.00192095975
+}

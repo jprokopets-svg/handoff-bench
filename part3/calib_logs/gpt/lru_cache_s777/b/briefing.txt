@@ -1,0 +1,14 @@
+GOAL: Implement a correct LRU cache (get/put) with O(1) operations and eviction when capacity exceeded.
+
+STATE: lru_cache.py contains a doubly-linked list + dict implementation with dummy head/tail nodes and methods: _add_node, _remove_node, _move_to_head, _pop_tail, get, put. Constructor enforces non-negative capacity.
+
+DONE: All unit tests currently pass. Core functionality works: insertion, update, access moves node to MRU position, eviction of LRU on overflow, capacity==0 handling (put is no-op), negative capacity raises ValueError.
+
+BROKEN: Nothing failing in current tests. Unknowns / potential issues not covered by tests:
+- Thread-safety (not synchronized).
+- Behavior with non-int keys/values (type annotations use int but code accepts any hashable key).
+- Memory behavior under heavy churn (any accidental reference cycles/leaks).
+- Edge-case stress (very large sequences, repeated puts of same key, alternating patterns).
+- No explicit API docs or tests for concurrency.
+
+NEXT: The single most important thing to try is to run extended/property-based stress tests covering edge cases (capacity=0 and 1, repeated put/get patterns, large sequences, eviction correctness) and add concurrency tests if multi-threaded access is expected. This will reveal subtle bugs or performance/memory issues beyond the existing unit tests.

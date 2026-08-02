@@ -1,0 +1,70 @@
+{
+  "family": "claude",
+  "task": "lru_cache",
+  "seed": 888,
+  "model": "anthropic/claude-haiku-4.5",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.012956999999999998,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.003071,
+    "text": "# BRIEFING: LRU Cache Implementation\n\n**GOAL:**\nMaintain a fully functional LRU (Least Recently Used) Cache with O(1) time complexity for both `get()` and `put()` operations, supporting capacity limits and automatic eviction of least recently used items.\n\n**STATE:**\n- Complete LRU Cache implementation using doubly-linked list + hash map hybrid data structure\n- Dummy head/tail nodes used to simplify edge case handling\n- All core operations implemented: `__init__()`, `get()`, `put()`, `_remove_node()`, `_add_to_head()`\n- Test suite: All tests passing\n\n**DONE:**\n\u2713 Dictionary-based O(1) key lookups  \n\u2713 Doubly-linked list maintains access order (head = most recent, tail = least recent)  \n\u2713 `get()` correctly retrieves values and marks items as recently used  \n\u2713 `put()` handles both new insertions and updates  \n\u2713 Capacity enforcement with automatic LRU eviction  \n\u2713 Node removal/insertion operations are O(1)  \n\u2713 Edge cases handled (empty cache, single item, capacity=1)  \n\n**BROKEN:**\n- Nothing identified. All tests passing. Code is production-ready.\n\n**NEXT:**\nNo immediate action required. If continuing work:\n1. **Add comprehensive docstring examples** showing usage patterns (cache hits/misses, eviction scenarios)\n2. **Consider edge case validation**: Add explicit checks for capacity \u2264 0 with appropriate error handling\n3. **Performance testing**: Benchmark against alternative implementations for large datasets\n4. **Thread safety** (if needed): Add locks for concurrent access scenarios\n\nThe implementation is solid and complete. Monitor for any new test failures or performance requir"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.01894,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 6
+    },
+    "code": "class Node:\n    \"\"\"Node in the doubly-linked list\"\"\"\n    def __init__(self, key: int = 0, value: int = 0):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\n\nclass LRUCache:\n    \"\"\"\n    LRU Cache implementation using doubly-linked list + hash map.\n    \n    - get(key): O(1) average time - returns value or -1 if absent\n    - put(key, value): O(1) average time - inserts/updates and evicts LRU when full\n    \"\"\"\n    \n    def __init__(self, capacity: int):\n        \"\"\"Initialize cache with given capacity\"\"\"\n        self.capacity = capacity\n        self.cache = {}  # key -> Node mapping for O(1) lookups\n        \n        # Dummy head and tail nodes to simplify edge cases\n        self.head = Node()  # Most recently used end\n        self.tail = Node()  # Least recently used end\n        self.head.next = self.tail\n        self.tail.prev = self.head\n    \n    def get(self, key: int) -> int:\n        \"\"\"\n        Get value for key. Returns -1 if key not found.\n        Marks the key as recently used.\n        \"\"\"\n        if key not in self.cache:\n            return -1\n        \n        node = self.cache[key]\n        # Move node to head (most recently used)\n        self._remove_node(node)\n        self._add_to_head(node)\n        return node.value\n    \n    def put(self, key: int, value: int) -> None:\n        \"\"\"\n        Insert or update key-value pair.\n        Evicts least recently used item if capacity exceeded.\n        \"\"\"\n        if key in self.cache:\n            # Update existing node\n            node = self.cache[key]\n            node.value = value\n            # Move to head (most recently used)\n            self._remove_node(node)\n            self._add_to_head(node)\n        else:\n            # Create new node\n            node = Node(key, value)\n            self.cache[key] = node\n            self._add_to_head(node)\n            \n            # Check capacity and evict if necessary\n            if len(self.cache) > self.capacity:\n                # Remove least recently used (node before tail)\n                lru_node = self.tail.prev\n                self._remove_node(lru_node)\n                del self.cache[lru_node.key]\n    \n    def _remove_node(self, node: Node) -> None:\n        \"\"\"Remove node from doubly-linked list\"\"\"\n        prev_node = node.prev\n        next_node = node.next\n        prev_node.next = next_node\n        next_node.prev = prev_node\n    \n    def _add_to_head(self, node: Node) -> None:\n        \"\"\"Add node right after head (most recently used position)\"\"\"\n        node.prev = self.head\n        node.next = self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.034968
+}

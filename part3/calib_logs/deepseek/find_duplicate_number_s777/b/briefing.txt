@@ -1,0 +1,9 @@
+GOAL: Implement Floyd's Tortoise and Hare algorithm to find the duplicate number in an array of n+1 integers (range 1 to n) with exactly one duplicate.
+
+STATE: Code is written and passes all provided tests. The algorithm correctly uses two-phase cycle detection.
+
+DONE: Core logic for cycle detection and duplicate identification is functional and verified.
+
+BROKEN: No apparent failures; however, the code lacks input validation (e.g., for empty list, out-of-range values, or multiple duplicates). Edge cases are untested.
+
+NEXT: Add input validation to handle invalid inputs gracefully, ensuring robustness before considering the task complete.

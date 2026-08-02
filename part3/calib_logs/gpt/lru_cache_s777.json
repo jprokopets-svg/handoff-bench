@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "lru_cache",
+  "seed": 777,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00232105,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 334,
+    "cost": 0.001556,
+    "text": "GOAL: Implement a correct LRU cache (get/put) with O(1) operations and eviction when capacity exceeded.\n\nSTATE: lru_cache.py contains a doubly-linked list + dict implementation with dummy head/tail nodes and methods: _add_node, _remove_node, _move_to_head, _pop_tail, get, put. Constructor enforces non-negative capacity.\n\nDONE: All unit tests currently pass. Core functionality works: insertion, update, access moves node to MRU position, eviction of LRU on overflow, capacity==0 handling (put is no-op), negative capacity raises ValueError.\n\nBROKEN: Nothing failing in current tests. Unknowns / potential issues not covered by tests:\n- Thread-safety (not synchronized).\n- Behavior with non-int keys/values (type annotations use int but code accepts any hashable key).\n- Memory behavior under heavy churn (any accidental reference cycles/leaks).\n- Edge-case stress (very large sequences, repeated puts of same key, alternating patterns).\n- No explicit API docs or tests for concurrency.\n\nNEXT: The single most important thing to try is to run extended/property-based stress tests covering edge cases (capacity=0 and 1, repeated put/get patterns, large sequences, eviction correctness) and add concurrency tests if multi-threaded access is expected. This will reveal subtle bugs or performance/memory issues beyond the existing unit tests."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00287165,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "class _Node:\n    __slots__ = (\"key\", \"value\", \"prev\", \"next\")\n    def __init__(self, key=None, value=None):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        if capacity < 0:\n            raise ValueError(\"capacity must be non-negative\")\n        self.capacity = capacity\n        self.cache = {}  # key -> node\n        # Dummy head and tail nodes to avoid edge checks\n        self.head = _Node()\n        self.tail = _Node()\n        self.head.next = self.tail\n        self.tail.prev = self.head\n        self.size = 0\n\n    def _add_node(self, node: _Node) -> None:\n        # Add right after head (most recently used)\n        node.prev = self.head\n        node.next = self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def _remove_node(self, node: _Node) -> None:\n        prev = node.prev\n        nxt = node.next\n        if prev is not None:\n            prev.next = nxt\n        if nxt is not None:\n            nxt.prev = prev\n        node.prev = node.next = None\n\n    def _move_to_head(self, node: _Node) -> None:\n        self._remove_node(node)\n        self._add_node(node)\n\n    def _pop_tail(self) -> _Node:\n        # Remove and return the least recently used node\n        node = self.tail.prev\n        if node is self.head:\n            return None\n        self._remove_node(node)\n        return node\n\n    def get(self, key: int) -> int:\n        node = self.cache.get(key)\n        if not node:\n            return -1\n        # move to head and return value\n        self._move_to_head(node)\n        return node.value\n\n    def put(self, key: int, value: int) -> None:\n        if self.capacity == 0:\n            return\n        node = self.cache.get(key)\n        if node:\n            # update and move to head\n            node.value = value\n            self._move_to_head(node)\n        else:\n            new_node = _Node(key, value)\n            self.cache[key] = new_node\n            self._add_node(new_node)\n            self.size += 1\n            if self.size > self.capacity:\n                tail = self._pop_tail()\n                if tail:\n                    del self.cache[tail.key]\n                    self.size -= 1\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0067487
+}

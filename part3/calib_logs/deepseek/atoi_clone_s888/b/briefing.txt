@@ -1,0 +1,9 @@
+GOAL: Implement a robust atoi clone that converts strings to 32-bit signed integers per the given specifications.
+
+STATE: Code is written and all tests are currently passing. The implementation handles whitespace, signs, digit parsing, overflow clamping, and returns 0 for invalid inputs.
+
+DONE: Core conversion logic, overflow checking, sign handling, and input validation are functional. The code passes the provided test suite.
+
+BROKEN: Nothing is known to be failing. However, edge cases like extremely long numeric strings leading to pre-check overflow or locale-specific whitespace/characters remain unverified without a full test suite review.
+
+NEXT: Perform a comprehensive edge-case review and stress test, focusing on non-standard inputs (e.g., mixed characters, large numbers beyond 64-bit, empty strings after trim) to ensure robustness beyond the current passing tests.

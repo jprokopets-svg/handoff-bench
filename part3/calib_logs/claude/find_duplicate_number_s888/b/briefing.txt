@@ -1,0 +1,30 @@
+# BRIEFING: find_duplicate_number.py
+
+**GOAL:**
+Implement an algorithm to find the duplicate number in an array of n+1 integers where each integer is in range [1, n] and exactly one number appears more than once. Solution must work correctly and efficiently.
+
+**STATE:**
+- Implementation complete using Floyd's Cycle Detection algorithm (tortoise and hare)
+- Algorithm treats the array as a linked list where `nums[i]` points to index `nums[i]`
+- Two-phase approach:
+  - Phase 1: Detect cycle by moving slow pointer 1 step and fast pointer 2 steps until they meet
+  - Phase 2: Find cycle entrance (the duplicate) by moving both pointers 1 step at a time from meeting point and array start
+
+**DONE:**
+✓ All tests passing
+✓ Core algorithm logic implemented correctly
+✓ Handles the mathematical property that cycle entrance = duplicate number
+✓ Time complexity: O(n), Space complexity: O(1)
+✓ Code is clean and well-documented
+
+**BROKEN:**
+- Nothing currently broken; all tests pass
+
+**NEXT:**
+No immediate action required. Task is complete and verified. If continuation is needed:
+1. **Code review**: Verify edge cases (empty array, single element, all duplicates)
+2. **Documentation**: Consider adding complexity analysis and algorithm explanation to docstring
+3. **Optional enhancement**: Add input validation (check array length, value ranges)
+4. **Testing**: Run against stress tests with large arrays if performance validation needed
+
+The implementation is production-ready.

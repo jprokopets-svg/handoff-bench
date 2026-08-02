@@ -1,0 +1,31 @@
+# BRIEFING: rotate_image.py
+
+**GOAL:**
+Implement a function that rotates an n×n matrix 90 degrees clockwise in-place, modifying the input matrix without returning a value.
+
+**STATE:**
+- Implementation complete in `rotate_image.py`
+- Function uses two-step algorithm: transpose + row reversal
+- All test cases currently passing
+
+**DONE:**
+✓ Core rotation logic implemented correctly
+✓ Transpose operation working (swaps elements across diagonal)
+✓ Row reversal working (reverses each row after transpose)
+✓ In-place modification achieved (no extra matrix allocation)
+✓ All existing tests passing
+
+**BROKEN:**
+- None identified; code appears fully functional
+- No known edge cases failing
+- No performance issues reported
+
+**NEXT:**
+Verify edge cases and stress test:
+1. Test with 1×1 matrix (single element)
+2. Test with 2×2 matrix (minimal non-trivial case)
+3. Test with large matrices (e.g., 1000×1000) for performance
+4. Confirm matrix is modified in-place (original reference updated)
+5. Add docstring examples showing input/output behavior
+
+If all edge cases pass, code is production-ready. If any fail, debug the transpose or reversal logic for those specific dimensions.

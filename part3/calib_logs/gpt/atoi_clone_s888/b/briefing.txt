@@ -1,0 +1,9 @@
+GOAL: Implement a Python clone of C's atoi that parses a string into a 32-bit signed integer with correct handling of whitespace, optional sign, digits, and clamping to INT_MIN/INT_MAX.
+
+STATE: File atoi_clone.py contains my_atoi(s) with logic to skip leading whitespace, read optional '+'/'-', accumulate digits with pre-checks for overflow, and final clamp. A small manual invocation prints my_atoi('42'). Test suite reports all tests passed.
+
+DONE: Core functionality works: ignores leading whitespace, handles '+' and '-', returns 0 for None or no digits, accumulates digits correctly, and clamps on overflow. Overflow checks for positive and negative branches are implemented. Tests pass.
+
+BROKEN: Unknown/untested areas: behavior on Unicode whitespace/digits, extremely long numeric strings (performance/memory), inputs with embedded non-ASCII characters, locale-specific digits, and unexpected types beyond None/str. No formal unit tests shown for boundary conditions like INT_MAX+1, INT_MIN-1, "+" or "-" only, or strings with trailing characters.
+
+NEXT: Add focused unit tests for edge/boundary cases (INT_MAX, INT_MAX+1, INT_MIN, INT_MIN-1, "+" / "-" only, leading/trailing text, Unicode whitespace/digits, very long numeric input) and run them to confirm correctness and identify any hidden bugs.

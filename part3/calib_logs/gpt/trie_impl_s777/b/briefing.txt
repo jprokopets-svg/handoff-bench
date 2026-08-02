@@ -1,0 +1,19 @@
+GOAL: Continue work on the Trie implementation in trie_impl.py so it supports required operations and edge cases for the project (current tests pass but functionality may be incomplete).
+
+STATE: File trie_impl.py contains a basic Trie class with TrieNode (children dict, is_word flag) and methods: insert, search, starts_with. Tests currently report all passing.
+
+DONE: 
+- insert(word) correctly builds nodes and sets is_word.
+- search(word) correctly returns True only for inserted words.
+- starts_with(prefix) correctly detects existing prefixes.
+- Basic structure and API are in place; current test suite passes.
+
+BROKEN / UNKNOWN:
+- No delete/remove(word) method implemented.
+- Behavior for empty string insertion/search is not explicitly documented or tested.
+- No explicit handling/normalization for case sensitivity, unicode, or non-letter characters — behavior unknown.
+- No memory/performance optimizations (e.g., compressing single-child chains) — not required by tests but may be needed.
+- Concurrency/thread-safety not addressed.
+- No serialization/deserialization or persistence.
+
+NEXT: Implement and test a delete(word) method that removes the word if present, clears is_word, and prunes orphaned nodes bottom-up (only delete child nodes that have no children and are not is_word). Add unit tests for deletion, empty-string handling, and a few unicode/case-sensitivity cases.

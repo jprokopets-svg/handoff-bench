@@ -1,0 +1,18 @@
+GOAL: Verify whether a binary tree is a valid BST (left subtree values < node < right subtree values) and ensure the implementation is robust.
+
+STATE: valid_bst.py contains TreeNode and is_valid_bst(root) using a recursive helper with (low, high) bounds initialized to (-inf, +inf). All provided unit tests currently pass.
+
+DONE: 
+- Correct recursive bound-checking algorithm implemented.
+- Uses strict inequalities (duplicates treated as invalid).
+- Handles normal integer-valued trees; tests passed.
+
+BROKEN / UNKNOWN:
+- No failing tests, but some edge risks are unverified:
+  - Behavior on duplicate values in provided test-suite (should be invalid).
+  - Very deep skewed trees may hit Python recursion limits.
+  - Extreme integer magnitudes interacting with float bounds (initial low/high are floats but bounds quickly become ints).
+  - No iterative version for environments where recursion depth is constrained.
+  - No explicit tests for non-integer node values (code assumes ints).
+
+NEXT: Add targeted edge-case tests—start with a tree containing duplicate values (e.g., a parent and a child with equal val) to confirm strict inequality handling; if that fails or recursion issues appear, add a deep-skewed tree test and consider an iterative stack-based implementation to avoid recursion limits.

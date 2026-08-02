@@ -1,0 +1,20 @@
+GOAL: Merge a list of [start, end] intervals so overlapping or adjacent intervals are combined; return merged intervals sorted by start.
+
+STATE: Function merge_intervals implemented in interval_merge.py. It sorts input by start, then walks and merges when next.start <= current_end. Tests executed and reported all passing.
+
+DONE:
+- Core merging logic implemented.
+- Adjacent intervals are treated as mergeable (condition start <= current_end).
+- Returns merged intervals sorted by start.
+- Handles empty input.
+- Current tests pass.
+
+BROKEN:
+- Nothing fails in the test suite, but several behaviors are unspecified/untested:
+  - Input validation: types, shapes (non-list/tuple entries), or malformed intervals (start > end).
+  - Boundary semantics for exclusive vs inclusive intervals (code assumes inclusive adjacency).
+  - Behavior with zero-length intervals, negative numbers, floats, or NaN/inf.
+  - Complexity and stability not asserted (current sort makes overall O(n log n)).
+  - No docstrings/tests for error messages or exceptions on bad input.
+
+NEXT: Add focused unit tests for edge cases (unsorted input, adjacent touching intervals, zero-length intervals, start > end, floats/negatives, and invalid types) and implement explicit input validation or documented behavior for malformed intervals.

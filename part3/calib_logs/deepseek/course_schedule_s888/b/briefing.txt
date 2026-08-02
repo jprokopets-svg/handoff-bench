@@ -1,0 +1,9 @@
+GOAL: Implement a function to return a valid course order if possible, else an empty list.
+
+STATE: Working topological sort (Kahn's algorithm) that only checks cycle existence in `can_finish`.
+
+DONE: Graph construction, in-degree tracking, BFS topological traversal, and cycle detection are fully functional.
+
+BROKEN: No function to return the actual ordering. The current function only returns a boolean.
+
+NEXT: Modify or create a new function `find_order` that uses the existing topological sort logic to build and return the course order list instead of just a boolean.

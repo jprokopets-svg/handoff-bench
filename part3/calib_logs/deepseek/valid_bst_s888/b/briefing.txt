@@ -1,0 +1,5 @@
+GOAL: Validate binary search tree using recursive bounds checking.
+STATE: Code passes all tests; appears fully functional.
+DONE: TreeNode class defined. Recursive `validate` helper correctly checks node values against min/max bounds. Base case for None node works.
+BROKEN: Nothing known to be broken. Potential edge cases (e.g., large trees, integer overflow) not explicitly tested.
+NEXT: Ensure robustness by adding a test for a tree with duplicate values (should return False) and a tree with the minimum/maximum integer values.

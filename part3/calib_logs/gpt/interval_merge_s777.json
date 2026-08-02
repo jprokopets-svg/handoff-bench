@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "interval_merge",
+  "seed": 777,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0015899999999999998,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 366,
+    "cost": 0.00145025,
+    "text": "GOAL: Implement a robust function to merge overlapping or adjacent intervals (list of [start, end]) and ensure it is well-tested and handles edge cases.\n\nSTATE: interval_merge.py contains merge_intervals(intervals) that:\n- returns [] for empty input\n- sorts intervals by (start, end)\n- merges overlapping or adjacent intervals using curr_end >= s\n- returns merged list sorted by start\n\nDONE:\n- Core algorithm implemented (sort + single pass merge).\n- Handles overlapping and adjacent intervals correctly.\n- All current tests pass (PASS).\n\nBROKEN / UNKNOWN:\n- No explicit validation for malformed inputs:\n  - intervals with start > end (e.g., [5,3]) \u2014 behavior is undefined (will treat 5 as start).\n  - inner elements that are not length-2 lists/tuples.\n  - non-integer or non-numeric values, None, or nested structures.\n- No tests for negative numbers, floats, very large lists, or performance regression.\n- No documented decision whether to normalize invalid intervals (swap start/end) or raise an error.\n- Edge-case policies (inclusive adjacency rule) are assumed but not explicitly specified in tests.\n\nNEXT: Add unit tests covering malformed and edge-case inputs (start > end, wrong shapes/types, floats, negatives, huge inputs) and then decide & implement a validation/normalization policy (e.g., raise TypeError/ValueError for invalid shapes/types or automatically normalize by swapping start/end). Prioritize tests first, then update the function accordingly."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00236855,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "from typing import List\n\n\ndef merge_intervals(intervals: List[List[int]]) -> List[List[int]]:\n    \"\"\"Merge overlapping or adjacent intervals.\n\n    Args:\n        intervals: list of [start, end] pairs\n\n    Returns:\n        merged list of intervals sorted by start\n    \"\"\"\n    if not intervals:\n        return []\n\n    # Sort by start then end\n    sorted_intervals = sorted(intervals, key=lambda x: (x[0], x[1]))\n\n    merged: List[List[int]] = []\n    for interval in sorted_intervals:\n        # Expect interval to be an indexable of length >= 2\n        if not merged:\n            merged.append([interval[0], interval[1]])\n            continue\n\n        last = merged[-1]\n        curr_start, curr_end = interval[0], interval[1]\n\n        # If overlapping or adjacent (last_end >= curr_start), merge\n        if last[1] >= curr_start:\n            last[1] = max(last[1], curr_end)\n        else:\n            merged.append([curr_start, curr_end])\n\n    return merged\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0054088
+}

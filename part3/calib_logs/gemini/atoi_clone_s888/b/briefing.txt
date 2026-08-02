@@ -1,0 +1,13 @@
+GOAL: Implement a function `my_atoi(s: str) -> int` that converts a string to a 32-bit signed integer, mimicking the behavior of the C `atoi` function.
+STATE: The current `my_atoi` function is implemented and passes all existing tests.
+DONE:
+*   Handles leading/trailing whitespace.
+*   Correctly parses positive and negative numbers.
+*   Handles explicit '+' and '-' signs.
+*   Converts digit sequences to integers.
+*   Clamps the result to the 32-bit signed integer range.
+*   Returns 0 for empty or all-whitespace strings.
+BROKEN:
+*   No known failures with current test suite.
+*   Potential edge cases not covered by current tests (e.g., strings with non-digit characters after digits, very long digit strings that overflow before clamping).
+NEXT: Expand the test suite to include strings with non-digit characters following valid numbers (e.g., "4193 with words"), and strings that would overflow before the final clamping step.

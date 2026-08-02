@@ -1,0 +1,34 @@
+# BRIEFING: max_area_container.py
+
+**GOAL:**
+Implement a function that finds the maximum area of water that can be contained between two vertical lines, given a list of heights.
+
+**STATE:**
+- File: `max_area_container.py`
+- Implementation: Two-pointer algorithm starting from both ends of the array
+- Algorithm moves inward by advancing the pointer at the shorter height
+- Test status: All tests passing
+
+**DONE:**
+✓ Core algorithm correctly implemented using two-pointer technique
+✓ Edge case handling for empty/short lists (< 2 elements)
+✓ Area calculation formula correct: `(j - i) * min(heights[i], heights[j])`
+✓ Pointer movement logic sound: always advances the shorter line to search for taller candidates
+✓ All unit tests passing
+✓ Time complexity optimal: O(n) single pass
+✓ Space complexity optimal: O(1) constant space
+
+**BROKEN:**
+- Nothing identified; code is functional and tested
+
+**NEXT:**
+No immediate action required. If continuing work:
+1. **Code review**: Verify edge cases (single element, all same heights, negative values if applicable)
+2. **Documentation**: Consider adding complexity analysis to docstring
+3. **Testing**: If not already done, add test cases for:
+   - Very large arrays (performance validation)
+   - Arrays with duplicate values
+   - Arrays in descending/ascending order
+4. **Integration**: Confirm this integrates properly with any calling code
+
+**Status:** Ready for deployment or next phase.

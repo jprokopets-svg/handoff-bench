@@ -1,0 +1,21 @@
+GOAL: Implement a correct O(1) LRU cache API (get, put, eviction) and have it fully tested.
+
+STATE: lru_cache.py contains a doubly-linked list + dict LRUCache implementation with Node class and methods: _add_node, _remove_node, _move_to_front, _pop_tail, get, put. Constructor enforces capacity > 0. Dummy head/tail sentinels used. All provided tests currently pass.
+
+DONE:
+- Core data structures present and wired (dict -> Node, sentinel head/tail).
+- get moves accessed node to front and returns value (or -1 if missing).
+- put inserts new nodes, updates existing keys, moves to front, and evicts least-recently-used when capacity exceeded.
+- _add_node/_remove_node correctly maintain pointers and clear removed node pointers.
+- Size bookkeeping and cache dict maintenance work in tests.
+
+BROKEN / UNKNOWN:
+- No failing tests, but some behaviors are unverified:
+  - Concurrency/thread-safety: not safe for concurrent access.
+  - Edge cases not explicitly covered by tests: capacity == 1, many repeated updates, large capacities, non-int keys/values.
+  - Memory behavior: potential retention / GC interactions (circular refs vs __slots__) not validated.
+  - API expectations (should get return None vs -1?) depend on spec; current get returns -1.
+  - No performance profiling for heavy workloads.
+  - No documentation/comments or type-checking beyond simple annotations.
+
+NEXT: Add focused unit tests for edge cases and invariants — especially capacity=1, repeated put of same key (ensure size doesn't grow), eviction order after sequences of gets/puts, and confirm behavior when cache is empty — to

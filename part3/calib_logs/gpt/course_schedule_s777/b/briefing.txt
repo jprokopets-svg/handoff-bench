@@ -1,0 +1,16 @@
+GOAL: Verify and, if needed, harden course_schedule.can_finish — determine if all courses can be finished given prerequisites (cycle detection in directed graph).
+
+STATE: course_schedule.py implements can_finish(numCourses, prerequisites) using recursive DFS with adjacency list. It ignores prerequisite pairs with out-of-range indices. Tests in current suite all pass.
+
+DONE: 
+- Correct adjacency construction for valid indices.
+- DFS with 3-color visitation detects cycles and returns True/False.
+- All provided unit tests pass (PASS).
+
+BROKEN / UNKNOWN:
+- Recursion: function uses recursion; behavior on very large/deep graphs (long linear chains) is untested and may hit Python recursion limits (RecursionError) or stack overflow.
+- Input handling: out-of-range prerequisite entries are silently ignored; unclear if that’s desired vs. raising an error.
+- Performance: worst-case performance and memory on very large numCourses/prerequisites not stress-tested.
+- Concurrency/side-effects: none expected, but not explicitly verified.
+
+NEXT: Run a stress test with a very large linear chain (e.g., numCourses = 100k with prerequisites forming 0<-1<-2<-... or similar) to confirm whether recursion depth causes failure; if it fails, replace recursive DFS with an iterative approach (explicit stack) or use Kahn’s algorithm (BFS topological sort).

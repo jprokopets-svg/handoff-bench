@@ -1,0 +1,5 @@
+GOAL: Implement a function `max_area(height)` that finds the maximum amount of water a container can store, given an array of non-negative integers representing the height of each vertical line.
+STATE: The `max_area` function is implemented using a two-pointer approach.
+DONE: The current implementation passes all provided tests. It correctly calculates the maximum area for various scenarios.
+BROKEN: No known issues or failing tests. The solution appears robust.
+NEXT: Review the code for potential edge cases not covered by current tests, and consider time/space complexity optimization if necessary, though the current solution is optimal.

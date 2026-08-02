@@ -1,0 +1,35 @@
+# BRIEFING: atoi_clone.py
+
+**GOAL:**
+Implement a string-to-integer converter (atoi clone) that:
+- Parses leading whitespace, optional sign, and digit sequences
+- Returns a 32-bit signed integer clamped to [-2147483648, 2147483647]
+- Returns 0 if no valid digits are found
+
+**STATE:**
+Complete working implementation exists in `atoi_clone.py` with all core logic implemented:
+- Whitespace skipping loop
+- Sign detection (+/-)
+- Digit parsing with accumulation
+- 32-bit clamping logic
+- Test suite reports all tests passing
+
+**DONE:**
+✓ Leading whitespace handling  
+✓ Optional sign parsing  
+✓ Digit accumulation logic  
+✓ 32-bit integer bounds clamping  
+✓ Edge case handling (empty strings, no digits, overflow)  
+✓ All test cases passing  
+
+**BROKEN:**
+Nothing currently failing. Code is functionally complete and test-verified.
+
+**NEXT:**
+**Code review & optimization pass:**
+1. Verify clamping logic handles overflow *during* digit accumulation (not just after) to prevent intermediate overflow in languages without arbitrary precision
+2. Consider early-exit optimization: clamp during loop if result exceeds INT_MAX/10
+3. Add inline comments explaining the 32-bit constraint rationale
+4. Confirm test coverage includes: empty string, whitespace-only, sign-only, leading zeros, boundary values (INT_MAX, INT_MIN, ±1), and mixed alphanumeric inputs
+
+If no issues found, task is complete and ready for production/submission.

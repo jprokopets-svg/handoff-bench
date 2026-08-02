@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "rotate_image",
+  "seed": 888,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0010511,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 150,
+    "cost": 0.0003798,
+    "text": "GOAL: Implement a function `rotate(matrix)` that rotates a given square 2D matrix by 90 degrees clockwise in-place.\nSTATE: The `rotate` function currently transposes the matrix and then reverses each row.\nDONE: The current implementation successfully rotates the matrix by 90 degrees clockwise, as indicated by all tests passing.\nBROKEN: Nothing is currently broken. The task appears to be complete.\nNEXT: Verify the solution against additional edge cases or constraints, if any were provided in the original task description, to ensure robustness. If no further constraints, consider the task complete."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0011232,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "def rotate(matrix: list[list[int]]) -> None:\n    n = len(matrix)\n    # Transpose the matrix\n    for i in range(n):\n        for j in range(i, n):\n            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]\n\n    # Reverse each row\n    for i in range(n):\n        matrix[i].reverse()\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0025541
+}

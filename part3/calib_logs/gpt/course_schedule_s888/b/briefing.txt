@@ -1,0 +1,14 @@
+GOAL: Implement can_finish(numCourses, prerequisites) to detect whether all courses can be completed (i.e., the prerequisite graph has no cycle).
+
+STATE: Kahn's algorithm is implemented in course_schedule.py. It builds adjacency list and indegree array, initializes queue with nodes of indegree 0, performs BFS/topological count, returns visited == numCourses. A small manual test prints True for can_finish(2, [[1,0]]).
+
+DONE: Core algorithm is implemented and correct for standard well-formed inputs. Current test suite passes. Handles empty prerequisites and numCourses <= 1.
+
+BROKEN: No input validation for prerequisites entries:
+- Unpacking assumes each pair has two elements; malformed pairs (None, length != 2, non-iterable) will raise errors or be skipped if falsy.
+- No bounds checks: negative indices or indices >= numCourses will cause IndexError or corrupt logic.
+- Non-integer types aren't checked.
+- Silent skip of falsy pairs (if not pair: continue) may hide data issues.
+Test coverage for these edge cases is unknown.
+
+NEXT: Add robust input validation and corresponding tests: ensure each prerequisite is a length-2 iterable of ints within [0, numCourses-1] (either raise ValueError or cleanly ignore/normalize), then re-run tests to catch edge cases (malformed entries, out-of-range indices, negatives, duplicates, large graphs, explicit cycles).

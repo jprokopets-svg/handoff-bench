@@ -1,0 +1,51 @@
+{
+  "family": "gemini",
+  "task": "valid_bst",
+  "seed": 888,
+  "model": "google/gemini-2.5-flash",
+  "excluded": true,
+  "error": "api_failure: degenerate empty response (finish=stop)",
+  "a": {
+    "error": "api_failure: degenerate empty response (finish=stop)",
+    "role": "a",
+    "turns_used": 3,
+    "tool_log": [
+      {
+        "turn": 1,
+        "tool": "read_file",
+        "args": {
+          "path": "test_valid_bst.py"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "from valid_bst import *\n\n\nn = TreeNode(2, TreeNode(1), TreeNode(3)); assert is_valid_bst(n) == True\n\nn = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6))); assert is_valid_bst(n) == False\n\nn = TreeNode(2, TreeNode(2), TreeNode(2)); assert is_valid_bst(n) == False\n\nassert is_valid_bst(N"
+      },
+      {
+        "turn": 2,
+        "tool": "write_file",
+        "args": {
+          "content": "class TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef is_valid_bst(root):\n    def validate(node, low=-float('inf'), high=float('inf')):\n        if not node:\n            return True\n        if not (low < node.val < high):\n            return False\n        return (validate(node.left, low, node.val) and\n                validate(node.right, node.val, high))\n\n    return validate(root)",
+          "path": "valid_bst.py"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "Written to valid_bst.py"
+      },
+      {
+        "turn": 3,
+        "tool": "run_tests",
+        "args": {},
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "result": "[Tests] All tests passed (PASS)."
+      }
+    ],
+    "cost": 0.0007965
+  },
+  "cost": 0.0007965
+}

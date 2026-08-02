@@ -1,0 +1,9 @@
+GOAL: Implement a function to calculate the maximum area of water that can be contained by vertical lines represented by an integer array.
+
+STATE: The function `max_area` is complete and passes all provided tests. It uses a two-pointer approach starting at the ends of the array, calculates the area at each step, and moves the pointer with the smaller height inward to potentially find a larger area.
+
+DONE: Core algorithm is correctly implemented and verified as functional. All tests are passing.
+
+BROKEN: Nothing is currently failing. The code is ready for production or further integration.
+
+NEXT: No immediate action is required. The task is complete. The next agent can proceed to the next task in the queue or review the code for any potential optimizations (though none are needed).

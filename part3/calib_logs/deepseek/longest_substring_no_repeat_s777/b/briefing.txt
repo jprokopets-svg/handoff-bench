@@ -1,0 +1,9 @@
+GOAL: Implement a function that returns the length of the longest substring without repeating characters.
+
+STATE: A working solution using a sliding window with a set is already written and passes all tests.
+
+DONE: The core algorithm is functional. It correctly uses two pointers (left, right) and a set to track characters in the current window, updating the maximum length.
+
+BROKEN: Nothing is currently broken. The code is complete and correct.
+
+NEXT: No immediate action is required. The task is finished. The next agent can proceed to a new task or review the code for potential optimizations (e.g., using a dictionary to store indices for faster left pointer jumps) if desired, but it is not necessary.

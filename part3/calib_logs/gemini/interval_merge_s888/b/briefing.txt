@@ -1,0 +1,14 @@
+GOAL: Implement a function `merge_intervals` that takes a list of intervals (e.g., `[[1,3],[2,6],[8,10],[15,18]]`) and merges all overlapping intervals, returning a new list of non-overlapping intervals (e.g., `[[1,6],[8,10],[15,18]]`).
+
+STATE: The `merge_intervals` function is implemented and appears to be working correctly based on current tests.
+
+DONE:
+*   The core logic for sorting intervals and merging overlapping ones is in place.
+*   The function handles empty input lists.
+*   All existing tests pass.
+
+BROKEN:
+*   No known failures.
+*   The current test suite might not be exhaustive enough to catch all edge cases (e.g., intervals with identical start/end points, intervals completely contained within another).
+
+NEXT: Expand the test suite to include more complex edge cases, specifically focusing on scenarios like `[[1,4],[2,3]]`, `[[1,2],[2,3]]`, and `[[1,5],[1,3]]` to ensure robustness.

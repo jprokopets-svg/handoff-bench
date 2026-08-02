@@ -1,0 +1,18 @@
+GOAL: Implement a correct decoder for strings with repeat counts and nested brackets (format k[encoded_string]), handling multi-digit counts and plain characters; maintain/clean up the current implementation and ensure robustness.
+
+STATE: decode_string.py contains an implementation using count_stack, string_stack, current_num, and current_str (a list). It iterates chars, builds multi-digit numbers, pushes/pops contexts on '[' and ']', and joins current_str at the end. All unit tests currently pass.
+
+DONE: 
+- Correctly decodes nested patterns (e.g., "3[a2[c]]" -> "accaccacc").
+- Handles multi-digit repeat counts.
+- Handles plain characters outside brackets.
+- Returns '' for empty input.
+- All provided tests currently pass.
+
+BROKEN / UNKNOWN:
+- current_str is a list sometimes holding single large string elements and sometimes characters (type inconsistency), which is fragile and slightly inelegant.
+- No explicit input validation for malformed inputs (unbalanced brackets, missing counts, illegal chars).
+- Minor inefficiency: repeated ''.join() conversions and list/string mixing.
+- Behavior on unexpected inputs is unspecified/uncovered by tests.
+
+NEXT: Refactor current_str to be consistently a string (not a list) and adjust push/pop logic accordingly (use string concatenation or a builder), then add tests for malformed inputs and edge cases (unbalanced brackets, zero/omitted counts) to confirm robustness.

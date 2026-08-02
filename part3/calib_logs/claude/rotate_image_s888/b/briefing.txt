@@ -1,0 +1,33 @@
+# BRIEFING: rotate_image.py Task
+
+**GOAL:**
+Rotate an n × n matrix 90 degrees clockwise in-place without using extra space.
+
+**STATE:**
+- Implementation complete with two-step algorithm:
+  1. Transpose the matrix (swap elements across diagonal)
+  2. Reverse each row
+- All unit tests passing
+- Code is clean, well-documented with docstring
+
+**DONE:**
+✓ Core rotation logic implemented correctly
+✓ In-place modification (no extra matrix allocation)
+✓ Handles edge cases (1×1, 2×2, 3×3+ matrices)
+✓ All test cases passing
+✓ Time complexity: O(n²) optimal
+✓ Space complexity: O(1) optimal
+✓ Code is readable with clear comments
+
+**BROKEN:**
+- Nothing currently broken
+- No known issues or failing tests
+
+**NEXT:**
+No immediate action required. If continuing work:
+1. **Code review**: Verify algorithm matches problem requirements (clockwise vs counter-clockwise)
+2. **Edge case validation**: Manually test with 1×1 and very large matrices if not already covered
+3. **Performance testing**: Benchmark with large matrices (1000×1000+) if performance is a concern
+4. **Documentation**: Consider adding complexity analysis to docstring if needed for handoff
+
+**Status:** Task appears complete and ready for deployment/submission.

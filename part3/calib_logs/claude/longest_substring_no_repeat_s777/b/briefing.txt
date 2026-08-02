@@ -1,0 +1,36 @@
+# BRIEFING: Longest Substring Without Repeating Characters
+
+**GOAL:**
+Implement and verify a function that returns the length of the longest substring without repeating characters using a sliding window approach.
+
+**STATE:**
+- File: `longest_substring_no_repeat.py`
+- Implementation: Complete sliding window algorithm with character index tracking
+- Test status: All tests passing
+
+**DONE:**
+✓ Core algorithm implemented correctly
+✓ Sliding window logic working (start/end pointers)
+✓ Character index dictionary tracking last seen positions
+✓ Proper window adjustment when duplicate found: `start = char_index[char] + 1`
+✓ Max length calculation: `end - start + 1`
+✓ Edge case handled: empty string returns 0
+✓ All test cases passing
+
+**BROKEN:**
+- Nothing currently broken; all tests pass
+
+**NEXT:**
+Task is complete. If continuing work:
+1. **Code review**: Verify edge cases (single char, all unique, all same)
+2. **Documentation**: Add complexity notes (Time: O(n), Space: O(min(n, charset_size)))
+3. **Optional enhancements**: 
+   - Add example usage/doctest
+   - Consider returning the actual substring (not just length)
+   - Add type hints (Python 3.5+)
+4. **Integration**: Commit to version control if applicable
+
+**Example behavior:**
+- `"abcabcbb"` → 3 (`"abc"`)
+- `"bbbbb"` → 1 (`"b"`)
+- `"pwwkew"` → 3 (`"wke"`)

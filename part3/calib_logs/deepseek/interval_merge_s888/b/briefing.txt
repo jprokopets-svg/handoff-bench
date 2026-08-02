@@ -1,0 +1,5 @@
+GOAL: Merge overlapping or adjacent integer intervals in a list.
+STATE: Function `merge_intervals` implemented and passing all provided tests.
+DONE: Sorting by start time, merging overlapping intervals, handling empty input.
+BROKEN: Unknown if edge cases like negative numbers, large intervals, or non-integer inputs are handled. Adjacency logic (end == start) merges, but may need verification.
+NEXT: Run more comprehensive tests, including intervals with negative values, single intervals, and fully contained intervals.

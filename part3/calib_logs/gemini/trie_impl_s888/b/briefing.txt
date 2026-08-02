@@ -1,0 +1,5 @@
+GOAL: Implement a `delete` method for the Trie data structure that correctly removes a word while maintaining the integrity of other words.
+STATE: Basic Trie functionality (insert, search, starts_with) is implemented and passing all current tests.
+DONE: `insert`, `search`, and `starts_with` methods are fully functional and tested. The core Trie structure (`TrieNode`, `Trie`) is sound.
+BROKEN: The `delete` method is not yet implemented. The current test suite does not include deletion tests.
+NEXT: Implement the `delete` method in `trie_impl.py`, considering cases where a node is part of another word or is a standalone word. Start with a simple recursive approach.

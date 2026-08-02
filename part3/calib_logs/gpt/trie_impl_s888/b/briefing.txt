@@ -1,0 +1,20 @@
+GOAL: Implement a working Trie with basic operations (insert, search, starts_with) and hand off so further work/tests can continue.
+
+STATE: trie_impl.py contains a TrieNode (with __slots__ children, is_word) and Trie class implementing:
+- insert(word: str)
+- search(word: str) -> bool
+- starts_with(prefix: str) -> bool
+All methods traverse children dicts and set/check is_word.
+
+DONE: Core functionality implemented and unit tests currently pass (All tests passed). insert/search/starts_with behave as expected for the covered test cases.
+
+BROKEN: Nothing failing in current tests. Unknowns / potential gaps:
+- Behavior for empty string input (insert("") / search(""))
+- Handling of non-str inputs (ints, None) — no input validation
+- Unicode/multibyte characters coverage
+- Deletion/removal of words is not implemented
+- No size tracking, iteration, or containment helpers (__contains__, __len__)
+- Performance/memory characteristics for large datasets untested
+- No explicit concurrency protection
+
+NEXT: Add targeted edge-case tests first: verify behavior for empty string, unicode strings, repeated inserts, and invalid (non-str) inputs. Use failing tests to guide whether to add input validation or special-case handling (e.g., treat empty string as a valid word or raise TypeError).

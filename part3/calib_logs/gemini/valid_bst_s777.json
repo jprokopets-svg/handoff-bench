@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "valid_bst",
+  "seed": 777,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0009969,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 177,
+    "cost": 0.0004676,
+    "text": "GOAL: Implement a function `is_valid_bst` that determines if a given binary tree is a valid Binary Search Tree (BST).\nSTATE: The core logic for validating a BST using an in-order traversal with min/max bounds is implemented.\nDONE: The current implementation correctly identifies valid BSTs and invalid BSTs based on the standard definition (left child < parent < right child). All existing tests pass.\nBROKEN: No known issues or failing tests. The current solution appears robust for the standard BST definition.\nNEXT: Consider edge cases for very large or very small integer values if the problem constraints allow for them, ensuring `float('inf')` and `-float('inf')` are appropriate for the given `val` type."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0015248,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef is_valid_bst(root: TreeNode | None) -> bool:\n    def validate(node, low=-float('inf'), high=float('inf')):\n        if not node:\n            return True\n        if not (low < node.val < high):\n            return False\n        return (validate(node.left, low, node.val) and\n                validate(node.right, node.val, high))\n\n    return validate(root)\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0029893000000000003
+}

@@ -1,0 +1,17 @@
+GOAL: Implement a correct, robust min_window(s, t) that returns the smallest substring of s containing all characters of t (respecting multiplicity). Return '' if no such window.
+
+STATE: Code in min_window_substring.py implements a standard sliding-window solution using Counter and defaultdict. It maintains window_counts, formed, required, and expands/contracts pointers l/r. Test suite currently reports all tests passed.
+
+DONE: Core algorithm is implemented and passes the current tests. It:
+- Handles duplicates in t (uses Counter).
+- Contracts window correctly and updates best window.
+- Returns '' when no valid window or when inputs are empty/len(t) > len(s).
+- Uses O(n) two-pointer approach.
+
+BROKEN / UNKNOWN:
+- Edge-case coverage is uncertain: very large inputs, Unicode/multibyte characters, all-equal characters, multiple equally minimal windows, and behavior requirements when t == '' (current code returns '').
+- Performance characteristics on very long strings (memory/time profiling) not measured.
+- No explicit handling or tests for non-string input types; type hints exist but not enforced.
+- Behavior on ties (which minimal window to return) is implicit (first found); confirm if that's acceptable.
+
+NEXT: Add comprehensive tests and benchmarks — create edge-case unit tests (empty t, t longer than s, repeated characters, non-ASCII/unicode, multiple minimal windows) and run performance tests on large inputs to validate correctness, tie behavior, and performance/memory characteristics.

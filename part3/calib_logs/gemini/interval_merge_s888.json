@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "interval_merge",
+  "seed": 888,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0008448,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 226,
+    "cost": 0.0006841,
+    "text": "GOAL: Implement a function `merge_intervals` that takes a list of intervals (e.g., `[[1,3],[2,6],[8,10],[15,18]]`) and merges all overlapping intervals, returning a new list of non-overlapping intervals (e.g., `[[1,6],[8,10],[15,18]]`).\n\nSTATE: The `merge_intervals` function is implemented and appears to be working correctly based on current tests.\n\nDONE:\n*   The core logic for sorting intervals and merging overlapping ones is in place.\n*   The function handles empty input lists.\n*   All existing tests pass.\n\nBROKEN:\n*   No known failures.\n*   The current test suite might not be exhaustive enough to catch all edge cases (e.g., intervals with identical start/end points, intervals completely contained within another).\n\nNEXT: Expand the test suite to include more complex edge cases, specifically focusing on scenarios like `[[1,4],[2,3]]`, `[[1,2],[2,3]]`, and `[[1,5],[1,3]]` to ensure robustness."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0013484,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:\n    if not intervals:\n        return []\n\n    intervals.sort(key=lambda x: x[0])\n\n    merged = []\n    for interval in intervals:\n        if not merged or merged[-1][1] < interval[0]:\n            merged.append(interval)\n        else:\n            merged[-1][1] = max(merged[-1][1], interval[1])\n    return merged\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0028773
+}

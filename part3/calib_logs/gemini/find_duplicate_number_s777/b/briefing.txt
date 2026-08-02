@@ -1,0 +1,5 @@
+GOAL: Implement `find_duplicate(nums)` to return the duplicate number in a list where all numbers appear once except for one.
+STATE: A basic implementation using a set to track seen numbers.
+DONE: The current code correctly identifies and returns the first duplicate encountered. All provided tests pass.
+BROKEN: The current implementation assumes there is exactly one duplicate and that it will be found. It does not handle cases like an empty list, no duplicates, or multiple duplicates (though the problem implies a single duplicate). The problem statement might have edge cases not covered by current tests.
+NEXT: Review the problem constraints and edge cases for `find_duplicate(nums)` to ensure the current solution is robust and handles all specified scenarios, especially concerning input validation or guarantees about the input array.

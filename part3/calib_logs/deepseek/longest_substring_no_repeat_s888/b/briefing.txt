@@ -1,0 +1,9 @@
+GOAL: Implement a function that returns the length of the longest substring without repeating characters.
+
+STATE: Code is written and passes all provided tests. The algorithm uses a sliding window with a hash map to track the most recent index of each character.
+
+DONE: Core logic is functional and correct. The function handles empty strings, updates the window start correctly when a repeat is found within the current window, and calculates the maximum length efficiently.
+
+BROKEN: Nothing is currently failing. Edge cases like very long strings or strings with many unique characters are not explicitly tested but the algorithm's O(n) time complexity should handle them.
+
+NEXT: No immediate action required. The task is complete. If further work is needed, it would involve writing additional tests for robustness or integrating the function into a larger system.

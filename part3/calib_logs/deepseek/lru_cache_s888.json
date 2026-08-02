@@ -1,0 +1,69 @@
+{
+  "family": "deepseek",
+  "task": "lru_cache",
+  "seed": 888,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00094137615,
+    "tool_summary": {
+      "counts": {
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    }
+  },
+  "brief": {
+    "tokens": 213,
+    "cost": 0.0001754984,
+    "text": "GOAL: Implement an LRU cache with O(1) get/put operations using a hash map and doubly linked list.\n\nSTATE: Core LRU cache implementation is complete and passes all provided tests. The code includes Node class, LRUCache with capacity, cache dictionary, dummy head/tail nodes, and helper methods for list manipulation.\n\nDONE: Basic structure, helper methods (_add_node, _remove_node, _move_to_head, _pop_tail), get() and put() logic, and capacity eviction are functional. Tests confirm correctness.\n\nBROKEN: Nothing is explicitly failing, but edge cases and robustness are unknown (e.g., handling of negative capacity, very large inputs, or thread safety). The current implementation may not include error handling or input validation.\n\nNEXT: Add input validation to __init__ to ensure capacity is a positive integer, raising an appropriate error if not."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0011033538000000001,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "class Node:\n    def __init__(self, key=0, value=0):\n        self.key = key\n        self.value = value\n        self.prev = None\n        self.next = None\n\n\nclass LRUCache:\n    def __init__(self, capacity: int):\n        if capacity <= 0:\n            raise ValueError(\"Capacity must be a positive integer\")\n        self.capacity = capacity\n        self.cache = {}  # key -> Node\n        # Dummy head and tail nodes\n        self.head = Node()\n        self.tail = Node()\n        self.head.next = self.tail\n        self.tail.prev = self.head\n\n    def _add_node(self, node: Node) -> None:\n        \"\"\"Add node right after head\"\"\"\n        node.prev = self.head\n        node.next = self.head.next\n        self.head.next.prev = node\n        self.head.next = node\n\n    def _remove_node(self, node: Node) -> None:\n        \"\"\"Remove node from linked list\"\"\"\n        prev_node = node.prev\n        next_node = node.next\n        prev_node.next = next_node\n        next_node.prev = prev_node\n\n    def _move_to_head(self, node: Node) -> None:\n        \"\"\"Move node to the front (most recently used)\"\"\"\n        self._remove_node(node)\n        self._add_node(node)\n\n    def _pop_tail(self) -> Node:\n        \"\"\"Remove and return the tail node (least recently used)\"\"\"\n        node = self.tail.prev\n        self._remove_node(node)\n        return node\n\n    def get(self, key: int) -> int:\n        if key not in self.cache:\n            return -1\n        node = self.cache[key]\n        self._move_to_head(node)\n        return node.value\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.cache:\n            # Update existing key\n            node = self.cache[key]\n            node.value = value\n            self._move_to_head(node)\n        else:\n            # Create new node\n            node = Node(key, value)\n            self.cache[key] = node\n            self._add_node(node)\n            \n            # Check capacity\n            if len(self.cache) > self.capacity:\n                # Evict LRU\n                tail = self._pop_tail()\n                del self.cache[tail.key]"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.00222022835
+}

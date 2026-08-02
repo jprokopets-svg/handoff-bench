@@ -1,0 +1,9 @@
+GOAL: Implement a function to decode a string encoded with the pattern k[encoded_string], where k is a positive integer and encoded_string may itself be nested.
+
+STATE: The decode_string function is written and passes all provided tests. It uses a stack to handle nested encodings by tracking numbers and partial strings.
+
+DONE: The algorithm correctly processes digits, '[', ']', and regular characters. All tests are passing.
+
+BROKEN: Nothing is currently broken or unknown based on the test results.
+
+NEXT: Ensure the solution is robust for edge cases (e.g., empty strings, very deep nesting, large numbers) by adding a few more test cases, then finalize and document the code.

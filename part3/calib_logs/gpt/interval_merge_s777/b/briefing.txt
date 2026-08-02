@@ -1,0 +1,23 @@
+GOAL: Implement a robust function to merge overlapping or adjacent intervals (list of [start, end]) and ensure it is well-tested and handles edge cases.
+
+STATE: interval_merge.py contains merge_intervals(intervals) that:
+- returns [] for empty input
+- sorts intervals by (start, end)
+- merges overlapping or adjacent intervals using curr_end >= s
+- returns merged list sorted by start
+
+DONE:
+- Core algorithm implemented (sort + single pass merge).
+- Handles overlapping and adjacent intervals correctly.
+- All current tests pass (PASS).
+
+BROKEN / UNKNOWN:
+- No explicit validation for malformed inputs:
+  - intervals with start > end (e.g., [5,3]) — behavior is undefined (will treat 5 as start).
+  - inner elements that are not length-2 lists/tuples.
+  - non-integer or non-numeric values, None, or nested structures.
+- No tests for negative numbers, floats, very large lists, or performance regression.
+- No documented decision whether to normalize invalid intervals (swap start/end) or raise an error.
+- Edge-case policies (inclusive adjacency rule) are assumed but not explicitly specified in tests.
+
+NEXT: Add unit tests covering malformed and edge-case inputs (start > end, wrong shapes/types, floats, negatives, huge inputs) and then decide & implement a validation/normalization policy (e.g., raise TypeError/ValueError for invalid shapes/types or automatically normalize by swapping start/end). Prioritize tests first, then update the function accordingly.

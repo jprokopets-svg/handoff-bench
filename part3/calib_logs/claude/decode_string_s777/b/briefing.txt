@@ -1,0 +1,31 @@
+# BRIEFING: decode_string.py
+
+**GOAL:**
+Decode strings with nested repetition patterns of form `k[encoded_string]` where k is a positive integer. Handle multi-digit numbers and arbitrary nesting depth.
+
+**STATE:**
+- Single implementation in `decode_string.py` using stack-based approach
+- Function signature: `decode_string(s: str) -> str`
+- All unit tests currently passing
+
+**DONE:**
+✓ Core algorithm working correctly
+✓ Multi-digit number parsing (e.g., `12[a]`)
+✓ Nested bracket handling (e.g., `3[a2[c]]`)
+✓ Mixed encoded/literal content (e.g., `2[abc]3[cd]ef`)
+✓ Stack-based state management for nesting
+✓ Test suite comprehensive and passing
+
+**BROKEN:**
+- None identified; code is functional
+- Edge cases not yet stress-tested (very deep nesting, large repetition counts, empty brackets)
+- No input validation (malformed strings like `[a]`, `3a`, unmatched brackets)
+- Performance not analyzed for large inputs
+
+**NEXT:**
+Add input validation and error handling:
+1. Check for malformed input (unmatched brackets, invalid format)
+2. Raise descriptive exceptions rather than silently failing
+3. Add guard against pathological inputs (e.g., `999999[a]` causing memory explosion)
+
+This ensures robustness before moving to production or expanding test coverage.

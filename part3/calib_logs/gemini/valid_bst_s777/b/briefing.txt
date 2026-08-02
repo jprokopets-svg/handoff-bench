@@ -1,0 +1,5 @@
+GOAL: Implement a function `is_valid_bst` that determines if a given binary tree is a valid Binary Search Tree (BST).
+STATE: The core logic for validating a BST using an in-order traversal with min/max bounds is implemented.
+DONE: The current implementation correctly identifies valid BSTs and invalid BSTs based on the standard definition (left child < parent < right child). All existing tests pass.
+BROKEN: No known issues or failing tests. The current solution appears robust for the standard BST definition.
+NEXT: Consider edge cases for very large or very small integer values if the problem constraints allow for them, ensuring `float('inf')` and `-float('inf')` are appropriate for the given `val` type.

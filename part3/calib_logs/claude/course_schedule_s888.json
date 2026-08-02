@@ -1,0 +1,70 @@
+{
+  "family": "claude",
+  "task": "course_schedule",
+  "seed": 888,
+  "model": "anthropic/claude-haiku-4.5",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.009149000000000001,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 348,
+    "cost": 0.002221,
+    "text": "# BRIEFING: Course Schedule - Cycle Detection\n\n**GOAL:**\nDetermine if all courses can be completed given prerequisite constraints. Return `True` if no circular dependencies exist, `False` if a cycle prevents completion.\n\n**STATE:**\n- Implementation uses Kahn's algorithm (topological sort via BFS with in-degree tracking)\n- Graph represented as adjacency list + in-degree array\n- Algorithm processes courses with no prerequisites first, decrementing dependent courses' in-degrees\n- Final check: if `completed == numCourses`, all courses are finishable (no cycle)\n\n**DONE:**\n\u2713 All test cases passing  \n\u2713 Graph construction correct (prerequisites \u2192 edges)  \n\u2713 In-degree initialization accurate  \n\u2713 Queue initialization with zero in-degree courses  \n\u2713 Cycle detection logic sound (incomplete traversal = cycle exists)  \n\u2713 Time complexity O(V + E) optimal for this problem  \n\n**BROKEN:**\n- Nothing currently failing\n- Code is production-ready\n\n**NEXT:**\n**No action required.** This implementation is complete and correct. If continuing work:\n1. Consider adding docstring examples showing cycle vs. non-cycle cases\n2. Optional: Add input validation (negative courses, invalid course indices)\n3. Optional: Refactor `queue.pop(0)` to `collections.deque` for O(1) popleft (minor optimization)\n\nThe solution correctly solves the LeetCode \"Course Schedule\" problem using standard graph theory approach."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.014107,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 6
+    },
+    "code": "from collections import deque\n\ndef can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    \"\"\"\n    Determine if all courses can be completed given prerequisite constraints.\n    Uses Kahn's algorithm (topological sort) to detect cycles.\n    \n    Args:\n        num_courses: Total number of courses (0 to num_courses-1)\n        prerequisites: List of [course, prerequisite] pairs\n        \n    Returns:\n        True if all courses can be finished (no cycle), False otherwise\n    \"\"\"\n    # Build adjacency list and in-degree array\n    graph = [[] for _ in range(num_courses)]\n    in_degree = [0] * num_courses\n    \n    # Process prerequisites: course depends on prerequisite\n    for course, prerequisite in prerequisites:\n        graph[prerequisite].append(course)\n        in_degree[course] += 1\n    \n    # Initialize queue with courses that have no prerequisites\n    queue = deque()\n    for i in range(num_courses):\n        if in_degree[i] == 0:\n            queue.append(i)\n    \n    # Process courses using BFS (Kahn's algorithm)\n    completed = 0\n    while queue:\n        course = queue.popleft()\n        completed += 1\n        \n        # For each course that depends on the current course\n        for dependent in graph[course]:\n            in_degree[dependent] -= 1\n            if in_degree[dependent] == 0:\n                queue.append(dependent)\n    \n    # If we completed all courses, no cycle exists\n    return completed == num_courses\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.025477
+}

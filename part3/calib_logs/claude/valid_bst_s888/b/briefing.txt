@@ -1,0 +1,31 @@
+# BRIEFING: valid_bst.py
+
+**GOAL:**
+Validate whether a binary tree is a valid binary search tree (BST) where all left subtree values are strictly less than the node, and all right subtree values are strictly greater.
+
+**STATE:**
+- Complete implementation of `is_valid_bst()` function with helper `validate()` 
+- TreeNode class defined with standard structure (val, left, right)
+- Solution uses recursive approach with min/max boundary tracking
+- All tests passing
+
+**DONE:**
+✓ Correct algorithm: tracks valid range [min_val, max_val] for each node
+✓ Base case handles None nodes properly
+✓ Boundary checks use strict inequalities (< and >) as required
+✓ Left subtree validated with upper bound = node.val
+✓ Right subtree validated with lower bound = node.val
+✓ Initial call uses infinity bounds
+✓ Test suite fully passing
+
+**BROKEN:**
+Nothing identified. Code is functionally correct and complete.
+
+**NEXT:**
+No action required. Task is complete and verified. If continuing work:
+- Consider adding docstring examples showing valid/invalid BST cases
+- Optionally add iterative solution variant for comparison
+- Could add edge case tests (single node, all left/right chains, duplicate values)
+
+---
+**Summary:** Implementation is solid and production-ready. All requirements met with clean, efficient O(n) time and O(h) space complexity.

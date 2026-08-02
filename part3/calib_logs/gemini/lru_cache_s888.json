@@ -1,0 +1,51 @@
+{
+  "family": "gemini",
+  "task": "lru_cache",
+  "seed": 888,
+  "model": "google/gemini-2.5-flash",
+  "excluded": true,
+  "error": "api_failure: degenerate empty response (finish=stop)",
+  "a": {
+    "error": "api_failure: degenerate empty response (finish=stop)",
+    "role": "a",
+    "turns_used": 3,
+    "tool_log": [
+      {
+        "turn": 1,
+        "tool": "read_file",
+        "args": {
+          "path": "test_lru_cache.py"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "from lru_cache import *\n\n\nc = LRUCache(2); c.put(1,1); c.put(2,2); assert c.get(1)==1; c.put(3,3); assert c.get(2)==-1; c.put(4,4); assert c.get(1)==-1; assert c.get(3)==3; assert c.get(4)==4\n\nc = LRUCache(1); c.put(2,1); assert c.get(2)==1; c.put(3,2); assert c.get(2)==-1; assert c.get(3)==2\n\nc = L"
+      },
+      {
+        "turn": 2,
+        "tool": "write_file",
+        "args": {
+          "content": "class LRUCache:\n\n    def __init__(self, capacity: int):\n        self.capacity = capacity\n        self.cache = {}\n        self.order = []\n\n    def get(self, key: int) -> int:\n        if key not in self.cache:\n            return -1\n        self.order.remove(key)\n        self.order.append(key)\n        return self.cache[key]\n\n    def put(self, key: int, value: int) -> None:\n        if key in self.cache:\n            self.order.remove(key)\n        elif len(self.cache) >= self.capacity:\n            del self.cache[self.order[0]]\n            self.order.pop(0)\n        self.cache[key] = value\n        self.order.append(key)",
+          "path": "lru_cache.py"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "Written to lru_cache.py"
+      },
+      {
+        "turn": 3,
+        "tool": "run_tests",
+        "args": {},
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "result": "[Tests] All tests passed (PASS)."
+      }
+    ],
+    "cost": 0.001005
+  },
+  "cost": 0.001005
+}

@@ -1,0 +1,30 @@
+GOAL:
+Merge overlapping and adjacent intervals in a list of [start, end] pairs. Return sorted, non-overlapping intervals where adjacent intervals (end == next start) are combined.
+
+STATE:
+- `interval_merge.py` contains a complete implementation of `merge_intervals()`
+- Function sorts intervals by (start, end), then iterates through to merge overlaps
+- All unit tests currently passing
+
+DONE:
+- Core merge logic works correctly
+- Sorting by start time (and end time as tiebreaker) is implemented
+- Handles empty input gracefully
+- Correctly identifies overlapping intervals using condition `current[0] <= last_merged[1]`
+- Extends merged interval end using `max()` to preserve larger bounds
+- Non-overlapping intervals are appended as new entries
+- Test suite validates functionality
+
+BROKEN:
+- None identified—all tests pass
+
+NEXT:
+**Code review & edge case validation**: Before considering this complete, manually verify:
+1. **Mutation concern**: The code modifies `last_merged[1]` in-place on the list object. Confirm this doesn't cause issues if the original `sorted_intervals` list is reused elsewhere (it shouldn't, but verify caller expectations).
+2. **Edge cases to spot-check**:
+   - Single interval: `[[1, 5]]` → `[[1, 5]]`
+   - Adjacent intervals: `[[1, 2], [2, 3]]` → `[[1, 3]]`
+   - Fully contained: `[[1, 5], [2, 3]]` → `[[1, 5]]`
+   - Reverse order input: `[[5, 7], [1, 3]]` → `[[1, 3], [5, 7]]`
+   - Negative numbers: `[[-5, -2], [-1, 3]]` → `[[-5, 3]]`
+3. If all edge cases pass, consider this task complete and ready for production use.

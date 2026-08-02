@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "course_schedule",
+  "seed": 777,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0017909999999999998,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 336,
+    "cost": 0.00121,
+    "text": "GOAL: Verify and, if needed, harden course_schedule.can_finish \u2014 determine if all courses can be finished given prerequisites (cycle detection in directed graph).\n\nSTATE: course_schedule.py implements can_finish(numCourses, prerequisites) using recursive DFS with adjacency list. It ignores prerequisite pairs with out-of-range indices. Tests in current suite all pass.\n\nDONE: \n- Correct adjacency construction for valid indices.\n- DFS with 3-color visitation detects cycles and returns True/False.\n- All provided unit tests pass (PASS).\n\nBROKEN / UNKNOWN:\n- Recursion: function uses recursion; behavior on very large/deep graphs (long linear chains) is untested and may hit Python recursion limits (RecursionError) or stack overflow.\n- Input handling: out-of-range prerequisite entries are silently ignored; unclear if that\u2019s desired vs. raising an error.\n- Performance: worst-case performance and memory on very large numCourses/prerequisites not stress-tested.\n- Concurrency/side-effects: none expected, but not explicitly verified.\n\nNEXT: Run a stress test with a very large linear chain (e.g., numCourses = 100k with prerequisites forming 0<-1<-2<-... or similar) to confirm whether recursion depth causes failure; if it fails, replace recursive DFS with an iterative approach (explicit stack) or use Kahn\u2019s algorithm (BFS topological sort)."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0028069500000000003,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "from collections import deque\n\n\ndef can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    \"\"\"\n    Determine if all courses can be finished given prerequisites.\n    Uses Kahn's algorithm (BFS/topological sort) to detect cycles without recursion.\n    Invalid prerequisite pairs (indices out of range) are ignored.\n    \"\"\"\n    if num_courses <= 0:\n        return True\n\n    indegree = [0] * num_courses\n    adj = [[] for _ in range(num_courses)]\n\n    for pair in prerequisites:\n        if not pair or len(pair) < 2:\n            continue\n        course, prereq = pair[0], pair[1]\n        if 0 <= course < num_courses and 0 <= prereq < num_courses:\n            adj[prereq].append(course)\n            indegree[course] += 1\n        else:\n            # ignore invalid indices\n            continue\n\n    q = deque([i for i in range(num_courses) if indegree[i] == 0])\n    visited = 0\n\n    while q:\n        node = q.popleft()\n        visited += 1\n        for nei in adj[node]:\n            indegree[nei] -= 1\n            if indegree[nei] == 0:\n                q.append(nei)\n\n    return visited == num_courses\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.00580795
+}

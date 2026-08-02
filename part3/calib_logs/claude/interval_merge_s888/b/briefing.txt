@@ -1,0 +1,37 @@
+# BRIEFING: interval_merge.py
+
+**GOAL:**
+Implement a function that merges overlapping and adjacent intervals in a list of [start, end] pairs, returning sorted results.
+
+**STATE:**
+- Function `merge_intervals()` is implemented in interval_merge.py
+- Handles empty input by returning []
+- Sorts intervals by (start, end) tuple
+- Iterates through sorted intervals, merging when overlap/adjacency detected
+- Uses `max()` to extend merged interval endpoints
+
+**DONE:**
+✓ All unit tests passing
+✓ Core merge logic working correctly
+✓ Handles edge cases (empty list)
+✓ Properly sorts input intervals
+✓ Correctly identifies overlapping intervals (current[0] <= last_merged[1])
+✓ Correctly identifies adjacent intervals (end == next start)
+✓ Returns merged intervals in sorted order
+
+**BROKEN:**
+- Nothing currently broken; all tests pass
+- Code is production-ready
+
+**NEXT:**
+No immediate action required. If continuing work:
+1. **Consider performance**: Current O(n log n) is optimal for comparison-based sorting
+2. **Verify edge cases manually** if needed:
+   - Single interval: `[[1,2]]` → `[[1,2]]`
+   - Adjacent intervals: `[[1,2],[2,3]]` → `[[1,3]]`
+   - Nested intervals: `[[1,5],[2,3]]` → `[[1,5]]`
+   - Reverse order input: `[[5,6],[1,2]]` → `[[1,2],[5,6]]`
+3. **Document assumptions**: Assumes valid input (start ≤ end for each interval)
+4. **Consider enhancement**: Add input validation if needed for production use
+
+**HANDOFF COMPLETE** - Task is stable and ready for deployment or further enhancement.

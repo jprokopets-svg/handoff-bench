@@ -1,0 +1,36 @@
+# BRIEFING: atoi_clone.py
+
+**GOAL:**
+Implement a string-to-integer converter (`my_atoi`) that mimics C's `atoi()` function with 32-bit signed integer constraints and specific parsing rules.
+
+**STATE:**
+- Complete implementation of `my_atoi()` function in `atoi_clone.py`
+- Function handles all 5 required rules:
+  1. Leading whitespace skipping
+  2. Optional +/- sign parsing
+  3. Digit reading until non-digit encountered
+  4. 32-bit signed clamping ([-2147483648, 2147483647])
+  5. Returns 0 if no digits found
+- Test suite executed and reports all tests passing
+
+**DONE:**
+✓ Whitespace trimming logic (leading spaces only)
+✓ Sign detection and application (+/-)
+✓ Digit parsing with early termination on non-digit
+✓ Integer overflow/underflow clamping to INT_MAX/INT_MIN
+✓ Edge case: returns 0 when no valid digits present
+✓ All test cases passing
+
+**BROKEN:**
+- None identified. Code appears functionally complete and test-verified.
+- Potential concern: No explicit validation that tests cover all edge cases (e.g., empty string, only whitespace, multiple signs, leading zeros with overflow)
+
+**NEXT:**
+Verify test coverage by manually inspecting test cases to confirm they include:
+- Empty string / whitespace-only inputs
+- Boundary values near INT_MAX and INT_MIN
+- Multiple consecutive signs (should stop parsing)
+- Leading zeros with large numbers
+- Mixed alphanumeric strings
+
+If test suite is comprehensive, task is complete. If gaps exist, add tests and verify they pass.

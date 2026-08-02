@@ -1,0 +1,9 @@
+GOAL: Implement a course scheduling algorithm that determines if all courses can be finished given prerequisites (no cycles allowed).
+
+STATE: Code is written and passes all tests. Uses DFS cycle detection with three-state marking (unvisited, visiting, visited) on an adjacency list built from prerequisites.
+
+DONE: Graph construction, cycle detection logic, and full traversal are functional. All provided tests pass.
+
+BROKEN: Nothing is currently failing. Unknown if there are edge cases not covered by existing tests (e.g., large input performance, invalid prerequisite pairs).
+
+NEXT: Verify robustness by adding a test for invalid prerequisite pairs (like course indices out of range) and decide whether to handle them gracefully or assume valid input.

@@ -1,0 +1,9 @@
+GOAL: Implement an LRU cache with O(1) get/put operations using a hash map and doubly linked list.
+
+STATE: Core LRU cache implementation is complete and passes all provided tests. The code includes Node class, LRUCache with capacity, cache dictionary, dummy head/tail nodes, and helper methods for list manipulation.
+
+DONE: Basic structure, helper methods (_add_node, _remove_node, _move_to_head, _pop_tail), get() and put() logic, and capacity eviction are functional. Tests confirm correctness.
+
+BROKEN: Nothing is explicitly failing, but edge cases and robustness are unknown (e.g., handling of negative capacity, very large inputs, or thread safety). The current implementation may not include error handling or input validation.
+
+NEXT: Add input validation to __init__ to ensure capacity is a positive integer, raising an appropriate error if not.

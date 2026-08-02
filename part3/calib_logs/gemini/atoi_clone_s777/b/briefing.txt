@@ -1,0 +1,10 @@
+GOAL: Implement a function `my_atoi(s: str)` that converts a string to an integer, handling leading/trailing whitespace, signs, non-digit characters, and 32-bit integer overflow/underflow, as per the standard `atoi` specification.
+STATE: The current `my_atoi` function is implemented and passes all existing tests.
+DONE:
+*   Handles leading/trailing whitespace.
+*   Correctly parses positive and negative signs.
+*   Accumulates digits into an integer.
+*   Applies the correct sign at the end.
+*   Clamps the final result within the 32-bit signed integer range.
+BROKEN: No known issues based on current test suite. The function appears to be fully functional for the tested cases.
+NEXT: Review the existing test suite for edge cases, particularly those involving very long strings of digits that might exceed the 32-bit integer limits *before* the final clamping, or strings with non-digit characters immediately following valid digits.

@@ -1,0 +1,5 @@
+GOAL: Implement the `min_window` function to find the smallest substring in `s` that contains all characters from `t` (with counts).
+STATE: The current code implements a sliding window approach to solve the problem.
+DONE: All provided test cases are currently passing. The core logic for expanding and shrinking the window, and tracking character counts, appears to be correct for the current tests.
+BROKEN: The current test suite might not be comprehensive enough. Specifically, the problem statement often implies handling cases where `t` has duplicate characters, and the current `dict_t[char] >= 0` check for `matched` increment/decrement might be subtly incorrect for these scenarios. If `dict_t[char]` goes negative, it means we have an excess of that character in the window, which is fine, but the `matched` count should only reflect *needed* characters.
+NEXT: Add a test case where `t` contains duplicate characters (e.g., `s = "ADOBECODEBANC"`, `t = "AABC"`). Then, carefully review the `matched` logic, particularly the `if dict_t[char] >= 0:` conditions, to ensure it correctly handles character counts when `t` has duplicates.

@@ -1,0 +1,12 @@
+GOAL: Rotate an n x n matrix 90 degrees clockwise in place (modify input). Keep behavior/API consistent and robust.
+
+STATE: rotate_image.py contains rotate(matrix) implemented by transposing then reversing each row. Docstring states it modifies in place and returns None. Current tests passed.
+
+DONE: Core algorithm implemented correctly (transpose + row.reverse()). All provided tests currently pass.
+
+BROKEN: Nothing failing in tests. Unknown/unstated edge cases:
+- Behavior for empty matrix (function returns None early).
+- Behavior for non-square or jagged inputs, non-list inputs, or immutable row types.
+- No type/input validation or explicit error messages; return value consistency (None vs matrix) might be ambiguous to callers.
+
+NEXT: Decide and implement clear API contract: either (A) keep in-place/no-return and document/raise for invalid inputs (empty, non-square), or (B) return the modified matrix for convenience. Add input validation (square matrix, list-of-lists) and unit tests for empty, non-square, and invalid types.

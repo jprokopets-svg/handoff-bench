@@ -1,0 +1,5 @@
+GOAL: Implement a `delete` method for the Trie data structure that removes a given word while maintaining the integrity of other words.
+STATE: Basic Trie functionality (insert, search, starts_with) is implemented and passing all current tests.
+DONE: The core Trie structure and its fundamental operations are robust.
+BROKEN: The `delete` method is not yet implemented. The current implementation does not support removing words.
+NEXT: Implement the `delete` method, focusing on a recursive approach that backtracks and removes nodes only if they are no longer part of any other word.

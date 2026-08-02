@@ -1,0 +1,5 @@
+GOAL: Verify that the `is_valid_bst` function correctly determines if a binary tree is a valid Binary Search Tree (BST).  
+STATE: Code is written and all tests have passed. The function uses a recursive helper with min/max bounds.  
+DONE: Implementation appears correct; test suite reports full pass.  
+BROKEN: Nothing is currently failing, but we lack visibility into test coverage, edge cases handled, and potential performance on large/degenerate trees.  
+NEXT: Review the test suite to confirm it includes critical edge cases (e.g., empty tree, single node, duplicates, skewed trees, and large inputs) to ensure robustness.

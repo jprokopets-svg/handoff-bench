@@ -1,0 +1,9 @@
+GOAL: Implement an LRU cache with O(1) get/put operations using a hash map and doubly linked list.
+
+STATE: Core implementation is complete and passes all provided tests. The cache maintains capacity, uses dummy head/tail nodes for simpler list operations, and correctly updates the MRU order on get/put.
+
+DONE: Node class, LRUCache initialization, internal _remove, _add_to_front, and _move_to_front helper methods. The get and put methods correctly handle cache hits, updates, insertions, and LRU eviction when capacity is exceeded.
+
+BROKEN: Nothing is currently known to be failing. However, potential edge cases (e.g., capacity of 0 or 1, repeated operations at capacity) may not be fully validated by the passed tests.
+
+NEXT: Run more comprehensive edge-case tests, particularly focusing on minimum capacity (0 or 1) and high-volume operations, to ensure robustness before finalizing.

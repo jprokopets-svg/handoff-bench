@@ -1,0 +1,9 @@
+GOAL: Implement find_duplicate function using Floyd's algorithm for an array of n+1 integers in [1, n] with exactly one duplicate.
+
+STATE: Code is written and passes all provided tests. The algorithm appears correctly implemented.
+
+DONE: Cycle detection logic is in place. Both phases of Floyd's algorithm are implemented. All tests pass.
+
+BROKEN: Potential edge cases may not be covered. The initial assignment `tortoise = nums[0]` and `hare = nums[0]` assumes valid input; no explicit input validation (e.g., for empty list, out-of-range values, or multiple duplicates) is present.
+
+NEXT: Add input validation to handle edge cases and ensure robustness before finalizing.

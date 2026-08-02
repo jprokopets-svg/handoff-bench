@@ -1,0 +1,70 @@
+{
+  "family": "deepseek",
+  "task": "course_schedule",
+  "seed": 888,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0008196903,
+    "tool_summary": {
+      "counts": {
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    }
+  },
+  "brief": {
+    "tokens": 143,
+    "cost": 0.0001327755,
+    "text": "GOAL: Implement a function to return a valid course order if possible, else an empty list.\n\nSTATE: Working topological sort (Kahn's algorithm) that only checks cycle existence in `can_finish`.\n\nDONE: Graph construction, in-degree tracking, BFS topological traversal, and cycle detection are fully functional.\n\nBROKEN: No function to return the actual ordering. The current function only returns a boolean.\n\nNEXT: Modify or create a new function `find_order` that uses the existing topological sort logic to build and return the course order list instead of just a boolean."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0007540533,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "def can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    # Build adjacency list and in-degree array\n    graph = [[] for _ in range(num_courses)]\n    in_degree = [0] * num_courses\n    \n    for course, prereq in prerequisites:\n        graph[prereq].append(course)\n        in_degree[course] += 1\n    \n    # Kahn's algorithm for topological sort\n    # Find all nodes with in-degree 0\n    queue = []\n    for i in range(num_courses):\n        if in_degree[i] == 0:\n            queue.append(i)\n    \n    count_visited = 0\n    \n    while queue:\n        node = queue.pop(0)\n        count_visited += 1\n        \n        # Reduce in-degree of neighbors\n        for neighbor in graph[node]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n    \n    # If we visited all nodes, there's no cycle\n    return count_visited == num_courses"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0017065191
+}

@@ -1,0 +1,33 @@
+# BRIEFING: find_duplicate_number.py
+
+**GOAL:**
+Implement an algorithm to find the single duplicate number in an array of n+1 integers where each integer is in range [1, n]. Must handle the constraint efficiently.
+
+**STATE:**
+- Implementation complete using Floyd's Cycle Detection algorithm (tortoise and hare)
+- Algorithm treats array as a linked list where `nums[i]` points to index `nums[i]`
+- Two-phase approach:
+  - Phase 1: Detect cycle by moving slow pointer 1 step, fast pointer 2 steps until collision
+  - Phase 2: Find cycle entrance by moving both pointers 1 step from collision point and nums[0]
+- All unit tests passing
+
+**DONE:**
+✓ Core algorithm logic implemented correctly
+✓ Handles the mathematical property that cycle entrance = duplicate number
+✓ O(n) time complexity, O(1) space complexity (optimal for constraints)
+✓ Test suite validates correctness
+✓ Code is well-documented with clear comments
+
+**BROKEN:**
+- None identified; tests passing
+- Edge cases appear handled (small arrays, multiple occurrences of same duplicate)
+
+**NEXT:**
+**Code review & documentation polish:**
+1. Verify edge case handling: empty arrays, single element, all duplicates
+2. Add example usage/docstring examples showing input/output
+3. Consider adding assertion for preconditions (array length, value ranges)
+4. Optional: Add alternative solution comment (hash set approach) for reference
+5. Ensure variable names `slow`/`fast` are clear; consider renaming to `tortoise`/`hare` for clarity
+
+**Status:** Ready for production or next phase. No blocking issues.

@@ -1,0 +1,5 @@
+GOAL: Implement the `max_area` function to find the maximum water that can be contained between two lines in an array, where the width is the distance between the lines and the height is the shorter of the two lines.
+STATE: The `max_area` function is implemented using a two-pointer approach.
+DONE: The current implementation correctly calculates the maximum area for all provided test cases. All tests are passing.
+BROKEN: No known issues or failing tests. The current solution appears robust for the given problem constraints.
+NEXT: Review the code for potential edge cases not covered by current tests (e.g., empty array, array with one element, all elements same height, strictly increasing/decreasing heights) and consider adding more comprehensive test cases.

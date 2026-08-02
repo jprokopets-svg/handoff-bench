@@ -1,0 +1,9 @@
+GOAL: Implement a function that returns the minimum window substring of s containing all characters of t (including duplicates), or an empty string if none exists.
+
+STATE: A sliding window solution is implemented in min_window_substring.py. The code uses frequency maps for t and the current window, tracking the number of unique character requirements met (`formed` vs `required`). It expands the right pointer, then contracts the left while the window is valid, updating the minimum window indices.
+
+DONE: The implementation passes all provided tests. The core sliding window logic, character frequency tracking, and window validation appear correct.
+
+BROKEN: Nothing is explicitly failing based on tests. However, potential edge cases (like very large strings or t with many duplicates) should be verified. The `required` variable counts unique characters, which is correct for the matching condition but relies on precise equality checks in the `formed` increment/decrement logic.
+
+NEXT: The most important step is to validate the solution against additional edge cases, particularly where t contains duplicate characters, to ensure the `formed` logic based on equality (`window_count[char] == t_count[char]`) correctly handles counts exceeding requirements.

@@ -1,0 +1,15 @@
+GOAL: Implement a correct, efficient function max_area(height: List[int]) -> int that returns the maximum area of water container formed by two vertical lines in the input list.
+
+STATE: File max_area_container.py contains a two-pointer implementation (left/right) computing area = min(h_left,h_right) * width and moving the pointer(s) inward each loop. The full source is included in the prompt. Test suite currently reports: All tests passed.
+
+DONE:
+- Function handles empty input (returns 0).
+- Two-pointer algorithm implemented; time O(n), space O(1).
+- Returns correct results for current unit tests (PASS).
+
+BROKEN / UNKNOWN:
+- No failing tests reported, so no concrete bug known.
+- Unknown: robustness on extensive randomized inputs and very large arrays.
+- Potential subtlety: when heights are equal the code moves both pointers inward. This is commonly acceptable, but worth validating that it doesn't miss any optimal pair in edge cases (tests so far didn't expose an issue).
+
+NEXT: Run additional targeted tests (randomized property tests and edge cases: long runs of equal heights, strictly increasing/decreasing arrays, large n ~10^6, and extreme values) to confirm correctness and performance; if any counterexample appears, adjust pointer-movement logic (e.g., move only one pointer on equal heights) and re-run tests.

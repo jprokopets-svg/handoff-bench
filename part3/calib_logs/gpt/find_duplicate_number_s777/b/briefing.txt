@@ -1,0 +1,18 @@
+GOAL: Implement a function to find the duplicate number in an array of n+1 integers where each integer is in [1, n], in O(n) time and O(1) extra space, without modifying the input.
+
+STATE: find_duplicate_number.py contains a complete implementation using Floyd's Tortoise and Hare cycle detection. Current test run reports: All tests passed.
+
+DONE: 
+- Core algorithm implemented correctly.
+- Handles normal valid inputs and returns the duplicate.
+- Raises ValueError on empty input.
+- All existing tests pass.
+
+BROKEN:
+- No failing tests, but behavior on invalid inputs is unspecified/untested:
+  - Values outside [1, n] (out-of-range indices) will cause IndexError.
+  - Non-integer elements will cause TypeError or unpredictable behavior.
+  - Multiple different duplicates (beyond the problem's single-duplicate assumption) not considered.
+  - No explicit type hints, doc validation, or edge-case unit tests beyond current suite.
+
+NEXT: Add input validation and unit tests for invalid and boundary cases — verify/guard that len(nums) >= 2 and every element is an int in range [1, len(nums)-1]; raise clear errors if assumptions are violated.

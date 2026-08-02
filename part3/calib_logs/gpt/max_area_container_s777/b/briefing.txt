@@ -1,0 +1,18 @@
+GOAL: Implement a function max_area(height: List[int]) -> int that returns the maximum area of water contained between two vertical lines (LeetCode "Container With Most Water" problem).
+
+STATE: max_area_container.py contains a two-pointer implementation. It initializes left and right pointers at ends, computes area = min(h_left, h_right) * width, updates max, and advances the pointer at the smaller height (moves both when equal). Type hints and docstring present. Current test run reports all tests passed.
+
+DONE:
+- Correct two-pointer algorithm implemented.
+- Handles empty or single-element inputs (returns 0).
+- Time complexity O(n), space O(1).
+- All provided tests pass.
+
+BROKEN:
+- Nothing fails in current test suite. Potential unknowns:
+  - Behavior/performance not validated on very large inputs (stress/benchmark).
+  - No tests for pathological or adversarial inputs (e.g., many equal heights, extreme values).
+  - No variant that returns the indices of the optimal pair (only area returned).
+  - No explicit type/edge-case validation beyond the basic checks.
+
+NEXT: Run expanded tests — especially randomized and large-scale stress tests (property-based tests) to validate correctness and performance at scale; add benchmarks and edge-case cases (all-equal heights, monotonic arrays, very large arrays) and consider adding tests that assert expected time behavior.

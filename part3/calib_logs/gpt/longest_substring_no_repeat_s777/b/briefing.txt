@@ -1,0 +1,12 @@
+GOAL: Implement a correct, efficient function length_of_longest_substring(s) that returns the length of the longest substring without repeating characters.
+
+STATE: File longest_substring_no_repeat.py contains a sliding-window implementation using a dict last_index and variables start and max_len. All provided unit tests have been executed.
+
+DONE: Implementation is complete and passes all tests. Time complexity O(n), space O(min(n, charset)). Handles typical cases (empty string, repeated chars, distinct chars). Docstring describes approach.
+
+BROKEN: No failing tests reported. Unknowns / edge cases not covered by tests:
+- Behavior/expectation for Unicode composed sequences (grapheme clusters vs. code points) — current code treats Python string elements (code points).
+- Performance/memory on extremely large inputs not stress-tested.
+- No explicit input validation (non-str inputs).
+
+NEXT: Add targeted tests for edge cases: Unicode grapheme/combining characters, very long strings to stress performance, and non-str inputs; if grapheme-level behavior is required, consider normalizing or using a grapheme library before running the algorithm.

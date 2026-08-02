@@ -1,0 +1,19 @@
+GOAL: Implement a correct, robust function to find the duplicate number in an array of n+1 integers in [1, n] using O(n) time and O(1) extra space (Floyd's cycle detection), and ensure tests and edge cases are covered.
+
+STATE: The repository contains find_duplicate_number.py with find_duplicate(nums) implemented using Floyd's Tortoise and Hare. Unit tests ran and reported: All tests passed.
+
+DONE: 
+- Correct algorithm implemented: two-phase Floyd cycle detection.
+- Function returns the duplicate for valid inputs.
+- Basic empty-input check exists (raises ValueError).
+- Current test suite passes.
+
+BROKEN / UNKNOWN:
+- Behavior on invalid inputs is undefined/untested:
+  - Elements outside [1, n] (could raise IndexError or produce wrong result).
+  - Non-integer elements, non-list inputs, or malformed sequences.
+  - Very small arrays or boundary cases (e.g., n=1) not explicitly validated in tests.
+- No explicit precondition validation beyond empty list check.
+- No property-based or fuzz tests to guarantee robustness against malformed input.
+
+NEXT: Add focused tests for edge and invalid inputs (out-of-range values, non-integers, wrong lengths) and update the function to validate inputs (verify length and that every element is an int in 1..n) so it fails fast with clear errors instead of crashing or producing undefined behavior.

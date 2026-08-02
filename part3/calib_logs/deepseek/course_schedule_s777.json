@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "course_schedule",
+  "seed": 777,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0011847200000000002,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 188,
+    "cost": 0.00018123,
+    "text": "GOAL: Implement a course scheduling algorithm that determines if all courses can be finished given prerequisites (no cycles allowed).\n\nSTATE: Code is written and passes all tests. Uses DFS cycle detection with three-state marking (unvisited, visiting, visited) on an adjacency list built from prerequisites.\n\nDONE: Graph construction, cycle detection logic, and full traversal are functional. All provided tests pass.\n\nBROKEN: Nothing is currently failing. Unknown if there are edge cases not covered by existing tests (e.g., large input performance, invalid prerequisite pairs).\n\nNEXT: Verify robustness by adding a test for invalid prerequisite pairs (like course indices out of range) and decide whether to handle them gracefully or assume valid input."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00087621105,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "def can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    # Build adjacency list\n    graph = [[] for _ in range(num_courses)]\n    for course, prereq in prerequisites:\n        graph[prereq].append(course)\n    \n    # Three states: 0 = unvisited, 1 = visiting, 2 = visited\n    state = [0] * num_courses\n    \n    def has_cycle(node: int) -> bool:\n        if state[node] == 1:  # Currently visiting - cycle detected\n            return True\n        if state[node] == 2:  # Already visited - no cycle from here\n            return False\n        \n        state[node] = 1  # Mark as visiting\n        \n        for neighbor in graph[node]:\n            if has_cycle(neighbor):\n                return True\n        \n        state[node] = 2  # Mark as visited\n        return False\n    \n    # Check for cycles starting from each node\n    for course in range(num_courses):\n        if state[course] == 0:  # Unvisited\n            if has_cycle(course):\n                return False\n    \n    return True"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.00224216105
+}

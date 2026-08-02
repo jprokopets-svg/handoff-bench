@@ -1,0 +1,9 @@
+GOAL: Implement a Trie data structure with insert, search, and starts_with methods.
+
+STATE: Basic TrieNode and Trie classes are written. Core methods (insert, search, starts_with) are implemented and functional.
+
+DONE: All provided tests are passing. The Trie correctly stores words, finds exact matches, and checks for prefixes.
+
+BROKEN: Nothing is currently failing. However, the implementation lacks advanced functionality common for Tries (e.g., deletion, prefix-based autocomplete, word listing).
+
+NEXT: Implement a `delete` method that removes a word from the Trie, handling cases where nodes shared by other words are preserved.

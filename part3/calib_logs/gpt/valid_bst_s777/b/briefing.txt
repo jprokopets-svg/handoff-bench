@@ -1,0 +1,19 @@
+GOAL: Verify whether a binary tree is a valid BST (every left subtree strictly < node < every right subtree). Provide/maintain correct implementation in valid_bst.py.
+
+STATE: File valid_bst.py contains a TreeNode class and is_valid_bst(root) which uses a recursive helper with low/high bounds initialized to (-inf, +inf). Helper enforces strict comparisons and recurses left/right with updated bounds. __repr__ provided for debugging. Tests currently run and report all pass.
+
+DONE: Implementation is correct for the tested cases:
+- Uses low/high bound propagation to enforce global constraints.
+- Strict inequality ensures duplicates are rejected.
+- Time O(n), space O(h) recursion depth.
+- All provided unit tests pass.
+
+BROKEN / UNKNOWN:
+- No failing tests currently. Potential issues not covered by tests:
+  - Very deep skewed trees could hit Python recursion limit (RecursionError).
+  - Use of float('-inf')/float('inf') is fine for ints but could be problematic for non-numeric or extreme values if types change.
+  - No explicit tests for duplicate values, negative/large ints, or mixed types.
+  - No iterative (stack) implementation for tail recursion mitigation.
+  - Behavior with malformed TreeNode inputs (non-int val) is unspecified.
+
+NEXT: Add a stress test that builds a very deep (e.g., >1000 depth) skewed BST to check for RecursionError; if it fails, replace or provide an iterative stack-based helper implementation to avoid recursion depth limits.
