@@ -18,4 +18,4 @@ New handoff problem; generic sender×receiver pair asymmetry; belief/automation-
 Task-tier composition after blind calibration; per-family API/tool-schema adaptations; retry caps; run counts after power simulation; cue exact wording after length-matching check. Nothing else.
 
 ## CHANGELOG
-(empty at seal)
+1. (2026-08-02, ruling at Buzz event 64cc8605) **B-workspace-when-A-completes** (science-relevant rule, from Stage 0): when A's interrupt grade is PASS, B starts from the canonical stub+test workspace — A's completed solution is not inherited — so the consumption ordering is always testable. A-complete runs are counted, reported separately, and predeclared as analyzed as their own stratum in the confirmatory analysis. Related ruling, same event: solutions are graded against the ORIGINAL test snapshot, never a workspace copy an agent may have rewritten.
