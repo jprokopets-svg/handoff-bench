@@ -1,0 +1,36 @@
+# BRIEFING: climbing_stairs.py
+
+**GOAL:**
+Implement a function that calculates the number of distinct ways to climb an n-step staircase when taking 1 or 2 steps at a time.
+
+**STATE:**
+- Function `climbing_stairs(n)` is fully implemented in climbing_stairs.py
+- Uses dynamic programming approach with O(n) time complexity and O(1) space complexity
+- Handles base cases: n≤0 returns 0, n=1 returns 1, n=2 returns 2
+- Iterative solution using two variables (prev2, prev1) to track previous states
+- All unit tests passing
+
+**DONE:**
+✓ Core algorithm working correctly (Fibonacci-based recurrence relation)
+✓ Base cases handled properly
+✓ Space-optimized DP solution (constant space instead of array)
+✓ Time complexity optimal at O(n)
+✓ Test suite passes completely
+✓ Code is well-documented with clear docstring
+✓ Logic is clean and maintainable
+
+**BROKEN:**
+- Nothing identified as broken
+- All tests passing
+- No known edge cases failing
+- No performance issues detected
+
+**NEXT:**
+**Task is complete.** The function is production-ready. If continuing work:
+1. Consider adding type hints (e.g., `def climbing_stairs(n: int) -> int:`)
+2. Add input validation with meaningful error messages for invalid inputs
+3. Document time/space complexity in docstring if not already visible to users
+4. Consider memoization alternative implementation as reference/comparison
+5. Add performance benchmarks if this will be used at scale
+
+**Recommendation:** Code review and merge to main branch. No further work required unless new requirements emerge.

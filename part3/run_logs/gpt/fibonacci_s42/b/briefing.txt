@@ -1,0 +1,17 @@
+GOAL: Implement a correct, robust fibonacci(n) that returns the nth Fibonacci number with fib(0)=0 and fib(1)=1, validating that n is a non-negative integer.
+
+STATE: Current file fibonacci.py contains an iterative implementation with input validation (TypeError for non-int, ValueError for negative). Docstring present. Test harness run.
+
+DONE: 
+- Function returns correct values for tested inputs.
+- Input validation present and raises appropriate exceptions for non-int and negative values.
+- All provided tests passed (PASS).
+
+BROKEN / UNKNOWN:
+- No failing tests, but edge cases/risks not verified:
+  - Performance for very large n (e.g., n >= 10^5 or 10^6) is unknown; iterative O(n) may be too slow.
+  - Memory/size of result for huge n not considered (Python handles big ints but may be costly).
+  - bool values (True/False) are instances of int in Python; currently accepted — may be undesirable.
+  - No property-based tests or stress tests covering correctness across wide range or concurrency.
+
+NEXT: The single most important thing to try is add targeted tests for large n and stress tests (including n ~ 1e5 and property-based checks). If performance is inadequate, replace or supplement the O(n) loop with a fast-doubling (log n) algorithm and re-run tests.

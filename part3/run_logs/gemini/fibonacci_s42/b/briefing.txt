@@ -1,0 +1,5 @@
+GOAL: Implement a Fibonacci sequence function in `fibonacci.py` that is efficient for larger inputs.
+STATE: A recursive, unoptimized `fibonacci` function exists.
+DONE: The current recursive implementation is functionally correct for small inputs, as all existing tests pass.
+BROKEN: The current implementation has exponential time complexity (O(2^n)) due to redundant calculations, making it inefficient for larger `n`. There are no tests for performance or large inputs.
+NEXT: Implement memoization (dynamic programming) to store and reuse previously calculated Fibonacci numbers, significantly improving performance.

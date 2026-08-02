@@ -1,0 +1,23 @@
+GOAL: Implement a correct, robust function count_bits(n: int) -> int that returns the number of 1 bits in the binary representation of a non-negative integer n and ensure it is well-tested.
+
+STATE: File count_bits.py contains a simple implementation using bin(n).count('1') and input validation for type and negativity:
+```
+def count_bits(n: int) -> int:
+    ...
+    if not isinstance(n, int):
+        raise TypeError("n must be an integer")
+    if n < 0:
+        raise ValueError("n must be non-negative")
+    return bin(n).count('1')
+```
+Test suite has been run.
+
+DONE: All current tests pass. Input validation and basic functionality work for standard Python int values. Implementation is concise and correct for tested cases.
+
+BROKEN: Nothing failing in current tests. Unknowns / potential issues:
+- No tests for very large integers (performance/memory characteristics).
+- No tests for integer-like types (numpy.int64, custom int subclasses) or bools.
+- No property-based tests (randomized/corner-case coverage).
+- Unclear whether API should accept non-int integer-like objects or negative handling beyond ValueError.
+
+NEXT: Add targeted tests covering edge cases and non-standard int-like inputs (0, large ints > 2**64, random large values, numpy integer types, bool, negative and non-int inputs) and include a property-based test (Hypothesis) to increase confidence.

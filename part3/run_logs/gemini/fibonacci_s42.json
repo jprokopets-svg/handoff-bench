@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "fibonacci",
+  "seed": 42,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0006077,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 154,
+    "cost": 0.0003556,
+    "text": "GOAL: Implement a Fibonacci sequence function in `fibonacci.py` that is efficient for larger inputs.\nSTATE: A recursive, unoptimized `fibonacci` function exists.\nDONE: The current recursive implementation is functionally correct for small inputs, as all existing tests pass.\nBROKEN: The current implementation has exponential time complexity (O(2^n)) due to redundant calculations, making it inefficient for larger `n`. There are no tests for performance or large inputs.\nNEXT: Implement memoization (dynamic programming) to store and reuse previously calculated Fibonacci numbers, significantly improving performance."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0013024,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "\ndef fibonacci(n: int) -> int:\n    if n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n\n    memo = {0: 0, 1: 1}\n\n    for i in range(2, n + 1):\n        memo[i] = memo[i-1] + memo[i-2]\n\n    return memo[n]\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0022657
+}

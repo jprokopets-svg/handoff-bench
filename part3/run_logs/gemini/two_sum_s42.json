@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "two_sum",
+  "seed": 42,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0007113,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 168,
+    "cost": 0.0004117,
+    "text": "GOAL: Implement the `two_sum` function to return the indices of two numbers in a list `nums` that add up to `target`.\nSTATE: A working implementation of `two_sum` using a hash map.\nDONE: The current `two_sum` function correctly identifies and returns the indices of two numbers that sum to the target. All existing tests pass.\nBROKEN: Nothing is currently broken. The function appears robust for its intended purpose. No edge cases or performance bottlenecks have been identified yet.\nNEXT: Consider adding more comprehensive test cases, especially for edge cases like empty lists, lists with duplicate numbers, or scenarios where no solution exists, to ensure robustness."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0013779,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "def two_sum(nums: list[int], target: int) -> list[int]:\n    num_map = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in num_map:\n            return [num_map[complement], i]\n        num_map[num] = i\n    return []\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0025009
+}

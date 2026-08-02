@@ -1,0 +1,9 @@
+GOAL: Implement a two_sum function that returns indices of two numbers adding to target.
+
+STATE: Code is complete with hash map solution. All tests pass.
+
+DONE: Core algorithm works. Handles standard cases. Includes docstring and comments.
+
+BROKEN: Nothing. Implementation is correct and tested.
+
+NEXT: No action needed. Task is complete.

@@ -1,0 +1,12 @@
+GOAL: Implement a function `climbing_stairs(n)` that calculates the number of distinct ways to climb to the top of a staircase with `n` steps, where you can either climb 1 or 2 steps at a time.
+
+STATE: The `climbing_stairs` function is implemented using dynamic programming.
+
+DONE:
+*   The current implementation correctly calculates the number of ways for `n` steps.
+*   All provided test cases pass.
+
+BROKEN:
+*   No known issues or failing tests.
+
+NEXT: Consider edge cases or constraints not covered by current tests (e.g., very large `n`, negative `n` if applicable, although problem implies positive). If the problem statement guarantees positive `n`, then the current solution is likely complete.

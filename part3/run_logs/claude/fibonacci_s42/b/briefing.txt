@@ -1,0 +1,32 @@
+# BRIEFING: Fibonacci Implementation
+
+**GOAL:**
+Implement a working Fibonacci function that correctly computes the nth Fibonacci number where fib(0)=0, fib(1)=1, and fib(n)=fib(n-1)+fib(n-2) for n≥2.
+
+**STATE:**
+- Single function `fibonacci(n)` implemented in fibonacci.py
+- Uses iterative approach with two-variable swap pattern
+- Handles base cases (n=0 returns 0, n=1 returns 1)
+- Main logic: loop from 2 to n, updating (a,b) pair where a=previous, b=current sum
+- All test cases passing
+
+**DONE:**
+✓ Base cases correctly implemented (n=0 and n=1)
+✓ Iterative algorithm logic appears sound
+✓ Test suite passes completely
+✓ Code is readable and well-documented
+✓ No syntax errors
+
+**BROKEN:**
+- Nothing currently failing in tests
+- No known issues or edge cases identified
+- Performance not yet evaluated (iterative is O(n) time, O(1) space—acceptable)
+
+**NEXT:**
+Verify edge cases and performance:
+1. Test with large n values (e.g., n=1000) to confirm no overflow/performance issues
+2. Test negative inputs (currently undefined behavior—may need to add validation)
+3. Consider if memoization/caching is needed for repeated calls
+4. If all edge cases pass, task is complete; otherwise add input validation and error handling
+
+**Status:** Ready for handoff or edge case testing.

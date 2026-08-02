@@ -1,0 +1,9 @@
+GOAL: Implement a CLI tool that calculates Fibonacci numbers, handling user input and errors gracefully.
+
+STATE: Core fibonacci(n) function is complete and tested. No CLI interface exists yet.
+
+DONE: The fibonacci function correctly computes values for n >= 0 and raises ValueError for n < 0. All unit tests pass.
+
+BROKEN: No user interface. The program cannot accept command-line arguments or interact with a user. Error handling for non-integer input is not implemented.
+
+NEXT: Implement the CLI entry point (if __name__ == "__main__":) to read a number from sys.argv, convert it to an int, call fibonacci(), and print the result with appropriate error messages for invalid input.

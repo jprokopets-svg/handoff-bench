@@ -1,0 +1,31 @@
+# BRIEFING: two_sum.py Task
+
+**GOAL:**
+Implement a function that finds two indices in a list of integers where the values sum to a target value. Return the indices as a list [i, j].
+
+**STATE:**
+- Single-pass hash map solution implemented in `two_sum.py`
+- Algorithm uses dictionary to track seen values and their indices
+- Time complexity: O(n), Space complexity: O(n)
+- Test suite exists and reports all tests passing
+
+**DONE:**
+✓ Core algorithm logic is correct
+✓ Dictionary-based approach efficiently finds complement values
+✓ Handles the two-pointer problem in linear time
+✓ All existing tests pass
+✓ Code is well-documented with docstring
+
+**BROKEN:**
+- Unknown edge cases not covered by current tests:
+  - Duplicate numbers in input
+  - Negative numbers
+  - Empty or single-element lists
+  - No solution exists scenario
+  - Target = 0 or very large numbers
+- No input validation (null checks, type checking)
+- Unclear if tests actually verify correctness or just check for runtime errors
+- No performance benchmarks documented
+
+**NEXT:**
+Review and expand the test suite to verify edge cases (duplicates, negatives, no solution, empty input). Add basic input validation to handle None/empty inputs gracefully. This will confirm the implementation is robust before considering it production-ready.

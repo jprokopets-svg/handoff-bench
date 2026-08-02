@@ -1,0 +1,16 @@
+GOAL: Implement a correct, efficient two_sum(nums, target) that returns indices [i, j] (i < j) of the two numbers that add to target. Assumes exactly one solution and elements cannot be reused.
+
+STATE: two_sum.py contains a hash-map based implementation. Tests were executed and report "All tests passed (PASS)".
+
+DONE:
+- Implementation uses a dictionary to store seen values -> O(n) time, O(n) space.
+- Returns earlier index first by design (seen stores earlier indices).
+- Raises ValueError if no solution (guard for unexpected inputs).
+- Current test suite passes.
+
+BROKEN / UNKNOWN:
+- No failing tests, but coverage unknown for edge cases: empty list, list length 2, duplicate values, negative numbers, non-integer types, very large inputs, and behavior when constraints are violated (zero or multiple solutions).
+- No type hints or input validation; behavior on non-hashable or non-int elements not explicitly tested.
+- Performance on extremely large lists not measured.
+
+NEXT: Add targeted unit tests for boundary and invalid cases (length=2, duplicates, negatives, non-integers, no-solution scenario) and run them to verify robustness; if any fail, update function to handle or document constraints.

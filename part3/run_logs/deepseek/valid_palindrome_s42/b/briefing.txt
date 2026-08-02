@@ -1,0 +1,9 @@
+GOAL: Implement a function that checks if a string is a valid palindrome, ignoring non-alphanumeric characters and case sensitivity.
+
+STATE: A working solution exists in `valid_palindrome.py`. It filters the string and performs a full reversal comparison.
+
+DONE: The function passes all provided tests. The core logic for filtering and palindrome checking is functional.
+
+BROKEN: Nothing is currently broken. However, the solution uses O(n) extra space for the filtered string and a full reversal, which may be suboptimal for memory or performance in constrained environments.
+
+NEXT: Optimize the function to use a two-pointer approach, checking characters in-place without creating a full filtered copy, while maintaining correctness.

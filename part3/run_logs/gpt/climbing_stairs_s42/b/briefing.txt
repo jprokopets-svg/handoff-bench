@@ -1,0 +1,20 @@
+GOAL: Implement a correct function climbing_stairs(n) that returns the count of distinct ways to climb n steps using 1- or 2-step moves, with defined behavior for n<0 (0) and n==0 (1).
+
+STATE: climbing_stairs.py contains an iterative solution:
+- Validates n is int (raises TypeError otherwise).
+- Handles n<0 -> 0, n==0 -> 1, n==1 -> 1.
+- Iteratively computes Fibonacci-like sequence with O(n) time, O(1) memory.
+
+DONE:
+- Function implements the intended recurrence: ways(n)=ways(n-1)+ways(n-2).
+- Edge cases n<0, n==0, n==1 handled explicitly.
+- All existing unit tests passed.
+
+BROKEN / UNKNOWN:
+- No failing tests, but unknowns / potential issues:
+  - Performance for very large n (e.g., n >= 10^6) — current O(n) loop may be slow.
+  - Behavior for numeric-but-non-int inputs (e.g., 5.0) — current TypeError may be acceptable or may need coercion.
+  - No explicit limits or handling for negative large magnitude, or for nonstandard types (numpy integers, decimals).
+  - No benchmarks or tests for extreme inputs.
+
+NEXT: Add targeted tests for very large n (and a timing/baseline) to determine if an O(log n) fast-doubling Fibonacci implementation is needed; also add tests for non-int numeric inputs to decide whether to coerce floats representing integers or keep raising TypeError.

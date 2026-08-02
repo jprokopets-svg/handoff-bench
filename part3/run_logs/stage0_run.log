@@ -1,0 +1,45 @@
+Stage 0 — 4 families x 5 tasks x seed 42 (self-pair, CLEAN brief)
+Budget cap: $8.0
+
+[claude   ] two_sum            ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.0229
+[claude   ] valid_palindrome   ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.0446
+[claude   ] fibonacci          ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.0656
+[claude   ] count_bits         ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.0874
+[claude   ] climbing_stairs    ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.1121
+[gpt      ] two_sum            ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.1178
+[gpt      ] valid_palindrome   ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.1236
+[gpt      ] fibonacci          ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.1298
+[gpt      ] count_bits         ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.1351
+[gpt      ] climbing_stairs    ...
+    a_pass=True b_pass=True consumption=CONSUMED transport=True spent=$0.1412
+[gemini   ] two_sum            ...
+Traceback (most recent call last):
+  File "/Users/jakeprokopets/handoff-bench/part3/stage0_harness.py", line 511, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jakeprokopets/handoff-bench/part3/stage0_harness.py", line 472, in main
+    r = run_one(family, prob, SEED, budget)
+  File "/Users/jakeprokopets/handoff-bench/part3/stage0_harness.py", line 368, in run_one
+    a = run_agent(prob, f"## Task\n\n{spec}\n\nWrite your solution to {enf}.py.",
+                  TURNS_A, work_dir / "a", seed, model, role="a")
+  File "/Users/jakeprokopets/handoff-bench/part3/stage0_harness.py", line 241, in run_agent
+    tc_data = json.loads(response_text)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 148 (char 147)

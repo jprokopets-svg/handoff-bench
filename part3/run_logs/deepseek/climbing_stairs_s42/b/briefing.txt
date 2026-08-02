@@ -1,0 +1,9 @@
+GOAL: Implement a function to count distinct ways to climb n stairs (1 or 2 steps at a time), handling large n efficiently.
+
+STATE: A dynamic programming solution is in place, passing all tests. The code uses an iterative approach with a list `dp` of size n+1.
+
+DONE: Base cases (n <= 0, 1, 2) are defined. The DP loop correctly computes dp[i] = dp[i-1] + dp[i-2] for i from 3 to n. All provided tests pass.
+
+BROKEN: The solution may use excessive memory for very large n due to the `dp` list. The base case for n=0 returns 0, but some interpretations expect 1 way to climb 0 stairs (doing nothing). This discrepancy is not flagged by current tests.
+
+NEXT: Optimize space complexity to O(1) by using variables instead of a full list, while verifying the n=0 case aligns with problem requirements.

@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "two_sum",
+  "seed": 42,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.001534,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 301,
+    "cost": 0.00126125,
+    "text": "GOAL: Implement a correct, efficient two_sum(nums, target) that returns indices [i, j] (i < j) of the two numbers that add to target. Assumes exactly one solution and elements cannot be reused.\n\nSTATE: two_sum.py contains a hash-map based implementation. Tests were executed and report \"All tests passed (PASS)\".\n\nDONE:\n- Implementation uses a dictionary to store seen values -> O(n) time, O(n) space.\n- Returns earlier index first by design (seen stores earlier indices).\n- Raises ValueError if no solution (guard for unexpected inputs).\n- Current test suite passes.\n\nBROKEN / UNKNOWN:\n- No failing tests, but coverage unknown for edge cases: empty list, list length 2, duplicate values, negative numbers, non-integer types, very large inputs, and behavior when constraints are violated (zero or multiple solutions).\n- No type hints or input validation; behavior on non-hashable or non-int elements not explicitly tested.\n- Performance on extremely large lists not measured.\n\nNEXT: Add targeted unit tests for boundary and invalid cases (length=2, duplicates, negatives, non-integers, no-solution scenario) and run them to verify robustness; if any fail, update function to handle or document constraints."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00291305,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "from typing import List\n\n\ndef two_sum(nums: List[int], target: int) -> List[int]:\n    \"\"\"Return indices [i, j] (i < j) of the two numbers in nums that add up to target.\n\n    Assumes exactly one solution exists and the same element cannot be used twice.\n    If no solution is found, raises ValueError.\n    \"\"\"\n    seen = {}  # value -> index\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            j = i\n            i0 = seen[complement]\n            # ensure smaller index first\n            if i0 < j:\n                return [i0, j]\n            else:\n                return [j, i0]\n        # store the first occurrence index for a value\n        if num not in seen:\n            seen[num] = i\n    raise ValueError(\"No two sum solution\")\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0057082999999999995
+}

@@ -1,0 +1,19 @@
+GOAL: Implement a function valid_palindrome(s) that returns True if s is a palindrome when ignoring non-alphanumeric characters and case.
+
+STATE: Implementation present in valid_palindrome.py. Test suite ran and reports all tests passed.
+
+DONE:
+- Two-pointer algorithm implemented.
+- Skips non-alphanumeric characters using str.isalnum().
+- Compares characters case-insensitively via str.lower().
+- Handles empty strings and typical ASCII inputs correctly.
+- Current behavior: if s is None, function returns True (guard at top).
+- All existing tests pass.
+
+BROKEN / UNKNOWN:
+- Specification for None input is unclear (current code treats None as palindrome).
+- Behavior with non-ASCII / Unicode characters (e.g., accented letters, scripts, full-width forms) is untested — str.isalnum() and str.lower() may have different semantics across Unicode.
+- No tests for very large strings or performance characteristics.
+- No explicit error handling for unexpected types (e.g., integers, bytes).
+
+NEXT: Add targeted tests for edge cases — especially None semantics and Unicode inputs (accented letters, non-Latin scripts, emojis, full-width alphanumerics) — and decide/encode the intended behavior for None and non-str inputs.

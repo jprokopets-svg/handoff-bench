@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "climbing_stairs",
+  "seed": 42,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0021825,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 321,
+    "cost": 0.00159775,
+    "text": "GOAL: Implement a correct function climbing_stairs(n) that returns the count of distinct ways to climb n steps using 1- or 2-step moves, with defined behavior for n<0 (0) and n==0 (1).\n\nSTATE: climbing_stairs.py contains an iterative solution:\n- Validates n is int (raises TypeError otherwise).\n- Handles n<0 -> 0, n==0 -> 1, n==1 -> 1.\n- Iteratively computes Fibonacci-like sequence with O(n) time, O(1) memory.\n\nDONE:\n- Function implements the intended recurrence: ways(n)=ways(n-1)+ways(n-2).\n- Edge cases n<0, n==0, n==1 handled explicitly.\n- All existing unit tests passed.\n\nBROKEN / UNKNOWN:\n- No failing tests, but unknowns / potential issues:\n  - Performance for very large n (e.g., n >= 10^6) \u2014 current O(n) loop may be slow.\n  - Behavior for numeric-but-non-int inputs (e.g., 5.0) \u2014 current TypeError may be acceptable or may need coercion.\n  - No explicit limits or handling for negative large magnitude, or for nonstandard types (numpy integers, decimals).\n  - No benchmarks or tests for extreme inputs.\n\nNEXT: Add targeted tests for very large n (and a timing/baseline) to determine if an O(log n) fast-doubling Fibonacci implementation is needed; also add tests for non-int numeric inputs to decide whether to coerce floats representing integers or keep raising TypeError."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.002369,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "def climbing_stairs(n: int) -> int:\n    \"\"\"Return the number of distinct ways to climb n steps taking 1 or 2 steps.\n\n    Behavior:\n    - If n < 0: return 0\n    - If n == 0: return 1\n    - For n >= 1: compute ways using recurrence ways(n)=ways(n-1)+ways(n-2).\n\n    Raises TypeError if n is not an int.\n    \"\"\"\n    if not isinstance(n, int):\n        raise TypeError(\"n must be an int\")\n    if n < 0:\n        return 0\n    if n == 0:\n        return 1\n    if n == 1:\n        return 1\n    a, b = 1, 1  # ways(0)=1, ways(1)=1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.00614925
+}

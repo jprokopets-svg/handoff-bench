@@ -1,0 +1,9 @@
+GOAL: Implement a function `count_bits(n: int) -> int` that returns the number of 1 bits in the binary representation of integer n.
+
+STATE: A working iterative solution exists in `count_bits.py`. It uses a while loop, bitwise AND, and right-shift. All tests are currently passing.
+
+DONE: The core logic is functional for positive integers. The test suite validates correctness.
+
+BROKEN: The function fails for negative integers (infinite loop because `n > 0` condition). The behavior for negative inputs is undefined and untested.
+
+NEXT: Modify the function to handle negative integers correctly, likely by using bit manipulation that works with two's complement representation (e.g., `n &= n - 1` trick or converting to an unsigned equivalent).

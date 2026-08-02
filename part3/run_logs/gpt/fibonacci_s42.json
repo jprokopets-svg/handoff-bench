@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "fibonacci",
+  "seed": 42,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0013725,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 317,
+    "cost": 0.001817,
+    "text": "GOAL: Implement a correct, robust fibonacci(n) that returns the nth Fibonacci number with fib(0)=0 and fib(1)=1, validating that n is a non-negative integer.\n\nSTATE: Current file fibonacci.py contains an iterative implementation with input validation (TypeError for non-int, ValueError for negative). Docstring present. Test harness run.\n\nDONE: \n- Function returns correct values for tested inputs.\n- Input validation present and raises appropriate exceptions for non-int and negative values.\n- All provided tests passed (PASS).\n\nBROKEN / UNKNOWN:\n- No failing tests, but edge cases/risks not verified:\n  - Performance for very large n (e.g., n >= 10^5 or 10^6) is unknown; iterative O(n) may be too slow.\n  - Memory/size of result for huge n not considered (Python handles big ints but may be costly).\n  - bool values (True/False) are instances of int in Python; currently accepted \u2014 may be undesirable.\n  - No property-based tests or stress tests covering correctness across wide range or concurrency.\n\nNEXT: The single most important thing to try is add targeted tests for large n and stress tests (including n ~ 1e5 and property-based checks). If performance is inadequate, replace or supplement the O(n) loop with a fast-doubling (log n) algorithm and re-run tests."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0029715,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "def fibonacci(n: int) -> int:\n    \"\"\"Return the nth Fibonacci number with fib(0)=0 and fib(1)=1.\n\n    Args:\n        n: A non-negative integer index.\n\n    Returns:\n        The nth Fibonacci number as an int.\n\n    Raises:\n        TypeError: if n is not an int or is a bool.\n        ValueError: if n is negative.\n    \"\"\"\n    # Reject booleans explicitly (they are instances of int in Python)\n    if isinstance(n, bool) or not isinstance(n, int):\n        raise TypeError(\"n must be an int\")\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n\n    # Fast doubling method: returns (F(n), F(n+1))\n    def _fib_pair(k: int) -> tuple[int, int]:\n        if k == 0:\n            return (0, 1)\n        a, b = _fib_pair(k >> 1)\n        c = a * ((b << 1) - a)  # F(2m) = F(m) * (2*F(m+1) \u2212 F(m))\n        d = a * a + b * b      # F(2m+1) = F(m)^2 + F(m+1)^2\n        if k & 1:\n            return (d, c + d)\n        else:\n            return (c, d)\n\n    return _fib_pair(n)[0]\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.006161
+}
