@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "mini_brainfuck",
+  "seed": 666,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0038107,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 375,
+    "cost": 0.00240025,
+    "text": "GOAL: Provide a minimal, correct Brainfuck interpreter that passes tests and behaves like typical implementations (30,000-cell tape, BF commands > < + - . , [ ]).\n\nSTATE: mini_brainfuck.py contains a complete interpreter with bracket precomputation, a fixed-size tape (30,000 cells), pointer and instruction pointer handling, I/O (, and .), and loop control. All provided tests currently pass.\n\nDONE:\n- Bracket matching with jump table; unbalanced brackets raise ValueError.\n- Command dispatch for >, <, +, -, ., ,, [, ] implemented.\n- Pointer bounds checked (IndexError if pointer leaves tape).\n- Input exhausted on ',' sets cell to 0.\n- Outputs collected and returned as a string.\n- Existing test suite reports PASS.\n\nBROKEN / RISK AREAS:\n- Cell values are unbounded Python ints; no wrapping to 0\u2013255. Negative values or large ints can break expectations.\n- chr(cells[ptr]) can raise for negative values or ints > 0x10FFFF.\n- Behavior on pointer overflow is to raise IndexError; some BF flavors extend tape instead.\n- No explicit handling/normalization of input bytes (ord(...) may exceed 255 on some inputs).\n- Edge-case semantics (e.g., exact behaviour on underflow/overflow) not enforced to standard BF.\n\nNEXT: Implement 8-bit wrapping: ensure '+' and '-' update cells[ptr] modulo 256, store input as ord(...) % 256, and output using chr(cells[ptr] % 256) (or format as byte) so values stay in 0\u2013255 and chr() cannot fail. This aligns behavior with typical Brainfuck and avoids invalid chr errors."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0049552,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "def brainfuck(code: str, input_str: str = \"\") -> str:\n    \"\"\"\n    Execute a Brainfuck program given by `code` with optional input string `input_str`.\n\n    Tape: 30,000 cells initialized to 0. Cells are Python ints with NO wraparound.\n    Data pointer starts at 0. Allowed commands: > < + - . , [ ]\n    Any other characters are ignored.\n\n    For ',' reads the next character from input_str and stores its ord() value in the current cell;\n    if input is exhausted stores 0.\n\n    For '.' appends chr(current cell) to output (may raise if value outside valid range).\n\n    Raises ValueError if brackets are unbalanced.\n    \"\"\"\n    # Precompute matching brackets\n    open_stack = []\n    jump = {}\n    for i, ch in enumerate(code):\n        if ch == '[':\n            open_stack.append(i)\n        elif ch == ']':\n            if not open_stack:\n                raise ValueError(\"Unmatched closing bracket at position {}\".format(i))\n            j = open_stack.pop()\n            jump[j] = i\n            jump[i] = j\n    if open_stack:\n        # unmatched opening bracket(s)\n        raise ValueError(\"Unmatched opening bracket(s)\")\n\n    tape = [0] * 30000\n    dp = 0  # data pointer\n    ip = 0  # instruction pointer\n    inp_pos = 0\n    output_chars = []\n    n = len(code)\n\n    while ip < n:\n        cmd = code[ip]\n        if cmd == '>':\n            dp += 1\n            if dp >= len(tape) or dp < 0:\n                raise IndexError(\"Data pointer moved out of tape bounds\")\n        elif cmd == '<':\n            dp -= 1\n            if dp >= len(tape) or dp < 0:\n                raise IndexError(\"Data pointer moved out of tape bounds\")\n        elif cmd == '+':\n            tape[dp] += 1\n        elif cmd == '-':\n            tape[dp] -= 1\n        elif cmd == '.':\n            output_chars.append(chr(tape[dp]))\n        elif cmd == ',':\n            if inp_pos < len(input_str):\n                tape[dp] = ord(input_str[inp_pos])\n                inp_pos += 1\n            else:\n                tape[dp] = 0\n        elif cmd == '[':\n            if tape[dp] == 0:\n                # jump forward to matching ] (jump maps [->])\n                ip = jump[ip]\n        elif cmd == ']':\n            if tape[dp] != 0:\n                # jump back to matching [ (jump maps ]->[), then continue from after it\n                ip = jump[ip]\n        # ignore any other characters\n        ip += 1\n    return ''.join(output_chars)\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.01116615
+}

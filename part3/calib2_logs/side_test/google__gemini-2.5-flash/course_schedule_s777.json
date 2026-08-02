@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "course_schedule",
+  "seed": 777,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0011306999999999999,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 174,
+    "cost": 0.0004227,
+    "text": "GOAL: Implement a function `can_finish(num_courses, prerequisites)` that determines if all courses can be finished given the total number of courses and a list of prerequisite pairs. This is a topological sort problem.\nSTATE: The current code implements a topological sort using Kahn's algorithm.\nDONE: The current implementation correctly passes all existing tests, indicating it handles valid course schedules and detects cycles.\nBROKEN: Nothing is currently broken. The code appears to be fully functional for its intended purpose.\nNEXT: Review the code for potential optimizations or edge cases not covered by existing tests, such as extremely large inputs or unusual prerequisite structures."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.001496,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "from collections import deque\n\ndef can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    adj = [[] for _ in range(num_courses)]\n    in_degree = [0] * num_courses\n\n    for course, prereq in prerequisites:\n        adj[prereq].append(course)\n        in_degree[course] += 1\n\n    queue = deque([i for i in range(num_courses) if in_degree[i] == 0])\n    count = 0\n\n    while queue:\n        prereq = queue.popleft()\n        count += 1\n\n        for course in adj[prereq]:\n            in_degree[course] -= 1\n            if in_degree[course] == 0:\n                queue.append(course)\n\n    return count == num_courses\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0030494
+}

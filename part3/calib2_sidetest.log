@@ -1,0 +1,21 @@
+[google/gemini-2.5-flash       ] course_schedule      s777 ...
+    completed a_pass=True b_pass=True cons=CONSUMED spent=$0.0030
+[google/gemini-2.5-flash       ] decode_string        s777 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$0.0039
+[google/gemini-2.5-pro         ] course_schedule      s777 ...
+    completed a_pass=True b_pass=True cons=CONSUMED spent=$0.1148
+[google/gemini-2.5-pro         ] decode_string        s777 ...
+    completed a_pass=True b_pass=True cons=CONSUMED spent=$0.2087
+[google/gemini-3-flash-preview ] course_schedule      s777 ...
+    completed a_pass=True b_pass=True cons=CONSUMED spent=$0.2137
+[google/gemini-3-flash-preview ] decode_string        s777 ...
+    completed a_pass=True b_pass=True cons=CONSUMED spent=$0.2187
+
+wrote /Users/jakeprokopets/handoff-bench/part3/calib2_logs/side_test/side_test_results.json
+
+--- verdicts ---
+google/gemini-2.5-flash        1/2 completed not-reliable
+google/gemini-2.5-pro          2/2 completed RELIABLE
+google/gemini-3-flash-preview  2/2 completed RELIABLE
+
+FAMILY-REPRESENTATIVE DECISION: google/gemini-2.5-pro transports reliably on the failing inputs -> predeclared as the Gemini family representative for the confirmatory stage (per-family adapter decision).

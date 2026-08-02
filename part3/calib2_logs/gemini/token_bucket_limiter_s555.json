@@ -1,0 +1,64 @@
+{
+  "family": "gemini",
+  "task": "token_bucket_limiter",
+  "seed": 555,
+  "model": "google/gemini-2.5-flash",
+  "excluded": true,
+  "error": "api_failure: degenerate empty response (finish=stop)",
+  "a": {
+    "error": "api_failure: degenerate empty response (finish=stop)",
+    "role": "a",
+    "turns_used": 4,
+    "tool_log": [
+      {
+        "turn": 1,
+        "tool": "read_file",
+        "args": {
+          "path": "test_token_bucket_limiter.py"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "from token_bucket_limiter import *\n\n\ntb = TokenBucket(5, 1.0); assert tb.allow(1, now=0.0); assert tb.allow(4, now=0.0); assert not tb.allow(1, now=0.0)\n\ntb = TokenBucket(5, 1.0); assert tb.allow(5, now=0.0); assert tb.allow(5, now=5.0); assert tb.allow(5, now=100.0); assert not tb.allow(5, now=100."
+      },
+      {
+        "turn": 2,
+        "tool": "write_file",
+        "args": {
+          "path": "token_bucket_limiter.py",
+          "content": "\nimport time\n\nclass TokenBucket:\n    def __init__(self, capacity, refill_rate):\n        self.capacity = float(capacity)\n        self.refill_rate = float(refill_rate)\n        self.tokens = float(capacity)\n        self.last_refill_time = time.monotonic()\n\n    def allow(self, tokens=1.0, now=None):\n        if tokens <= 0:\n            return True\n        if tokens > self.capacity:\n            return False\n\n        if now is None:\n            now = time.monotonic()\n\n        time_passed = now - self.last_refill_time\n        self.tokens = min(self.capacity, self.tokens + time_passed * self.refill_rate)\n        self.last_refill_time = now\n\n        if self.tokens >= tokens:\n            self.tokens -= tokens\n            return True\n        else:\n            return False\n"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "Written to token_bucket_limiter.py"
+      },
+      {
+        "turn": 3,
+        "tool": "run_tests",
+        "args": {},
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "result": "[Tests] FAILED:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import sys, runpy; sys.path.insert(0, '/Users/jakeprokopets/handoff-bench/part3/calib2_logs/gemini/token_bucket_limiter_s555/a'); runpy.run_path('/Users/jakeprokopets/handoff-bench/part3/calib2_logs/gemini/"
+      },
+      {
+        "turn": 4,
+        "tool": "write_file",
+        "args": {
+          "path": "token_bucket_limiter.py",
+          "content": "\nimport time\n\nclass TokenBucket:\n    def __init__(self, capacity, refill_rate):\n        self.capacity = float(capacity)\n        self.refill_rate = float(refill_rate)\n        self.tokens = float(capacity)\n        self.last_refill_time = time.monotonic()\n\n    def allow(self, tokens=1.0, now=None):\n        if tokens <= 0:\n            return True\n        if tokens > self.capacity:\n            return False\n\n        if now is None:\n            now = time.monotonic()\n\n        time_passed = now - self.last_refill_time\n        self.tokens = min(self.capacity, self.tokens + time_passed * self.refill_rate)\n\n        if self.tokens >= tokens:\n            self.tokens -= tokens\n            self.last_refill_time = now\n            return True\n        else:\n            return False\n"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "Written to token_bucket_limiter.py"
+      }
+    ],
+    "cost": 0.0032144
+  },
+  "cost": 0.0032144
+}

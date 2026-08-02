@@ -1,0 +1,14 @@
+GOAL: Implement a `GraphSerializer` class that can serialize and deserialize complex Python objects (lists, dictionaries, and primitives) while preserving object identity for cyclic or shared references.
+
+STATE: The `GraphSerializer` can encode objects into a JSON-compatible format. The `decode` method has a two-pass approach: first creating placeholders for complex objects, then populating them.
+
+DONE:
+*   `encode` method correctly serializes primitive types, lists, and dictionaries, handling object references.
+*   `decode` method successfully loads the JSON string and initializes `encoded_objects`.
+*   `_decode_create_placeholders` correctly creates empty lists/dictionaries in `id_to_object_map` for complex objects.
+
+BROKEN:
+*   `decode` fails when trying to populate objects, specifically when resolving references to primitive types. The `KeyError: 1` indicates that `encoded_item["__ref__"]` is being accessed for a primitive value (like `1`) that doesn't have a `__ref__` key, or that `id_to_object_map` is missing an entry for a primitive ID.
+*   The `_resolve_reference` method expects all non-primitive `encoded_item` to be a dictionary with a `__ref__` key, which is not true for encoded primitive values.
+
+NEXT: Modify `_resolve_reference` to correctly handle primitive values directly, without attempting to look them up in `id_to_object_map`.

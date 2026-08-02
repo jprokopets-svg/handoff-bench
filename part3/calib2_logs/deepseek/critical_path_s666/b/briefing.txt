@@ -1,0 +1,9 @@
+GOAL: Implement critical path method to compute project duration and one critical path from task durations and dependencies.
+
+STATE: Code is complete and passes all tests. Uses topological sort for cycle detection, forward/backward passes for earliest/latest start times, and reconstructs a critical path from a critical source.
+
+DONE: Cycle detection, topological ordering, forward/backward pass calculations, critical task identification, and path reconstruction all work correctly.
+
+BROKEN: Nothing is currently failing. However, the code assumes all tasks are in the durations dictionary; dependencies may reference tasks not in durations, which could cause KeyError.
+
+NEXT: Add validation to ensure all tasks referenced in dependencies exist in the durations dictionary, raising a ValueError if not, to prevent silent errors.

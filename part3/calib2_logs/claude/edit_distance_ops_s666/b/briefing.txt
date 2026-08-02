@@ -1,0 +1,23 @@
+GOAL:
+Implement `min_edit_ops(a, b)` that returns a minimal sequence of edit operations transforming string `a` into string `b`. Operations are tuples: `('delete', i)`, `('insert', i, c)`, `('sub', i, c)`. The sequence length must equal the Levenshtein distance.
+
+STATE:
+- DP table correctly computes Levenshtein distance
+- Backtracking logic identifies which operations were used
+- Operations are collected and reversed to correct order
+
+DONE:
+- DP initialization and filling logic is correct
+- Backtracking correctly identifies when characters match
+- Base cases (i==0, j==0) are handled
+
+BROKEN:
+- **Index tracking during replay is wrong**: When operations are applied sequentially to transform `a` into `b`, indices shift after each operation. The current code records indices as if all operations happen simultaneously on the original string.
+- Test case `min_edit_ops('abc', '')` fails: expects 3 delete operations, but replay crashes with `IndexError: list assignment index out of range`
+- The issue: after first delete at index 2, the string shrinks. Subsequent deletes use stale indices from the original string.
+
+NEXT:
+**Adjust indices during backtracking to account for cumulative changes.** When backtracking, track how the string length changes and adjust subsequent operation indices accordingly. Specifically:
+- For delete operations: record the index relative to the current state, not the original string
+- For insert operations: similarly adjust based on prior operations
+- Alternative: record operations in forward order with indices adjusted as you go, or use a different index sc

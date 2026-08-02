@@ -1,0 +1,60 @@
+[claude   ] mini_brainfuck             s555 (cached, cost=$0.0325)
+[claude   ] json_parser                s555 (cached, cost=$0.0651)
+[claude   ] regex_matcher              s555 (cached, cost=$0.1381)
+[claude   ] graph_serializer           s555 (cached, cost=$0.0799)
+[claude   ] avl_tree                   s555 (cached, cost=$0.0503)
+[claude   ] edit_distance_ops          s555 (cached, cost=$0.0758)
+[claude   ] calculator_parser          s555 (cached, cost=$0.0796)
+[claude   ] critical_path              s555 (cached, cost=$0.0619)
+[claude   ] text_justification         s555 (cached, cost=$0.0343)
+[claude   ] token_bucket_limiter       s555 (cached, cost=$0.0300)
+[claude   ] mini_brainfuck             s666 (cached, cost=$0.0352)
+[claude   ] json_parser                s666 (cached, cost=$0.0603)
+[claude   ] regex_matcher              s666 (cached, cost=$0.1618)
+[claude   ] graph_serializer           s666 (cached, cost=$0.0928)
+[claude   ] avl_tree                   s666 (cached, cost=$0.0499)
+[claude   ] edit_distance_ops          s666 (cached, cost=$0.0823)
+[claude   ] calculator_parser          s666 (cached, cost=$0.0966)
+[claude   ] critical_path              s666 (cached, cost=$0.0692)
+[claude   ] text_justification         s666 (cached, cost=$0.0414)
+[claude   ] token_bucket_limiter       s666 (cached, cost=$0.0314)
+[gpt      ] mini_brainfuck             s555 (cached, cost=$0.0112)
+[gpt      ] json_parser                s555 (cached, cost=$0.0267)
+[gpt      ] regex_matcher              s555 (cached, cost=$0.0092)
+[gpt      ] graph_serializer           s555 (cached, cost=$0.0192)
+[gpt      ] avl_tree                   s555 (cached, cost=$0.0111)
+[gpt      ] edit_distance_ops          s555 (cached, cost=$0.0173)
+[gpt      ] calculator_parser          s555 (cached, cost=$0.0210)
+[gpt      ] critical_path              s555 (cached, cost=$0.0115)
+[gpt      ] text_justification         s555 (cached, cost=$0.0069)
+[gpt      ] token_bucket_limiter       s555 (cached, cost=$0.0133)
+[gpt      ] mini_brainfuck             s666 (cached, cost=$0.0112)
+[gpt      ] json_parser                s666 (cached, cost=$0.0165)
+[gpt      ] regex_matcher              s666 (cached, cost=$0.0070)
+[gpt      ] graph_serializer           s666 (cached, cost=$0.0206)
+[gpt      ] avl_tree                   s666 (cached, cost=$0.0111)
+[gpt      ] edit_distance_ops          s666 (cached, cost=$0.0157)
+[gpt      ] calculator_parser          s666 (cached, cost=$0.0375)
+[gpt      ] critical_path              s666 (cached, cost=$0.0099)
+[gpt      ] text_justification         s666 (cached, cost=$0.0085)
+[gpt      ] token_bucket_limiter       s666 (cached, cost=$0.0174)
+[gemini   ] mini_brainfuck             s555 (cached, cost=$0.0052)
+[gemini   ] json_parser                s555 ...
+    a_pass=False b_pass=False cons=CONSUMED transport=True A_complete=False spent=$1.7301
+[gemini   ] regex_matcher              s555 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$1.7310
+[gemini   ] graph_serializer           s555 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$1.7399
+[gemini   ] avl_tree                   s555 ...
+    a_pass=True b_pass=True cons=CONSUMED transport=True A_complete=True spent=$1.7579
+[gemini   ] edit_distance_ops          s555 ...
+    a_pass=True b_pass=True cons=CONSUMED transport=True A_complete=True spent=$1.7931
+[gemini   ] calculator_parser          s555 ...
+    a_pass=False b_pass=False cons=CONSUMED transport=True A_complete=False spent=$1.8464
+[gemini   ] critical_path              s555 ...
+    a_pass=True b_pass=True cons=CONSUMED transport=True A_complete=True spent=$1.8530
+[gemini   ] text_justification         s555 ...
+    a_pass=True b_pass=True cons=CONSUMED transport=True A_complete=True spent=$1.8590
+[gemini   ] token_bucket_limiter       s555 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$1.8622
+[gemini   ] mini_brainfuck             s666 ...

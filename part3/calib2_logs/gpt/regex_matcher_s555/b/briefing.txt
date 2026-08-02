@@ -1,0 +1,16 @@
+GOAL: Implement full_match(pattern, text) to return True iff the ENTIRE text matches the regex pattern. Malformed patterns must be converted from re.error into ValueError per spec.
+
+STATE: Current file regex_matcher.py contains a concise implementation that compiles the pattern, converts re.error to ValueError, and uses prog.fullmatch(text) to check an exact full match.
+
+DONE: Implementation present and simple. All existing tests pass. The code:
+- compiles pattern with re.compile()
+- catches re.error and raises ValueError(str(e))
+- returns prog.fullmatch(text) is not None
+
+BROKEN: Nothing failing in current tests. Unknown/untested edge cases:
+- behavior for non-str inputs (None, bytes, other types) for pattern or text
+- whether the ValueError must preserve the original re.error message exactly or wrap differently
+- interactions with bytes patterns/text or with pattern flags passed as nonstandard types
+- performance for very large patterns/text (not covered by tests)
+
+NEXT: Add targeted edge-case tests (single most important): supply non-string inputs (None, bytes, ints) for pattern and text and malformed patterns to confirm desired exception types/messages and adjust code if the spec requires different handling (e.g., raising TypeError for non-str inputs or preserving exact error message in ValueError).

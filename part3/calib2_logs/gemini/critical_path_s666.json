@@ -1,0 +1,51 @@
+{
+  "family": "gemini",
+  "task": "critical_path",
+  "seed": 666,
+  "model": "google/gemini-2.5-flash",
+  "excluded": true,
+  "error": "api_failure: degenerate empty response (finish=stop)",
+  "a": {
+    "error": "api_failure: degenerate empty response (finish=stop)",
+    "role": "a",
+    "turns_used": 3,
+    "tool_log": [
+      {
+        "turn": 1,
+        "tool": "read_file",
+        "args": {
+          "path": "test_critical_path.py"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "from critical_path import *\n\n\ndef _valid(durations, deps, dur, path):\n    if abs(dur - sum(durations[t] for t in path)) > 1e-9:\n        return False\n    pos = {t: i for i, t in enumerate(path)}\n    for a, b in deps:\n        if a in pos and b in pos and pos[a] > pos[b]:\n            return False\n    r"
+      },
+      {
+        "turn": 2,
+        "tool": "write_file",
+        "args": {
+          "path": "critical_path.py",
+          "content": "import collections\n\ndef critical_path(durations, deps):\n    if not durations:\n        return 0.0, []\n\n    # Build adjacency list and in-degree map\n    adj = collections.defaultdict(list)\n    in_degree = collections.defaultdict(int)\n    for u, v in deps:\n        adj[u].append(v)\n        in_degree[v] += 1\n        # Ensure all tasks are in in_degree map, even if they have no dependencies\n        in_degree[u] \n\n    # Initialize all tasks with 0 in-degree as sources\n    sources = collections.deque([task for task in durations if in_degree[task] == 0])\n\n    # Calculate earliest start times and longest path to each task\n    earliest_start_time = collections.defaultdict(float)\n    longest_path_to_task = collections.defaultdict(list)\n\n    for task in durations:\n        earliest_start_time[task] = 0.0\n        longest_path_to_task[task] = [task]\n\n    while sources:\n        u = sources.popleft()\n\n        for v in adj[u]:\n            new_start_time = earliest_start_time[u] + durations[u]\n            if new_start_time > earliest_start_time[v]:\n                earliest_start_time[v] = new_start_time\n                longest_path_to_task[v] = longest_path_to_task[u] + [v]\n            \n            in_degree[v] -= 1\n            if in_degree[v] == 0:\n                sources.append(v)\n\n    # Check for cycles\n    if any(in_degree[task] != 0 for task in durations):\n        raise ValueError(\"Dependency graph contains a cycle\")\n\n    # Find the project duration and critical path\n    project_duration = 0.0\n    critical_path_tasks = []\n\n    for task in durations:\n        finish_time = earliest_start_time[task] + durations[task]\n        if finish_time > project_duration:\n            project_duration = finish_time\n            critical_path_tasks = longest_path_to_task[task]\n\n    return project_duration, critical_path_tasks\n"
+        },
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "path_sanitized": false,
+        "result": "Written to critical_path.py"
+      },
+      {
+        "turn": 3,
+        "tool": "run_tests",
+        "args": {},
+        "malformed": false,
+        "ok": true,
+        "note": null,
+        "result": "[Tests] All tests passed (PASS)."
+      }
+    ],
+    "cost": 0.0022392000000000002
+  },
+  "cost": 0.0022392000000000002
+}

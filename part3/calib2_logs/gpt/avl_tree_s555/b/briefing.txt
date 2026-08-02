@@ -1,0 +1,24 @@
+GOAL: Implement a correct, robust AVL tree (insert, delete, contains) and ensure it maintains BST order and AVL balance under all cases.
+
+STATE: Code for Node and AVLTree in avl_tree.py is present. insert, delete, contains, rotations (left/right), height updates, balance calculations, and min-node helper are implemented. _insert and _delete perform rebalancing. Tests in current suite passed.
+
+DONE: 
+- insert/delete/contains implemented.
+- Rotations and height updates implemented.
+- Rebalancing logic for LL/LR/RR/RL cases implemented.
+- Basic unit tests passed.
+
+BROKEN / UNKNOWN:
+- No failing tests, but some gaps/uncertainties remain:
+  - Duplicate handling: insert ignores equal keys (silently no-op) — intended?
+  - No traversal/debug utilities (in-order, validate) to introspect tree state.
+  - No stress/property tests (randomized sequences) to prove invariants under many operations.
+  - No explicit checks that node.height values are always consistent with subtree heights.
+  - Behavior for non-int or None keys not defined.
+  - No concurrency/thread-safety considerations.
+
+NEXT: Add property-based/randomized tests that repeatedly insert a large set of random keys, perform random deletes, then validate:
+- in-order traversal yields sorted unique keys (BST property),
+- every node's height equals 1 + max(child heights),
+- every node's balance factor is in {-1,0,1}.
+If violations occur, produce a minimal failing sequence for debugging.

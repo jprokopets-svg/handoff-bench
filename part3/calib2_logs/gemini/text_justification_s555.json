@@ -1,0 +1,67 @@
+{
+  "family": "gemini",
+  "task": "text_justification",
+  "seed": 555,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.002393,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 335,
+    "cost": 0.0010104,
+    "text": "GOAL: Implement a function `full_justify` that takes a list of words and a maximum width, and returns a list of strings, where each string is a fully justified line of text.\n\nSTATE: The `full_justify` function correctly groups words into lines and calls `format_line`. The `format_line` function handles last lines and single-word lines correctly. It also distributes spaces for justified lines.\n\nDONE:\n- `full_justify` correctly forms lines based on `max_width`.\n- `format_line` correctly handles `is_last_line=True` and `len(words) == 1` cases.\n- `format_line` calculates `spaces_per_gap` and `extra_spaces` for justified lines.\n\nBROKEN: The current test suite is insufficient. The code passes all existing tests, but the problem description for `full_justify` implies specific behavior for single-word lines *within* the main justification logic (not just last lines). The `if num_gaps == 0:` condition in `format_line` is redundant because `len(words) == 1` is already handled. The `current_length` calculation in `full_justify` is slightly off; it includes spaces that aren't part of the word lengths themselves, which could lead to incorrect `total_spaces_needed`.\n\nNEXT: Add a test case for `full_justify` with a single word that fits on a line, but is not the last line, to verify its justification (left-aligned with trailing spaces)."
+  },
+  "b": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0025029,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "code": "def full_justify(words: list[str], max_width: int) -> list[str]:\n    result = []\n    current_line = []\n    current_length = 0\n\n    for word in words:\n        # Check if adding the word to the current line exceeds max_width\n        # current_length + len(word) + (1 if current_line else 0)\n        # The (1 if current_line else 0) accounts for the space needed before the new word\n        if current_length + len(word) + len(current_line) > max_width:\n            result.append(format_line(current_line, current_length, max_width, False))\n            current_line = [word]\n            current_length = len(word)\n        else:\n            current_line.append(word)\n            current_length += len(word)\n\n    if current_line:\n        result.append(format_line(current_line, current_length, max_width, True))\n\n    return result\n\ndef format_line(words: list[str], current_length: int, max_width: int, is_last_line: bool) -> str:\n    num_words = len(words)\n    \n    if is_last_line or num_words == 1:\n        return \" \".join(words).ljust(max_width)\n\n    total_spaces_needed = max_width - current_length\n    num_gaps = num_words - 1\n\n    spaces_per_gap = total_spaces_needed // num_gaps\n    extra_spaces = total_spaces_needed % num_gaps\n\n    justified_line = \"\"\n    for i in range(num_words):\n        justified_line += words[i]\n        if i < num_gaps:\n            justified_line += \" \" * spaces_per_gap\n            if i < extra_spaces:\n                justified_line += \" \"\n    return justified_line\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.0059063
+}

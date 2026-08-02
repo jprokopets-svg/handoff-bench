@@ -1,0 +1,9 @@
+GOAL: Implement a robust JSON parser that correctly handles all valid JSON per RFC 8259 and raises appropriate errors for invalid input.
+
+STATE: Core parser is complete with object, array, string, null, boolean, and number parsing. Basic error handling and whitespace skipping are implemented. All current tests pass.
+
+DONE: Basic JSON structure parsing, type validation, escape sequences (\", \\, \/, \b, \f, \n, \r, \t), Unicode escapes (\uXXXX), number parsing (integers, floats, exponents), and trailing content detection.
+
+BROKEN: No explicit handling for scientific notation with uppercase 'E' in numbers (code checks for 'eE' but may need verification). Edge cases like maximum nesting depth, very large numbers, or precise float conversion may be untested.
+
+NEXT: Add comprehensive test suite for edge cases: scientific notation (1E10), large integers, float precision, deeply nested structures, and malformed JSON to ensure robustness beyond basic cases.

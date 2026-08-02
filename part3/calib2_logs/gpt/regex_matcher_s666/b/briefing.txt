@@ -1,0 +1,17 @@
+GOAL: Provide a reliable full-string regex matcher: return True iff the entire text matches the given pattern, and raise ValueError for malformed patterns.
+
+STATE: regex_matcher.py contains full_match(pattern: str, text: str) which compiles the pattern with re.compile, converts re.error into ValueError, and uses prog.fullmatch(text) to check full-string match. All existing unit tests pass.
+
+DONE:
+- Pattern compilation and detection of malformed patterns is implemented (re.error → ValueError).
+- Matching uses re.fullmatch semantics so partial matches are excluded.
+- Basic functionality is correct per current test suite.
+
+BROKEN / UNKNOWN:
+- No explicit handling or tests for non-str inputs (e.g., None, bytes, non-string types); behavior is Python's default (may raise TypeError from re).
+- No support for passing regex flags or precompiled Pattern objects as input.
+- No caching of compiled patterns—recompile on every call (potential performance issue if called frequently with same patterns).
+- No explicit tests for edge cases (unicode, empty pattern/text, extremely large inputs, catastrophic backtracking).
+- Concurrency/thread-safety considerations not evaluated (caching would need care).
+
+NEXT: Implement and test an LRU cache for compiled patterns (e.g., functools.lru_cache or manual cache) to avoid repeated compilation for the same pattern; ensure cache size is reasonable and thread-safe.

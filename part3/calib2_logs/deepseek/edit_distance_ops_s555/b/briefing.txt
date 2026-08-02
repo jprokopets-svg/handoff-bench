@@ -1,0 +1,9 @@
+GOAL: Implement min_edit_ops to return a minimal sequence of edit operations (insert, delete, sub) transforming string a into b, with correct indices for sequential application.
+
+STATE: DP and backtracking implemented. Index adjustment logic added to account for shifts from previous operations. All tests currently pass.
+
+DONE: Levenshtein DP table, backtracking to find operations in reverse, and index adjustment using a shift counter appear functional.
+
+BROKEN: Potential off-by-one errors in index adjustment logic, especially for insert operations. The current adjustment uses `op[1] + shift`, but `op[1]` is the target index in the *original* string state during backward reconstruction. This may not correctly map to the "current string" during forward application after previous ops.
+
+NEXT: Verify index adjustment by manually testing edge cases (e.g., multiple inserts/deletes at same index) and ensure `adjusted_idx` reflects the position in the string *as it exists* when that operation is applied.

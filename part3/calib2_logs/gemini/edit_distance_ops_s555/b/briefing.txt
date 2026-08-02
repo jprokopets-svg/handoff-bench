@@ -1,0 +1,9 @@
+GOAL: Implement `min_edit_ops` to return a list of operations (delete, insert, substitute) to transform string `a` into string `b`, with correct indices that account for previous operations.
+STATE: The core Levenshtein distance calculation is complete. The traceback logic is partially implemented to identify operations, but the indexing for `final_operations` is incorrect.
+DONE:
+*   Levenshtein distance calculation (`dp` table).
+*   Initial traceback to identify operation types and original indices (`temp_ops`).
+*   All existing tests pass, but they are likely insufficient to catch the indexing bug.
+BROKEN:
+*   The `final_operations` list, which should contain operations with indices relative to the *current state* of string `a` as operations are applied, is incorrect. The `current_offset` logic is flawed.
+NEXT: Debug the `current_offset` logic within the `final_operations` loop. Specifically, verify how `original_index` and `current_offset` combine to produce the correct index for each operation type, especially for 'delete' and 'insert' which change string length.

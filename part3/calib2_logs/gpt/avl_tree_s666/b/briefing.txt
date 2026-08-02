@@ -1,0 +1,23 @@
+GOAL: Maintain a correct AVL tree implementation (insert, delete, contains) that keeps the tree balanced after operations.
+
+STATE: avl_tree.py contains:
+- Node class with val, left, right (no height field).
+- AVLTree with root; methods: contains (iterative), insert, delete.
+- insert/delete use nested height(), rotate_left/rotate_right, rebalance, and recursive _insert/_delete.
+- Tests currently report: All tests passed.
+
+DONE:
+- Functional correctness: insert, delete, and contains appear to work; rebalancing logic (LL, LR, RR, RL) is implemented.
+- Rotations are implemented and used in rebalance.
+- Duplicate inserts are ignored; delete handles 0/1/2-child cases using inorder successor.
+- Current test suite passes.
+
+BROKEN / UNKNOWN:
+- Performance: height() recomputes subtree heights recursively at every call, causing expensive O(n) height computations and worst-case O(n^2) behavior across operations. This is likely acceptable for small tests but not scalable.
+- Node lacks a stored height attribute; rotations and rebalance do not update cached heights.
+- No explicit unit tests for large or pathological sequences (stress tests), so balancing correctness at scale is unverified.
+- Recursion depth: insert/delete use recursion which could hit recursion limits for deep trees before balancing takes effect.
+- API: insert/delete return None (may be fine), no docstrings or type enforcement beyond hints.
+
+NEXT (single most important thing to try):
+- Add a height attribute to Node and update it deterministically: compute node.height = 1 + max(left.height, right.height) after modificatio

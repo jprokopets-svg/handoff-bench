@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "json_parser",
+  "seed": 666,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.006780899999999999,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.003387,
+    "text": "GOAL: Implement and maintain a strict JSON parser parse_json(text) that returns Python objects or raises ValueError on invalid JSON, following the JSON spec (no trailing commas, strict number formats, proper escapes, etc.).\n\nSTATE: json_parser.py contains a complete recursive-descent strict JSON parser. It implements skip_ws, parse_value, parse_object, parse_array, parse_string, parse_number and top-level parsing. All provided unit tests currently pass.\n\nDONE: \n- Parses objects, arrays, strings, numbers, true/false/null.\n- Enforces whitespace rules and detects trailing content.\n- Rejects trailing commas in arrays/objects.\n- String escapes handled: \\\", \\\\, \\/, \\b, \\f, \\n, \\r, \\t and \\uXXXX (validates 4 hex digits).\n- Disallows unescaped control characters in strings.\n- Numbers: enforces no leading zeros, requires digits after decimal/exponent, supports exponent signs, returns int or float appropriately.\n- Good error messages for many failure cases.\n- Tests all passing.\n\nBROKEN / UNKNOWN:\n- Unicode surrogate pairs: currently \\uXXXX is decoded into a single Python codepoint for that escape, but if JSON uses a UTF-16 surrogate pair (two \\u escapes representing one non-BMP codepoint) the parser does not combine them into the correct codepoint \u2014 it will produce two surrogate characters. This may violate expected behavior.\n- Input type validation: non-str inputs (bytes, etc.) are not explicitly rejected \u2014 may raise confusing errors.\n- Deeply nested JSON may hit Python recursion limits.\n- Performance/memory for very large inputs untested.\n- Error messages for some positions are gen"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.006326150000000001,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "def parse_json(text: str) -> object:\n    if not isinstance(text, str):\n        raise ValueError('input must be a string')\n    n = len(text)\n    pos = 0\n\n    def skip_ws(i):\n        while i < n and text[i] in ' \\t\\n\\r':\n            i += 1\n        return i\n\n    def parse_value(i):\n        i = skip_ws(i)\n        if i >= n:\n            raise ValueError('Unexpected end of input while expecting a value')\n        ch = text[i]\n        if ch == '{':\n            return parse_object(i)\n        if ch == '[':\n            return parse_array(i)\n        if ch == '\"':\n            return parse_string(i)\n        if ch == 't' and text.startswith('true', i):\n            return True, i + 4\n        if ch == 'f' and text.startswith('false', i):\n            return False, i + 5\n        if ch == 'n' and text.startswith('null', i):\n            return None, i + 4\n        # number\n        if ch == '-' or ch.isdigit():\n            return parse_number(i)\n        raise ValueError(f'Invalid value starting at position {i}')\n\n    def parse_object(i):\n        # assumes text[i] == '{'\n        i += 1\n        i = skip_ws(i)\n        obj = {}\n        if i < n and text[i] == '}':\n            return obj, i + 1\n        while True:\n            i = skip_ws(i)\n            if i >= n or text[i] != '\"':\n                raise ValueError('Expected string for object key')\n            key, i = parse_string(i)\n            i = skip_ws(i)\n            if i >= n or text[i] != ':':\n                raise ValueError('Expected colon after object key')\n            i += 1\n            val, i = parse_value(i)\n            obj[key] = val\n            i = skip_ws(i)\n            if i >= n:\n                raise ValueError('Unterminated object')\n            if text[i] == ',':\n                # lookahead to forbid trailing comma before closing brace\n                i += 1\n                i = skip_ws(i)\n                if i < n and text[i] == '}':\n                    raise ValueError('Trailing comma in object')\n                continue\n            if text[i] == '}':\n                return obj, i + 1\n            raise ValueError('Expected comma or closing brace in object')\n\n    def parse_array(i):\n        # assumes text[i] == '['\n        i += 1\n        i = skip_ws(i)\n        arr = []\n        if i < n and text[i] == ']':\n            return arr, i + 1\n        while True:\n            val, i = parse_value(i)\n            arr.append(val)\n            i = skip_ws(i)\n            if i >= n:\n                raise ValueError('Unterminated array')\n            if text[i] == ',':\n                i += 1\n                i = skip_ws(i)\n                if i < n and text[i] == ']':\n                    raise ValueError('Trailing comma in array')\n                continue\n            if text[i] == ']':\n                return arr, i + 1\n            raise ValueError('Expected comma or closing bracket in array')\n\n    def parse_string(i):\n        # assumes text[i] == '\"'\n        i += 1\n        chars = []\n        while True:\n            if i >= n:\n                raise ValueError('Unterminated string')\n            ch = text[i]\n            if ch == '\"':\n                i += 1\n                return ''.join(chars), i\n            if ch == '\\\\':\n                i += 1\n                if i >= n:\n                    raise ValueError('Unterminated escape')\n                esc = text[i]\n                if esc == '\"':\n                    chars.append('\"')\n                elif esc == '\\\\':\n                    chars.append('\\\\')\n                elif esc == '/':\n                    chars.append('/')\n                elif esc == 'b':\n                    chars.append('\\b')\n                elif esc == 'f':\n                    chars.append('\\f')\n                elif esc == 'n':\n                    chars.append('\\n')\n                elif esc == 'r':\n                    chars.append('\\r')\n                elif esc == 't':\n                    chars.append('\\t')\n                elif esc == 'u':\n                    # expect exactly 4 hex digits\n                    if i + 4 >= n:\n                        raise ValueError('Invalid unicode escape')\n                    hex_digits = text[i+1:i+5]\n                    if len(hex_digits) != 4 or any(c not in '0123456789abcdefABCDEF' for c in hex_digits):\n                        raise ValueError('Invalid unicode escape')\n                    codepoint = int(hex_digits, 16)\n                    chars.append(chr(codepoint))\n                    i += 4\n                else:\n                    raise ValueError('Invalid escape character')\n                i += 1\n                continue\n            # disallow raw control characters\n            if ord(ch) <= 0x1F:\n                raise ValueError('Unescaped control character in string')\n            chars.append(ch)\n            i += 1\n\n    def parse_number(i):\n        start = i\n        if text[i] == '-':\n            i += 1\n            if i >= n:\n                raise ValueError('Invalid number')\n        # integer part\n        if i < n and text[i] == '0':\n            i += 1\n            # leading zero must not be followed by digit\n            if i < n and text[i].isdigit():\n                raise ValueError('Leading zeros are not allowed')\n        else:\n            if i >= n or not text[i].isdigit():\n                raise ValueError('Invalid number')\n            while i < n and text[i].isdigit():\n                i += 1\n        is_float = False\n        # fraction\n        if i < n and text[i] == '.':\n            is_float = True\n            i += 1\n            if i >= n or not text[i].isdigit():\n                raise ValueError('Invalid number: digits required after decimal point')\n            while i < n and text[i].isdigit():\n                i += 1\n        # exponent\n        if i < n and (text[i] == 'e' or text[i] == 'E'):\n            is_float = True\n            i += 1\n            if i < n and (text[i] == '+' or text[i] == '-'):\n                i += 1\n            if i >= n or not text[i].isdigit():\n                raise ValueError('Invalid number: bad exponent')\n            while i < n and text[i].isdigit():\n                i += 1\n        num_text = text[start:i]\n        try:\n            if is_float:\n                val = float(num_text)\n            else:\n                val = int(num_text)\n        except Exception:\n            raise ValueError('Invalid number')\n        return val, i\n\n    pos = skip_ws(0)\n    if pos >= n:\n        raise ValueError('Empty input')\n    value, pos = parse_value(pos)\n    pos = skip_ws(pos)\n    if pos != n:\n        raise ValueError('Trailing data')\n    return value\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.01649405
+}

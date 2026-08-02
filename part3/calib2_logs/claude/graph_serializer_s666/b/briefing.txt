@@ -1,0 +1,33 @@
+# BRIEFING: graph_serializer.py
+
+## GOAL
+Implement a bidirectional serializer that converts Python objects to/from JSON strings while preserving:
+- Shared references (same object referenced multiple times)
+- Cycles (objects containing references to themselves)
+
+## STATE
+- Complete implementation of `encode()` and `decode()` functions
+- Encoder assigns unique IDs to container objects (lists/dicts)
+- Decoder reconstructs objects with shared references and cycles intact
+- All tests passing
+
+## DONE
+✓ Primitive type handling (None, bool, int, float, str)
+✓ List and dict serialization with ID tracking
+✓ Cycle detection during encoding (in_progress set)
+✓ Shared reference detection (seen dict by object id)
+✓ Reference resolution during decoding (obj_cache)
+✓ Cycle support in decoder (pre-cache containers before populating)
+✓ Error handling for malformed input
+✓ JSON compatibility
+
+## BROKEN
+Nothing currently broken—all tests pass.
+
+## NEXT
+**Document the serialization format** with examples showing:
+1. How shared references appear in encoded output
+2. How cycles are represented
+3. Example: `x = []; x.append(x)` → encoded form → decoded form
+
+This will help future maintainers understand the design and catch edge cases during code review.

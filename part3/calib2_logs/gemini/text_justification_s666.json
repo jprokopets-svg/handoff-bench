@@ -1,0 +1,69 @@
+{
+  "family": "gemini",
+  "task": "text_justification",
+  "seed": 666,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0024146999999999997,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 189,
+    "cost": 0.0006,
+    "text": "GOAL: Implement a full text justification algorithm.\nSTATE: The current code passes all provided tests.\nDONE: The `full_justify` function correctly groups words into lines and the `format_line` function handles spacing for non-last lines and single-word lines. Last lines are left-justified.\nBROKEN: The problem description implies words will always be shorter than `max_width`. The current code has a `pass` for this edge case in `full_justify`, which is untested. The test suite might not be comprehensive enough.\nNEXT: Review the problem description for any constraints or edge cases not explicitly covered by the current tests, especially regarding word length vs. `max_width`. Consider adding a test case where a single word is exactly `max_width` long."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0038843000000000007,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "def full_justify(words: list[str], max_width: int) -> list[str]:\n    result = []\n    current_line = []\n    current_length = 0\n\n    i = 0\n    while i < len(words):\n        word = words[i]\n        # Check if adding the current word exceeds max_width\n        # current_length + len(word) + len(current_line) (for spaces)\n        if current_length + len(word) + len(current_line) > max_width:\n            # Justify the current line\n            num_gaps = len(current_line) - 1\n            line = \"\"\n            if num_gaps == 0:  # Single word on the line\n                line = current_line[0] + \" \" * (max_width - current_length)\n            else:\n                total_spaces = max_width - current_length\n                spaces_per_gap = total_spaces // num_gaps\n                extra_spaces = total_spaces % num_gaps\n\n                for j in range(len(current_line)):\n                    line += current_line[j]\n                    if j < num_gaps:\n                        line += \" \" * spaces_per_gap\n                        if j < extra_spaces:\n                            line += \" \"\n            result.append(line)\n            current_line = []\n            current_length = 0\n        else:\n            current_line.append(word)\n            current_length += len(word)\n            i += 1\n\n    # Handle the last line\n    if current_line:\n        line = \" \".join(current_line)\n        line += \" \" * (max_width - len(line))\n        result.append(line)\n\n    return result\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.006899000000000001
+}

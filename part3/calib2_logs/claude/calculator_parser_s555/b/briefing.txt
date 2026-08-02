@@ -1,0 +1,32 @@
+# BRIEFING: Calculator Parser
+
+**GOAL:**
+Implement a working infix arithmetic expression evaluator supporting +, -, *, /, %, ** operators with correct precedence and associativity, unary operators, and parentheses.
+
+**STATE:**
+- Complete recursive descent parser implementation in `calculator_parser.py`
+- Tokenizer handles numbers (int/float), operators, parentheses, and whitespace
+- Parser class with precedence climbing: expression → term → unary → power → primary
+- All test cases passing
+
+**DONE:**
+✓ Tokenization (numbers, operators, parentheses)
+✓ Operator precedence (** > unary > *,/,% > +,-)
+✓ Right-associativity for ** (e.g., 2**3**2 = 2**(3**2) = 512)
+✓ Unary +/- operators with proper chaining
+✓ Parentheses grouping
+✓ Error handling (division by zero, modulo by zero, unbalanced parens, unexpected tokens)
+✓ All tests passing
+
+**BROKEN:**
+- Nothing currently identified; code is functional and tested
+
+**NEXT:**
+**Code review & edge case validation.** Before considering this complete:
+1. Verify tokenizer handles edge cases: leading decimals (.5), consecutive operators (++5), empty parens ()
+2. Test unary operator chains: ---5, +-*3
+3. Confirm power associativity with complex expressions: 2**-3**2
+4. Check floating-point precision issues with modulo on floats
+5. Consider if negative number literals (e.g., "-5" as single token) should be supported differently
+
+If all edge cases pass, this implementation is production-ready. If issues arise, debug in order: tokenizer → parser logic → operator precedence rules.

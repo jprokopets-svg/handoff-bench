@@ -1,0 +1,37 @@
+# BRIEFING: AVL Tree Implementation
+
+**GOAL:**
+Implement a fully functional, self-balancing AVL tree with insert, delete, and search operations that maintain O(log n) height invariant.
+
+**STATE:**
+Complete AVL tree implementation with:
+- Node class with height tracking
+- Insert with recursive rebalancing (4 rotation cases)
+- Delete with successor replacement and rebalancing (4 rotation cases)
+- Search (contains) operation
+- Helper methods: rotations, height updates, balance factor calculation
+
+**DONE:**
+✓ All unit tests passing
+✓ Insert operation with proper rotation logic
+✓ Delete operation with three cases (leaf, one child, two children)
+✓ Search/contains working correctly
+✓ Height maintenance and balance factor calculations
+✓ Both left and right rotation implementations
+✓ Duplicate key handling (no-op on insert)
+
+**BROKEN:**
+Nothing currently failing in test suite. However, potential edge cases to verify:
+- Stress testing with large datasets (1000+ nodes)
+- Repeated insertions and deletions (tree stability)
+- Boundary conditions: single node, all left/right chains before rebalancing
+- Delete on empty tree or non-existent keys
+
+**NEXT:**
+Add comprehensive test coverage including:
+1. **Stress test**: Insert 1000 random values, verify tree height ≤ 1.44*log(n)
+2. **Stability test**: Alternating insert/delete cycles
+3. **Edge cases**: Empty tree operations, single node, duplicate deletes
+4. **Validation helper**: Add `_validate_avl_property()` to verify balance factor invariant after each operation
+
+Consider adding a `search_range()` or `in_order_traversal()` method for comp

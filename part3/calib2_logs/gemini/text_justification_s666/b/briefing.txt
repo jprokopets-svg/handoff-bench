@@ -1,0 +1,5 @@
+GOAL: Implement a full text justification algorithm.
+STATE: The current code passes all provided tests.
+DONE: The `full_justify` function correctly groups words into lines and the `format_line` function handles spacing for non-last lines and single-word lines. Last lines are left-justified.
+BROKEN: The problem description implies words will always be shorter than `max_width`. The current code has a `pass` for this edge case in `full_justify`, which is untested. The test suite might not be comprehensive enough.
+NEXT: Review the problem description for any constraints or edge cases not explicitly covered by the current tests, especially regarding word length vs. `max_width`. Consider adding a test case where a single word is exactly `max_width` long.

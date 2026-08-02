@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "critical_path",
+  "seed": 666,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00129645945,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 207,
+    "cost": 0.00033724,
+    "text": "GOAL: Implement critical path method to compute project duration and one critical path from task durations and dependencies.\n\nSTATE: Code is complete and passes all tests. Uses topological sort for cycle detection, forward/backward passes for earliest/latest start times, and reconstructs a critical path from a critical source.\n\nDONE: Cycle detection, topological ordering, forward/backward pass calculations, critical task identification, and path reconstruction all work correctly.\n\nBROKEN: Nothing is currently failing. However, the code assumes all tasks are in the durations dictionary; dependencies may reference tasks not in durations, which could cause KeyError.\n\nNEXT: Add validation to ensure all tasks referenced in dependencies exist in the durations dictionary, raising a ValueError if not, to prevent silent errors."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00129869025,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "def critical_path(durations: dict, deps: list) -> tuple:\n    # Empty durations case\n    if not durations:\n        return (0.0, [])\n    \n    # Validate all tasks in dependencies exist in durations\n    all_tasks = set(durations.keys())\n    for a, b in deps:\n        if a not in all_tasks:\n            raise ValueError(f\"Task {a} in dependencies not found in durations\")\n        if b not in all_tasks:\n            raise ValueError(f\"Task {b} in dependencies not found in durations\")\n    \n    # Build adjacency list and indegree count\n    adj = {task: [] for task in all_tasks}\n    indegree = {task: 0 for task in all_tasks}\n    for a, b in deps:\n        adj[a].append(b)\n        indegree[b] += 1\n    \n    # Topological sort (Kahn's algorithm) for cycle detection\n    zero_indegree = [task for task in all_tasks if indegree[task] == 0]\n    topo_order = []\n    \n    while zero_indegree:\n        task = zero_indegree.pop()\n        topo_order.append(task)\n        for neighbor in adj[task]:\n            indegree[neighbor] -= 1\n            if indegree[neighbor] == 0:\n                zero_indegree.append(neighbor)\n    \n    # If not all tasks were processed, there's a cycle\n    if len(topo_order) != len(all_tasks):\n        raise ValueError(\"Dependency graph contains a cycle\")\n    \n    # Forward pass: compute earliest start times\n    earliest_start = {task: 0.0 for task in all_tasks}\n    for task in topo_order:\n        for neighbor in adj[task]:\n            earliest_start[neighbor] = max(\n                earliest_start[neighbor],\n                earliest_start[task] + durations[task]\n            )\n    \n    # Project duration is max of earliest_start + duration\n    project_duration = 0.0\n    for task in all_tasks:\n        project_duration = max(\n            project_duration,\n            earliest_start[task] + durations[task]\n        )\n    \n    # Backward pass: compute latest start times\n    latest_start = {task: float('inf') for task in all_tasks}\n    # Initialize sinks (tasks with no outgoing edges)\n    for task in all_tasks:\n        if not adj[task]:  # sink task\n            latest_start[task] = project_duration - durations[task]\n    \n    # Process in reverse topological order\n    for task in reversed(topo_order):\n        # For each predecessor (we need reverse adjacency)\n        # But we can compute from successors since we have forward adjacency\n        for successor in adj[task]:\n            latest_start[task] = min(\n                latest_start[task],\n                latest_start[successor] - durations[task]\n            )\n        # If still infinity (no successors), it's a sink already handled\n    \n    # Identify critical tasks: earliest_start == latest_start\n    critical_tasks = {\n        task for task in all_tasks\n        if abs(earliest_start[task] - latest_start[task]) < 1e-9\n    }\n    \n    # Find a critical source (critical task with no critical predecessors)\n    # Build critical adjacency\n    critical_adj = {task: [] for task in critical_tasks}\n    for a, b in deps:\n        if a in critical_tasks and b in critical_tasks:\n            critical_adj[a].append(b)\n    \n    # Find critical sources (no incoming critical edges)\n    critical_sources = set(critical_tasks)\n    for a, b in deps:\n        if b in critical_tasks and a in critical_tasks:\n            critical_sources.discard(b)\n    \n    # Start from a critical source and follow critical path\n    if not critical_sources:\n        # Should not happen if there's at least one critical task\n        # But handle edge case\n        return (project_duration, [])\n    \n    # Reconstruct one critical path\n    path = []\n    current = next(iter(critical_sources))  # take any critical source\n    \n    while current in critical_tasks:\n        path.append(current)\n        # Find a critical successor\n        next_task = None\n        for succ in critical_adj[current]:\n            if succ in critical_tasks:\n                next_task = succ\n                break\n        if next_task is None:\n            break\n        current = next_task\n    \n    return (project_duration, path)"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.0029323897
+}

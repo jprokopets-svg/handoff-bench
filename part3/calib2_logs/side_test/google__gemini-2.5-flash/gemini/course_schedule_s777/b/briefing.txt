@@ -1,0 +1,5 @@
+GOAL: Implement a function `can_finish(num_courses, prerequisites)` that determines if all courses can be finished given the total number of courses and a list of prerequisite pairs. This is a topological sort problem.
+STATE: The current code implements a topological sort using Kahn's algorithm.
+DONE: The current implementation correctly passes all existing tests, indicating it handles valid course schedules and detects cycles.
+BROKEN: Nothing is currently broken. The code appears to be fully functional for its intended purpose.
+NEXT: Review the code for potential optimizations or edge cases not covered by existing tests, such as extremely large inputs or unusual prerequisite structures.

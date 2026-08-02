@@ -1,0 +1,9 @@
+GOAL: Implement min_edit_ops to return a minimal sequence of edit operations (insert, delete, sub) transforming string a into b.
+
+STATE: Code has DP table and backtracking logic built, but forward reconstruction is broken. Current implementation attempts multiple conflicting approaches (backtracking, forward walk, simulation) and fails tests.
+
+DONE: DP correctly computes edit distances. Backtracking builds a valid operation sequence, but indices are relative to the original string and not adjusted for sequential application.
+
+BROKEN: The final operation list has incorrect indices because deletions/insertions shift positions. The forward-walk logic is incomplete and contains unreachable code after the initial break statement.
+
+NEXT: Fix the backtracking approach by adjusting operation indices. After building ops via backtracking, simulate applying them sequentially to compute correct current indices for each operation.

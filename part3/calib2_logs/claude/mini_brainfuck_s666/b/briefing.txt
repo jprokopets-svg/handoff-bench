@@ -1,0 +1,34 @@
+# BRIEFING: Brainfuck Interpreter
+
+**GOAL:**
+Implement a working Brainfuck interpreter that executes Brainfuck code with proper memory management, I/O handling, and control flow.
+
+**STATE:**
+- Complete interpreter implementation in `mini_brainfuck.py`
+- 30,000-cell tape with pointer management
+- All 8 Brainfuck commands implemented: `>`, `<`, `+`, `-`, `.`, `,`, `[`, `]`
+- Bracket matching pre-computed into a map for O(1) jump performance
+- Input/output handling via string parameters
+- Pointer bounds checking with clamping
+
+**DONE:**
+✓ Bracket validation (detects unbalanced brackets before execution)
+✓ Bracket map construction (enables fast loop jumping)
+✓ Memory tape initialization and pointer arithmetic
+✓ All command handlers implemented
+✓ Input stream consumption via `input_ptr`
+✓ Output accumulation into list (efficient string building)
+✓ All test cases passing
+
+**BROKEN:**
+- None identified. Code is functionally complete and all tests pass.
+
+**NEXT:**
+Task is complete. No action required. The interpreter successfully:
+- Handles nested loops via bracket map
+- Manages tape bounds safely
+- Processes input character-by-character
+- Generates correct output
+- Validates syntax before execution
+
+If resuming work: Consider optional enhancements like cell wrapping (modulo 256), infinite tape expansion, or debug mode—but these are not required for current functionality.

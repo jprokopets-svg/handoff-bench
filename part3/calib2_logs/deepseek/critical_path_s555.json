@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "critical_path",
+  "seed": 555,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0018281400000000002,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 244,
+    "cost": 0.000698955,
+    "text": "GOAL: Develop a robust function that computes the critical path in a task dependency graph, handling edge cases like empty input and cycles.\n\nSTATE: Core algorithm implemented in `critical_path.py`. It performs topological sorting, forward/backward passes, and critical path reconstruction.\n\nDONE: Basic algorithm works. All provided tests are passing, indicating correct logic for standard inputs and cycle detection.\n\nBROKEN: Path reconstruction logic is overly complex and heuristic (e.g., choosing source and breaking ties by duration). It may not return a *complete* critical path from a true graph source to sink if the heuristic picks a sub-optimal starting task or successor, potentially missing tasks on the true longest path.\n\nNEXT: Refactor the final `path` building section. Replace the heuristic search with a reliable method to find one full critical path from a source node (indegree 0) to a sink node (outdegree 0) using the computed earliest/latest start times."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0015651207,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "def critical_path(durations: dict, deps: list) -> tuple:\n    # Handle empty durations\n    if not durations:\n        return (0.0, [])\n    \n    # Build adjacency list and indegree/outdegree counts\n    adj = {task: [] for task in durations}\n    indegree = {task: 0 for task in durations}\n    outdegree = {task: 0 for task in durations}\n    \n    for a, b in deps:\n        if a not in adj:\n            adj[a] = []\n        if b not in adj:\n            adj[b] = []\n        adj[a].append(b)\n        indegree[b] += 1\n        outdegree[a] += 1\n    \n    # Initialize all tasks\n    tasks = list(durations.keys())\n    \n    # Topological sort with cycle detection\n    indegree_copy = indegree.copy()\n    queue = [task for task in tasks if indegree_copy[task] == 0]\n    topo_order = []\n    \n    while queue:\n        task = queue.pop(0)\n        topo_order.append(task)\n        for neighbor in adj.get(task, []):\n            indegree_copy[neighbor] -= 1\n            if indegree_copy[neighbor] == 0:\n                queue.append(neighbor)\n    \n    # Check for cycle\n    if len(topo_order) != len(tasks):\n        raise ValueError(\"Cycle detected\")\n    \n    # Forward pass: compute earliest start times\n    earliest_start = {task: 0.0 for task in tasks}\n    for task in topo_order:\n        for neighbor in adj.get(task, []):\n            earliest_start[neighbor] = max(\n                earliest_start[neighbor],\n                earliest_start[task] + durations[task]\n            )\n    \n    # Project duration is max of earliest finish times\n    project_duration = max(\n        earliest_start[task] + durations[task] for task in tasks\n    )\n    \n    # Backward pass: compute latest start times\n    latest_start = {task: float('inf') for task in tasks}\n    # Initialize sink tasks (no outgoing edges)\n    for task in tasks:\n        if outdegree[task] == 0:\n            latest_start[task] = project_duration - durations[task]\n    \n    # Process in reverse topological order\n    for task in reversed(topo_order):\n        # Update predecessors\n        for pred in tasks:\n            if task in adj.get(pred, []):\n                latest_start[pred] = min(\n                    latest_start[pred],\n                    latest_start[task] - durations[pred]\n                )\n    \n    # Find critical path: tasks where earliest_start == latest_start\n    # and form a continuous path from source to sink\n    critical_tasks = {\n        task for task in tasks \n        if abs(earliest_start[task] - latest_start[task]) < 1e-9\n    }\n    \n    # Build the critical path from source to sink\n    # Find source critical tasks (indegree 0 or all predecessors not critical)\n    source_critical = []\n    for task in critical_tasks:\n        is_source = True\n        for pred in tasks:\n            if task in adj.get(pred, []) and pred in critical_tasks:\n                is_source = False\n                break\n        if is_source:\n            source_critical.append(task)\n    \n    # Start from a source critical task and follow critical successors\n    if not source_critical:\n        # If no obvious source, start from any critical task\n        # that has earliest_start = 0\n        for task in critical_tasks:\n            if abs(earliest_start[task]) < 1e-9:\n                source_critical.append(task)\n                break\n    \n    if not source_critical:\n        # Fallback: use first critical task\n        source_critical.append(next(iter(critical_tasks)))\n    \n    # Build path from source to sink\n    path = []\n    current = source_critical[0]\n    visited = set()\n    \n    while current and current not in visited:\n        visited.add(current)\n        path.append(current)\n        \n        # Find critical successor\n        next_task = None\n        for neighbor in adj.get(current, []):\n            if neighbor in critical_tasks:\n                next_task = neighbor\n                break\n        \n        current = next_task\n    \n    # Verify path sum equals project duration\n    path_duration = sum(durations[task] for task in path)\n    if abs(path_duration - project_duration) > 1e-9:\n        # If path doesn't match, try to find a better path\n        # by exploring all possible critical paths\n        def dfs_find_path(current, current_path, current_sum):\n            if outdegree[current] == 0:\n                if abs(current_sum - project_duration) < 1e-9:\n                    return current_path\n                return None\n            \n            for neighbor in adj.get(current, []):\n                if neighbor in critical_tasks:\n                    result = dfs_find_path(\n                        neighbor, \n                        current_path + [neighbor],\n                        current_sum + durations[neighbor]\n                    )\n                    if result:\n                        return result\n            return None\n        \n        # Try from each source critical task\n        for source in source_critical:\n            result = dfs_find_path(source, [source], durations[source])\n            if result:\n                path = result\n                break\n    \n    return (project_duration, path)"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.0040922157
+}

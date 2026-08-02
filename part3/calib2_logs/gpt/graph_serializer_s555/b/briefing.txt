@@ -1,0 +1,16 @@
+GOAL: Serialize Python object graphs (primitives, lists, dicts with string keys) into a JSON-safe graph format and deserialize back, preserving object identity and cycles.
+
+STATE: File graph_serializer.py contains encode(obj) and decode(s). encode builds nodes with uid references (JSON keys are uid strings). decode parses JSON, validates structure, allocates placeholders, then fills lists/dicts and resolves root.
+
+DONE: encode and decode implement supported types (none, bool, int, float, str, list, dict). Identity and cycles are preserved via uid placeholders. JSON encoding/decoding handles numeric types; tests currently pass.
+
+BROKEN / UNKNOWN:
+- No failing tests, but potential edge cases not explicitly covered by tests:
+  - decode uses a class object _Sentinel as sentinel and compares with "is _Sentinel" (works but unconventional).
+  - float handling accepts ints from JSON and casts to float; this is intentional but should be confirmed.
+  - encode stores numeric references (ints) inside v for list/dict; decode accepts ints or strings—consistent but worth validating across implementations.
+  - Unsupported Python types (tuples, sets, non-string dict keys, custom objects) raise ValueError; behavior is by design but may need expansion.
+  - Robustness against malformed inputs (missing uids, non-contiguous uid ranges, invalid node entries) seems handled, but fuzz/malformation tests are limited or absent.
+  - Minor risk: using id(o) keys; if id reuse occurs between get_uid_for and nodes lifecycle (unlikely here) could be problematic in complex environments.
+
+NEXT: Run comprehens

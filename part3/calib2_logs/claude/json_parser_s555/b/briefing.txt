@@ -1,0 +1,38 @@
+# BRIEFING: JSON Parser Implementation
+
+**GOAL:**
+Implement a complete JSON parser that converts JSON text into Python objects, handling all JSON data types (null, boolean, string, number, array, object) with proper error handling and validation.
+
+**STATE:**
+- Full JSON parser implementation in `json_parser.py` with 9 functions
+- Main entry point: `parse_json(text)` validates input and delegates to `_parse_value()`
+- Specialized parsers for each JSON type: null, true, false, string, number, array, object
+- String parser handles escape sequences including unicode (`\uXXXX`)
+- Number parser distinguishes between integers and floats
+- Array and object parsers handle nested structures with proper comma/bracket validation
+- All tests passing
+
+**DONE:**
+✓ Literal parsing (null, true, false)
+✓ String parsing with escape sequences and unicode support
+✓ Number parsing (integers, floats, scientific notation, negative numbers)
+✓ Array parsing with empty array support
+✓ Object parsing with string key requirement
+✓ Whitespace handling throughout
+✓ Trailing content detection
+✓ Trailing comma rejection in arrays and objects
+✓ Control character rejection in strings
+✓ Leading zero validation in numbers
+✓ Comprehensive error messages
+
+**BROKEN:**
+- Nothing identified; all tests pass
+
+**NEXT:**
+Code review and documentation. Verify edge cases:
+1. Add docstring examples to `parse_json()` showing usage
+2. Test with actual JSON files if available
+3. Consider performance optimization if parsing large documents
+4. Ensure compliance with JSON RFC 7159 (verify all requirements met)
+
+If no issues fou

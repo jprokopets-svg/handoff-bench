@@ -1,0 +1,14 @@
+GOAL: Implement a fully functional AVL tree data structure with `insert`, `delete`, and `contains` methods.
+STATE: The `AVLTree` class is defined with `Node` and methods for height, balance factor, rotations, balancing, insertion, deletion, and checking for existence.
+DONE:
+- `Node` class and basic tree structure.
+- Height tracking and update.
+- Balance factor calculation.
+- Left and right rotations.
+- Balancing logic for all four cases (LL, LR, RR, RL).
+- `insert` method with balancing.
+- `_min_value_node` helper.
+- `contains` method.
+- All current tests are passing.
+BROKEN: The `delete` method has a logical flaw. Specifically, when a node with two children is deleted, the `_delete` method recursively calls itself to remove the successor, but it uses `temp.val` which might lead to issues if duplicate values were allowed (though currently disallowed) or if the `_delete` call itself needs to return a balanced subtree. The current implementation of `_delete` for two children might not correctly rebalance the subtree after replacing the node's value.
+NEXT: Debug and fix the `_delete` method, particularly the case where a node with two children is removed, to ensure proper rebalancing and tree integrity.

@@ -1,0 +1,9 @@
+GOAL: Create a graph serializer/deserializer that preserves object sharing and cycles, supporting primitive types (int, float, bool, None, str) and complex types (list, dict).
+
+STATE: Code is written and passes all tests. The solution uses a two-pass approach: assign IDs to objects during serialization, store them in a list, and reconstruct them in two passes during deserialization to handle cycles.
+
+DONE: Serialization correctly handles primitives, lists, dicts, sharing, and cycles. Deserialization reconstructs the object graph with the same structure and references. All tests pass.
+
+BROKEN: Nothing is currently broken. However, the code only supports list and dict containers; other iterable types (e.g., tuple, set) are unsupported but not required per the problem statement.
+
+NEXT: No further action needed. The implementation is complete and fully functional.

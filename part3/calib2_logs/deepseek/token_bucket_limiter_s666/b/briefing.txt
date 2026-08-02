@@ -1,0 +1,9 @@
+GOAL: Implement a correct token bucket rate limiter that passes all tests.
+
+STATE: Basic TokenBucket class with capacity, refill_rate, tokens, and last_update. The `allow()` method checks/consumes tokens.
+
+DONE: Core refill logic and token consumption work. Edge cases (tokens <= 0, tokens > capacity) are handled.
+
+BROKEN: The test fails because `allow()` with a fixed `now=0.0` expects the bucket to start full (5 tokens), allow 1, then allow 4, then reject 1. Our implementation fails the second `allow(4, now=0.0)` because `_refill(now)` updates `self.last_update` to 0.0 on the first call, making elapsed=0 for subsequent calls, but we already consumed 1 token, leaving only 4. So `allow(4)` should succeed, but it might be failing due to floating-point comparison or an initialization bug.
+
+NEXT: Ensure `self.last_update` is initialized to the first provided `now` in `allow()` (or a default) to prevent incorrect elapsed time calculation on the first refill. Specifically, on the first call with `now=0.0`, `last_update` should be set to 0.0, not the time at initialization.

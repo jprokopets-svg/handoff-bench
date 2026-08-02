@@ -1,0 +1,18 @@
+GOAL: Implement a correct "Text Justification" function full_justify(words, max_width) that packs words greedily into lines of width max_width, fully justifying all but the last line (which is left-justified).
+
+STATE: text_justification.py contains full_justify implementation. It iterates greedily to find words per line, computes total character length, distributes spaces evenly across gaps, gives extra spaces to left gaps, and left-justifies the last line or single-word lines. Tests have been run.
+
+DONE:
+- Greedy line breaking implemented.
+- Space distribution logic implemented (integer division + remainder extra spaces to left gaps).
+- Last-line and single-word left-justification handled (pad trailing spaces).
+- Function signature and typing present.
+- All provided tests currently pass.
+
+BROKEN / UNKNOWN:
+- Behavior for a word longer than max_width is undefined (no explicit handling).
+- Behavior for invalid inputs (max_width <= 0, empty words list, None) not explicitly validated.
+- Unicode/wide character width semantics not handled (len() on codepoints might not match visual width).
+- No docstring or explicit error messages.
+
+NEXT: Add/modify tests for edge cases (word length > max_width, max_width <= 0, empty list) and implement explicit handling — e.g., raise ValueError for words longer than max_width and invalid max_width — so behavior is well-defined and robust.

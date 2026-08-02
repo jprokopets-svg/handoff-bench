@@ -1,0 +1,9 @@
+GOAL: Implement a robust arithmetic expression parser that evaluates strings to float results, supporting +, -, *, /, %, **, parentheses, unary operators, and proper error handling.
+
+STATE: Tokenization and shunting-yard algorithm implemented. Code passes all provided tests.
+
+DONE: Tokenization handles numbers (with digit-before-decimal validation), operators, parentheses, and unary +/- detection. RPN conversion respects precedence (** right-associative, others left) and associativity. Evaluation correctly processes unary and binary operations with error checks (division/modulo by zero, invalid expressions).
+
+BROKEN: Potential edge cases: unary operator precedence vs. exponentiation interaction (e.g., "-3**2" could be ambiguous), handling of multiple unary operators (e.g., "+-5"), and validation of expression structure during RPN conversion may need reinforcement.
+
+NEXT: Test and resolve precedence of unary operators relative to exponentiation (ensure "-3**2" equals -(3**2), not (-3)**2, per typical math conventions).

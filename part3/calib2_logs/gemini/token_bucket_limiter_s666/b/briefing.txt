@@ -1,0 +1,12 @@
+GOAL: Implement a functional token bucket rate limiter in `token_bucket_limiter.py`.
+STATE: A `TokenBucket` class exists with `__init__` and `allow` methods.
+DONE:
+*   Basic token refill logic appears correct.
+*   Capacity limits are respected.
+*   Initial token count is set to capacity.
+*   The `allow` method correctly decrements tokens when available.
+*   All existing tests pass.
+BROKEN:
+*   The `last_refill_time` is initialized to `0.0`. This is problematic for real-world usage where the first `allow` call might happen long after initialization, leading to an immediate, large refill.
+*   The current tests might not cover this initial state issue.
+NEXT: Modify the `__init__` method to set `self.last_refill_time = time.monotonic()` (or `now` if provided) to ensure accurate initial refill timing. Then, add a test case to verify this behavior.

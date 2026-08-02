@@ -1,0 +1,71 @@
+{
+  "family": "gpt",
+  "task": "token_bucket_limiter",
+  "seed": 666,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 6,
+    "cost": 0.010464949999999999,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 2,
+        "run_tests": 2,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 6
+    }
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.00248725,
+    "text": "GOAL: Implement a correct token-bucket rate limiter (TokenBucket.allow) that enforces capacity and refill rate over time.\n\nSTATE: token_bucket_limiter.py present with TokenBucket class. Implementation:\n- capacity and refill_rate validated >= 0\n- tokens stored as float, starts full\n- allow(tokens=1.0, now=None) refills based on elapsed monotonic time, updates last observation, allows if enough tokens, decrements on allow\n- accepts optional now for deterministic tests\n\nDONE: All unit tests passed. Core functionality (refill logic, capacity bounds, basic edge behavior: tokens > capacity -> False, tokens <= 0 -> True) works as implemented.\n\nBROKEN: Unknown or untested areas and potential issues:\n- Type robustness: tokens conversion uses try/except but may leave non-float types (Decimal, custom numeric) that can cause comparison/type errors; NaN/inf handling not explicit.\n- Time handling: if caller supplies non-monotonic or malformed now values behavior may be surprising; monotonic usage is fine but not protected against strange now inputs.\n- Concurrency: class is not thread-safe (no locks); concurrent allow() calls can race.\n- No explicit tests for boundary/edge cases (very small/large rates, fractional tokens, negative/zero refill_rate after init, repeated calls with identical now, very large elapsed).\n- No docstrings/examples.\n\nNEXT: Add focused tests for edge cases and robustness (single most important): run property/fuzz tests that exercise non-standard token inputs (Decimal, NaN, inf, non-numeric), various now values (decreasing, identical, large jumps), and concurrent all"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.004455949999999999,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "from time import monotonic\n\n\nclass TokenBucket:\n    def __init__(self, capacity: float, refill_rate: float):\n        \"\"\"Create a token bucket with given capacity and refill_rate (tokens per unit time).\n\n        The bucket starts full.\n        \"\"\"\n        try:\n            capacity = float(capacity)\n            refill_rate = float(refill_rate)\n        except (TypeError, ValueError):\n            raise TypeError(\"capacity and refill_rate must be numeric\")\n        if capacity < 0 or refill_rate < 0:\n            raise ValueError(\"capacity and refill_rate must be >= 0\")\n\n        self._capacity = capacity\n        self._refill = refill_rate\n        self._tokens = capacity\n        # last observation time (monotonic clock). For deterministic tests, allow() accepts an explicit now.\n        self._last = monotonic()\n\n    def allow(self, tokens: float = 1.0, now: float | None = None) -> bool:\n        \"\"\"Attempt to consume `tokens` from the bucket.\n\n        If `now` is provided it is treated as the current time (for deterministic testing).\n        Returns True and deducts tokens if enough are available; otherwise returns False and does not deduct.\n\n        tokens > capacity always returns False. tokens <= 0 returns True and deducts nothing.\n        \"\"\"\n        # Validate and normalize tokens\n        try:\n            tokens = float(tokens)\n        except (TypeError, ValueError):\n            raise TypeError(\"tokens must be a numeric value\")\n\n        # Short-circuit behavior\n        if tokens <= 0:\n            return True\n        if tokens > self._capacity:\n            return False\n\n        # Determine current time\n        t = now if now is not None else monotonic()\n        try:\n            t = float(t)\n        except (TypeError, ValueError):\n            raise TypeError(\"now must be a numeric timestamp\")\n\n        # Compute elapsed time (do not allow negative rewind)\n        elapsed = t - self._last\n        if elapsed < 0:\n            elapsed = 0.0\n        # Refill tokens based on elapsed\n        if elapsed > 0:\n            self._tokens = min(self._capacity, self._tokens + elapsed * self._refill)\n        # Update last observation to t\n        self._last = t\n\n        # Check availability\n        if self._tokens >= tokens:\n            self._tokens -= tokens\n            return True\n        return False\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.017408149999999997
+}

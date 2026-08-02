@@ -1,0 +1,9 @@
+GOAL: Implement and verify a solution for the "Course Schedule" problem (detecting cycles in a directed graph using Kahn's Algorithm).
+
+STATE: A complete implementation using `defaultdict` for the adjacency list and an `in_degree` array for topological sorting is present in `course_schedule.py`.
+
+DONE: The core logic for building the graph, calculating in-degrees, and processing the queue is functional. The algorithm correctly returns `True` if a topological sort covering all nodes is possible.
+
+BROKEN: Nothing. All current tests are passing.
+
+NEXT: Perform edge-case testing (e.g., empty prerequisites, disconnected components, or large `numCourses` with no edges) to ensure robustness before finalizing.

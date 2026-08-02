@@ -1,0 +1,34 @@
+# BRIEFING: Token Bucket Limiter
+
+**GOAL:**
+Implement a token bucket rate limiter that allows/denies requests based on token availability, with continuous refill over time.
+
+**STATE:**
+- `TokenBucket` class implemented with:
+  - Initialization with capacity and refill_rate
+  - `allow(tokens, now)` method for consumption checks
+  - Continuous token refill based on elapsed time
+  - Support for deterministic testing via `now` parameter
+  - Bucket starts at full capacity
+
+**DONE:**
+✓ Core logic: token consumption and refill calculations  
+✓ Time tracking with `last_refill_time`  
+✓ Capacity capping (tokens never exceed max)  
+✓ Edge case handling (negative/oversized requests)  
+✓ All unit tests passing  
+✓ Deterministic testing support (injectable time)  
+
+**BROKEN:**
+- **Unknown edge case**: No issues identified yet, but needs real-world validation
+- **No wait/blocking mechanism**: Current implementation only returns True/False; doesn't support "wait until tokens available"
+- **No async support**: Synchronous only
+- **No metrics/monitoring**: Can't inspect current token count externally (private state)
+
+**NEXT:**
+Add a `get_tokens()` getter method to expose current token count for debugging/monitoring. This will:
+1. Apply pending refills (same logic as `allow()`)
+2. Return current token balance without consuming
+3. Enable external inspection for testing and observability
+
+This is low-risk, non-breaking, and useful for the next agent to validate behavior or build monitoring on top.

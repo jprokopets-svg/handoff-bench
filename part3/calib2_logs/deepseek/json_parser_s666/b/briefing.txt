@@ -1,0 +1,5 @@
+GOAL: Implement a JSON parser that passes all tests.
+STATE: Parser handles objects, arrays, strings, booleans, null, and basic numbers. Test failure on scientific notation numbers (e.g., '1e10').
+DONE: Basic parsing structure, whitespace skipping, strings with escapes, objects, arrays, literals, and integer/float parsing without exponents.
+BROKEN: Number parsing fails for scientific notation (exponent part 'e' or 'E'). The current `_parse_number` logic incorrectly validates or converts exponent-containing strings.
+NEXT: Fix `_parse_number` to correctly parse numbers with exponents (e.g., '1e10', '1.5E-3') and convert them to Python floats. Ensure it handles optional signs in exponents and doesn't reject valid formats.

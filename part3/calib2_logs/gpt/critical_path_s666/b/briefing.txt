@@ -1,0 +1,18 @@
+GOAL: Implement a correct, tested critical_path(durations, deps) that returns (project_duration, critical_path) given task durations and precedence pairs.
+
+STATE: Function critical_path is implemented in critical_path.py. It builds graph from durations and deps, runs Kahn's topological sort, computes earliest start/finish times, picks the max finish as project duration, and reconstructs one critical path using a back-pointer.
+
+DONE:
+- Topological sort with cycle detection (raises ValueError on cycles).
+- Earliest start/finish computed correctly via longest-path DP on DAG.
+- Returns project duration and a reconstructed critical path.
+- Tests all passed.
+- Time complexity O(V+E).
+
+BROKEN / UNKNOWN:
+- The code mutates the input durations dict when deps reference unknown tasks (it adds missing nodes with duration 0.0). That side-effect may be unexpected.
+- Tie-breaking for multiple equally-long predecessor paths is implicit (first max encountered) — may return any one critical path; deterministic order depends on iteration order of preds/topo.
+- No explicit validation for negative durations (behavior undefined).
+- Behavior for disconnected graphs: returns path ending at node with max finish (OK, but may be non-intuitive).
+
+NEXT: Fix the mutation of the caller's durations mapping — copy durations at start (e.g., local_durations = dict(durations)) and operate on that so the input dict is not modified when adding missing nodes.

@@ -1,0 +1,20 @@
+GOAL: Implement a correct Brainfuck interpreter in mini_brainfuck.py that passes tests and behaves like conventional Brainfuck.
+
+STATE: The current interpreter is complete and all provided tests pass. Code parses and precomputes bracket matches, executes commands, handles input/output, and enforces tape bounds.
+
+DONE:
+- Bracket matching implemented with error on unmatched brackets.
+- Execution loop supports > < + - . , [ ] and ignores other chars.
+- Pointer bounds checked (IndexError if moving off 0..29999).
+- Input (,) consumes characters or writes 0 when input exhausted.
+- Output (.) collects characters and returns a joined string.
+- All tests passed.
+
+BROKEN / POTENTIAL ISSUES:
+- Cell values are arbitrary Python ints (no byte wrapping). Typical Brainfuck uses 8-bit cells (0–255) and wrap on overflow/underflow.
+- chr(tape[ptr]) will raise ValueError if tape cell is negative or > 0x10FFFF; atypical large/negative values can break output.
+- No explicit handling of cell overflow/underflow semantics; behavior may differ from standard interpreters.
+- Tape fixed to 30,000 cells; could be fine but inflexible for some programs.
+- Performance issues only if running extremely long programs (no major concern now).
+
+NEXT: Implement 8-bit cell semantics (wrap values modulo 256) and ensure inputs are stored as bytes (ord(c) & 0xFF) and outputs use chr(tape[ptr]) after masking to 0..255. This prevents negative/oversized values and matches standard Brainfuck behavior.

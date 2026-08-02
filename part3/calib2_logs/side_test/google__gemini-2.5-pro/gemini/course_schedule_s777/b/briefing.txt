@@ -1,0 +1,16 @@
+GOAL:
+Implement a solution for the Course Schedule problem set. The primary objective is to find a valid topological sort of the courses, representing an order in which they can be taken.
+
+STATE:
+The file `course_schedule.py` contains a function `can_finish` that implements Kahn's algorithm. It correctly builds a directed graph from the prerequisites, calculates in-degrees, and uses a queue to process nodes.
+
+DONE:
+The current implementation successfully determines if a valid course schedule is possible (i.e., if the dependency graph contains no cycles). It passes all tests for this boolean check. The graph construction and cycle detection logic are solid.
+
+BROKEN:
+Nothing is functionally broken, but the implementation is incomplete and suboptimal.
+1.  **Incomplete:** The function only returns `True`/`False`. It does not return the actual course order, which is the ultimate goal of a topological sort.
+2.  **Suboptimal:** The code uses a standard Python `list` as a queue with `queue.pop(0)`, which has O(n) time complexity. This should be replaced by `collections.deque` for O(1) pop performance.
+
+NEXT:
+Modify the function to capture the topological sort order. Create a result list and append each `course` to it as it's removed from the queue. This will produce the final course schedule.

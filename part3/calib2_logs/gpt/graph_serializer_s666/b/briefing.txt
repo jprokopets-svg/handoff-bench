@@ -1,0 +1,18 @@
+GOAL: Implement a JSON encoder/decoder that serializes object graphs (int, float, bool, None, str, list, dict-with-string-keys), preserving shared references and cycles, and that round-trips faithfully.
+
+STATE: Complete implementation present in graph_serializer.py for encode() and decode(). Both functions traverse graphs, assign ids, emit typed nodes, validate input, and reconstruct placeholder objects before wiring references.
+
+DONE:
+- encode builds id map and emits nodes with types "int","float","bool","null","str","list","dict".
+- decode validates shape/types, creates placeholders, fills list/dict children, and returns root.
+- Input validation rejects unsupported types and non-string dict keys.
+- Tests run: All tests passed.
+
+BROKEN / UNKNOWN:
+- Identity semantics for immutable primitives (ints/strs/bools): decode uses the primitive value as the placeholder, so whether decoded references share the same Python object identity is incidental and not explicitly specified.
+- Large-graph performance/memory characteristics untested (encode is iterative; decode two-pass).
+- Behavior with atypical JSON numeric representations (very large ints, NaN/Inf) not explicitly handled.
+- No support for tuples, sets, or custom objects (by design).
+- Edge cases around JSON malformation handled broadly but error messages could be more specific.
+
+NEXT: Add targeted tests that verify reference preservation for mutable objects and cycles (e.g., shared lists/dicts, self-referential structures) and also test repeated primitive values to decide whether deduplication of immutables is acceptable; us

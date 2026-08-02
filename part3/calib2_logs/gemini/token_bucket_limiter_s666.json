@@ -1,0 +1,69 @@
+{
+  "family": "gemini",
+  "task": "token_bucket_limiter",
+  "seed": 666,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 7,
+    "cost": 0.006134059999999999,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 3,
+        "run_tests": 3
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "write_file",
+        "run_tests",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 7
+    }
+  },
+  "brief": {
+    "tokens": 213,
+    "cost": 0.0006548,
+    "text": "GOAL: Implement a functional token bucket rate limiter in `token_bucket_limiter.py`.\nSTATE: A `TokenBucket` class exists with `__init__` and `allow` methods.\nDONE:\n*   Basic token refill logic appears correct.\n*   Capacity limits are respected.\n*   Initial token count is set to capacity.\n*   The `allow` method correctly decrements tokens when available.\n*   All existing tests pass.\nBROKEN:\n*   The `last_refill_time` is initialized to `0.0`. This is problematic for real-world usage where the first `allow` call might happen long after initialization, leading to an immediate, large refill.\n*   The current tests might not cover this initial state issue.\nNEXT: Modify the `__init__` method to set `self.last_refill_time = time.monotonic()` (or `now` if provided) to ensure accurate initial refill timing. Then, add a test case to verify this behavior."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00642879,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "write_file": 2,
+        "run_tests": 2
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "write_file",
+        "run_tests",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "import time\n\nclass TokenBucket:\n    def __init__(self, capacity: float, refill_rate: float):\n        self.capacity = capacity\n        self.refill_rate = refill_rate\n        self.tokens = capacity\n        self.last_refill_time = None # Initialize to None\n\n    def allow(self, tokens: float = 1.0, now: float | None = None) -> bool:\n        if tokens <= 0:\n            return True\n        if tokens > self.capacity:\n            return False\n\n        if now is None:\n            now = time.monotonic()\n\n        if self.last_refill_time is None: # First call to allow\n            self.last_refill_time = now\n        \n        time_passed = now - self.last_refill_time\n        self.last_refill_time = now\n        self.tokens = min(self.capacity, self.tokens + time_passed * self.refill_rate)\n\n        if self.tokens >= tokens:\n            self.tokens -= tokens\n            return True\n        else:\n            return False\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 1
+  },
+  "transport_complete": true,
+  "cost": 0.01321765
+}

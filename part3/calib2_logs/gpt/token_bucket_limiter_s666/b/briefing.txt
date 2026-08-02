@@ -1,0 +1,18 @@
+GOAL: Implement a correct token-bucket rate limiter (TokenBucket.allow) that enforces capacity and refill rate over time.
+
+STATE: token_bucket_limiter.py present with TokenBucket class. Implementation:
+- capacity and refill_rate validated >= 0
+- tokens stored as float, starts full
+- allow(tokens=1.0, now=None) refills based on elapsed monotonic time, updates last observation, allows if enough tokens, decrements on allow
+- accepts optional now for deterministic tests
+
+DONE: All unit tests passed. Core functionality (refill logic, capacity bounds, basic edge behavior: tokens > capacity -> False, tokens <= 0 -> True) works as implemented.
+
+BROKEN: Unknown or untested areas and potential issues:
+- Type robustness: tokens conversion uses try/except but may leave non-float types (Decimal, custom numeric) that can cause comparison/type errors; NaN/inf handling not explicit.
+- Time handling: if caller supplies non-monotonic or malformed now values behavior may be surprising; monotonic usage is fine but not protected against strange now inputs.
+- Concurrency: class is not thread-safe (no locks); concurrent allow() calls can race.
+- No explicit tests for boundary/edge cases (very small/large rates, fractional tokens, negative/zero refill_rate after init, repeated calls with identical now, very large elapsed).
+- No docstrings/examples.
+
+NEXT: Add focused tests for edge cases and robustness (single most important): run property/fuzz tests that exercise non-standard token inputs (Decimal, NaN, inf, non-numeric), various now values (decreasing, identical, large jumps), and concurrent all

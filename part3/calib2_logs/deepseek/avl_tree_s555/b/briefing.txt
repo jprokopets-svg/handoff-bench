@@ -1,0 +1,9 @@
+GOAL: Implement an AVL tree with insertion, deletion, and search, ensuring it remains balanced.
+
+STATE: Core AVL tree implementation is complete with Node class, rotations, rebalancing, insert, delete, and contains methods. All provided tests have passed.
+
+DONE: Basic structure, height management, rotations, and rebalancing logic are functional. Insertion and search operations are working correctly. Deletion logic for nodes with 0, 1, or 2 children is implemented and integrates with rebalancing.
+
+BROKEN: No functionality is explicitly failing based on tests. However, the scope of testing is unknown; edge cases (e.g., deleting from an empty tree, inserting large sequences, verifying tree invariants post-operation) may not be covered. There is no traversal or visualization method to debug structure.
+
+NEXT: Implement an inorder traversal method (e.g., `inorder()` returning a list) to verify the binary search tree property and aid in debugging future modifications or complex test failures.

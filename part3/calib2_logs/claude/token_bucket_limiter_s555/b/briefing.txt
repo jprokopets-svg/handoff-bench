@@ -1,0 +1,33 @@
+# BRIEFING: Token Bucket Limiter
+
+**GOAL:**
+Implement a token bucket rate limiter that controls request throughput by managing token consumption. Tokens refill over time at a configurable rate. Requests are allowed only if sufficient tokens are available.
+
+**STATE:**
+- `TokenBucket` class fully implemented with:
+  - Constructor accepting `capacity` and `refill_rate` parameters
+  - `allow()` method that checks token availability and consumes tokens
+  - Time-based refill logic using `time.monotonic()` for precision
+  - Support for deterministic testing via optional `now` parameter
+  - Lazy initialization of `last_refill_time` on first call
+
+**DONE:**
+✓ Core rate limiting logic working correctly
+✓ Token refill calculation based on elapsed time
+✓ Capacity ceiling enforcement (tokens capped at max)
+✓ Edge case handling (non-positive token requests, oversized requests)
+✓ All unit tests passing
+✓ Deterministic testing support via `now` parameter
+✓ Clean, documented code with clear docstrings
+
+**BROKEN:**
+- Nothing currently failing; all tests pass
+- No known issues or edge cases
+
+**NEXT:**
+**Integration testing & real-world validation.** While unit tests pass, verify the limiter works correctly in:
+1. Concurrent/multi-threaded scenarios (thread safety not currently guaranteed)
+2. Production-like workloads with varying request patterns
+3. Edge cases: rapid-fire requests, long idle periods, clock adjustments
+
+Consider adding thread-safety (locks) if concurrent use is required, and document any threading assumptions.

@@ -1,0 +1,20 @@
+GOAL: Implement and maintain a strict JSON parser parse_json(text) that returns Python objects or raises ValueError on invalid JSON, following the JSON spec (no trailing commas, strict number formats, proper escapes, etc.).
+
+STATE: json_parser.py contains a complete recursive-descent strict JSON parser. It implements skip_ws, parse_value, parse_object, parse_array, parse_string, parse_number and top-level parsing. All provided unit tests currently pass.
+
+DONE: 
+- Parses objects, arrays, strings, numbers, true/false/null.
+- Enforces whitespace rules and detects trailing content.
+- Rejects trailing commas in arrays/objects.
+- String escapes handled: \", \\, \/, \b, \f, \n, \r, \t and \uXXXX (validates 4 hex digits).
+- Disallows unescaped control characters in strings.
+- Numbers: enforces no leading zeros, requires digits after decimal/exponent, supports exponent signs, returns int or float appropriately.
+- Good error messages for many failure cases.
+- Tests all passing.
+
+BROKEN / UNKNOWN:
+- Unicode surrogate pairs: currently \uXXXX is decoded into a single Python codepoint for that escape, but if JSON uses a UTF-16 surrogate pair (two \u escapes representing one non-BMP codepoint) the parser does not combine them into the correct codepoint — it will produce two surrogate characters. This may violate expected behavior.
+- Input type validation: non-str inputs (bytes, etc.) are not explicitly rejected — may raise confusing errors.
+- Deeply nested JSON may hit Python recursion limits.
+- Performance/memory for very large inputs untested.
+- Error messages for some positions are gen

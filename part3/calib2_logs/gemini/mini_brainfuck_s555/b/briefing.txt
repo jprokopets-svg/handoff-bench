@@ -1,0 +1,9 @@
+GOAL: Implement a Brainfuck interpreter in Python.
+STATE: The core interpreter logic is mostly complete and passes all current tests.
+DONE:
+*   `>`, `<`, `+`, `-`, `.`, `,` commands are implemented.
+*   Bracket matching pre-processing is implemented and handles unbalanced brackets.
+*   Basic loop functionality (`[` and `]`) is implemented.
+BROKEN:
+*   The `]` command's loop logic is incorrect. If `tape[data_ptr]` is non-zero, it should jump *back* to the matching `[` to re-evaluate the loop condition, not just skip to the end of the loop.
+NEXT: Correct the `]` command's behavior to jump to the matching `[` when `tape[data_ptr]` is not zero.

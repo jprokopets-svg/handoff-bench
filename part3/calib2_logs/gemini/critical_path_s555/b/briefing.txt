@@ -1,0 +1,15 @@
+GOAL: Implement a function `critical_path(durations, deps)` that calculates the critical path and project duration for a set of tasks with dependencies.
+
+STATE: The `critical_path` function is mostly complete and passes all current tests.
+
+DONE:
+- Handles empty task lists.
+- Builds adjacency list and in-degree map.
+- Performs topological sort and cycle detection.
+- Calculates earliest start times for all tasks.
+- Identifies the project duration.
+
+BROKEN:
+- The `longest_path_to` logic for identifying the critical path is incorrect. It currently tracks the path to *each* task, but doesn't correctly propagate the *longest* path when multiple predecessors exist. This means `critical_path_tasks` will likely be wrong if multiple paths converge.
+
+NEXT: Refactor the `longest_path_to` update within the `for u in topological_order` loop. When updating `earliest_start_time[v]`, ensure `longest_path_to[v]` is updated to reflect the path from the predecessor `u` that *resulted* in the new `earliest_start_time[v]`.

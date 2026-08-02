@@ -1,0 +1,25 @@
+# BRIEFING
+
+**GOAL:** Implement a regex matcher supporting literals, `.`, character classes `[...]`, quantifiers `*+?`, groups `(...)`, alternation `|`, anchors `^$`, and escapes `\`.
+
+**STATE:** Complete regex_matcher.py with parser and matching engine using backtracking. All classes defined: PatternParser, Literal, Dot, CharacterClass, Anchor, Sequence, Quantifier, Group, Alternation.
+
+**DONE:**
+- Parser logic for all regex features appears structurally sound
+- Backtracking engine implemented via generators
+- Character class ranges and negation handled
+- Quantifier min/max constraints in place
+- Alternation and grouping support
+
+**BROKEN:** 
+- **CRITICAL: File contains literal `\n` escape sequences instead of actual newlines.** The code was pasted with escaped newlines, causing SyntaxError on line 1. The entire file is on one logical line with `\n` characters embedded as text rather than line breaks.
+
+**NEXT:** 
+Immediately fix the file formatting by replacing all literal `\n` sequences with actual newlines. The code itself is correct—it just needs proper line breaks. After that, run tests to identify any logic bugs in the matching engine (likely in Quantifier backtracking or Anchor handling).
+
+---
+
+**Technical note for next agent:** Once formatting is fixed, watch for:
+1. Quantifier greedy vs. lazy matching (current implementation is greedy, which is correct)
+2. Anchor behavior at sequence boundaries
+3. Empty match handling in Literal('')

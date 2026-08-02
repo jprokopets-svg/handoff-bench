@@ -1,0 +1,10 @@
+GOAL: Implement a robust JSON parser in `json_parser.py` that correctly handles various JSON structures and edge cases.
+STATE: A significant portion of the JSON parsing logic is implemented, including parsing strings, numbers, objects, arrays, and literals. Whitespace handling is also present.
+DONE:
+- Basic parsing of strings, numbers, and literals (true, false, null).
+- Object and array structure recognition.
+- Basic error handling for malformed strings and numbers.
+BROKEN:
+- The parser fails when an array contains `true` or `null` values, specifically raising "Expected value". This indicates an issue with `parse_literal` not being correctly invoked or its return value not being handled properly within `parse_array`'s `parse_value` call.
+- The `parse_value` function's order of operations for different types might be incorrect, or the `parse_literal` function itself might have a bug.
+NEXT: Debug `parse_value` and `parse_literal` to ensure that `true`, `false`, and `null` are correctly identified and returned, especially when nested within arrays or objects. Focus on the `parse_array` function's call to `parse_value` and how it handles the results from `parse_literal`.

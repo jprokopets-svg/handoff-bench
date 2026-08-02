@@ -1,0 +1,39 @@
+# BRIEFING: Calculator Parser Fix
+
+**GOAL:**
+Implement a recursive descent parser for infix arithmetic expressions with correct operator precedence and associativity. Must handle: numbers, +/-, */%, **, unary +/-, and parentheses.
+
+**STATE:**
+- Complete tokenizer and parser structure implemented
+- Operator precedence chain: expression → term → unary → power → primary
+- All basic operations working (addition, subtraction, multiplication, division, modulo)
+- Unary operators and parentheses partially working
+
+**DONE:**
+✓ Tokenization (numbers, operators, parentheses)
+✓ Basic binary operators (+, -, *, /, %)
+✓ Parenthesized expressions
+✓ Unary +/- for simple cases (e.g., `-5`, `--3`)
+✓ Power operator right-associativity (e.g., `2**3**2` = 512)
+
+**BROKEN:**
+✗ **Unary operators after binary operators fail** — Test `2 ** -1` crashes with "Unexpected token: -"
+  - Root cause: `parse_power()` calls `parse_primary()` for right operand, which doesn't handle unary operators
+  - `parse_primary()` expects NUMBER or '(' but gets '-'
+  - Unary operators must be parsed BEFORE power, not after
+
+**NEXT:**
+**Restructure precedence chain:** Move unary parsing to occur BEFORE power parsing in the right operand of `**`.
+
+Change `parse_power()` to call `parse_unary()` instead of `parse_primary()` for the right side:
+```python
+def parse_power(self):
+    left = self.parse_primary()
+    if self.current_token() and self.current_token()[0] == '**':
+        self.consume('**')
+        right = self.parse_unary()  # ← CHANGE: was parse_power()
+        return left ** right
+    return left
+```
+
+This allows u

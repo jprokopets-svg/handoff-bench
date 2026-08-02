@@ -1,0 +1,16 @@
+GOAL: Return a minimal sequence of edit operations (delete, insert, sub) that transforms string a into b. Operation indices must be valid for sequential application.
+
+STATE: Implementation uses classic DP to compute Levenshtein distance and backtracks to produce operations. Backtracking yields ops_rev with positions referring to original a indices; these are reversed and then remapped to concrete indices for sequential application using an orig_indices list that tracks original positions (inserted chars get None). All tests currently pass.
+
+DONE:
+- DP table built correctly and yields correct distance.
+- Backtracking produces a plausible list of edits with original-index annotations.
+- Mapping from original-index-based ops to sequentially-applicable ops is implemented (orig_indices bookkeeping).
+- Current test suite passes.
+
+BROKEN / UNKNOWN:
+- Edge-case behavior is unverified: multiple consecutive inserts at the same original position, many inserted chars (None entries), and cases with repeated characters may expose incorrect insertion placement.
+- Remapping fallbacks (ValueError -> idx = len(s)) may silently place ops at string end rather than failing, masking logic errors.
+- Minimality guarantee is based on DP cost, but no post-check enforces that the produced op sequence actually transforms a->b or matches the DP cost in all edge cases.
+
+NEXT: Run targeted/property tests that (1) apply result_ops to a and verify the result equals b, and (2) assert len(result_ops) == dp[m][n] (Levenshtein distance). Prioritize cases: empty strings, repeated characters, multiple inserts at

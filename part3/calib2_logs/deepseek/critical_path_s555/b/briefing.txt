@@ -1,0 +1,9 @@
+GOAL: Develop a robust function that computes the critical path in a task dependency graph, handling edge cases like empty input and cycles.
+
+STATE: Core algorithm implemented in `critical_path.py`. It performs topological sorting, forward/backward passes, and critical path reconstruction.
+
+DONE: Basic algorithm works. All provided tests are passing, indicating correct logic for standard inputs and cycle detection.
+
+BROKEN: Path reconstruction logic is overly complex and heuristic (e.g., choosing source and breaking ties by duration). It may not return a *complete* critical path from a true graph source to sink if the heuristic picks a sub-optimal starting task or successor, potentially missing tasks on the true longest path.
+
+NEXT: Refactor the final `path` building section. Replace the heuristic search with a reliable method to find one full critical path from a source node (indegree 0) to a sink node (outdegree 0) using the computed earliest/latest start times.

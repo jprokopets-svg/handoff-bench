@@ -1,0 +1,9 @@
+GOAL: Implement a thread-safe token bucket rate limiter for concurrent API usage.
+
+STATE: Basic token bucket logic is implemented and passes unit tests, but lacks thread safety and real-world integration features.
+
+DONE: Core algorithm works correctly (refill logic, capacity checks). Single-threaded functionality is validated.
+
+BROKEN: Not safe for concurrent access (no locks). Missing practical features like configurable timeouts for waiting, burst handling clarity, and monitoring metrics.
+
+NEXT: Add threading lock (`threading.Lock`) to the `allow` method to ensure state (`tokens`, `last_time`) updates are atomic across threads.

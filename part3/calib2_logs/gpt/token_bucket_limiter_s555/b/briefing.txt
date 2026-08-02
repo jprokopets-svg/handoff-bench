@@ -1,0 +1,13 @@
+GOAL: Implement a token-bucket rate limiter (capacity + refill_rate), support fractional tokens and deterministic testing by accepting an optional now timestamp.
+
+STATE: token_bucket_limiter.py contains TokenBucket with __init__, _now, and allow. Uses time.monotonic(), stores floats, starts full, refills based on (now - _last) * refill_rate, handles tokens > capacity (reject), tokens <= 0 (accept and update _last), and accepts an optional now for deterministic decisions.
+
+DONE: All unit tests currently pass. Core behaviors work: starting-full state, fractional token accounting, refill logic when time advances, optional now parameter usage for tests, and basic guardrails for token requests larger than capacity.
+
+BROKEN: No failing tests, but potential issues/unknowns:
+- refill_rate is not validated (negative refill_rate allowed) — semantics unclear.
+- If a caller supplies a non-monotonic now (earlier than self._last), _last gets lowered which can later produce an inflated refill delta and over-refill tokens.
+- Not thread-safe (no locking) — concurrent allow() calls can produce races.
+- No handling for NaN/inf or pathological float inputs.
+
+NEXT: Most important single step: prevent backward time moves by clamping the provided now so _last never decreases (e.g., t = max(self._last, self._now(now))) and add validation to __init__ to require refill_rate >= 0; then add unit tests that exercise non-monotonic now and negative refill_rate to confirm behavior.

@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "graph_serializer",
+  "seed": 555,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0076096,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.003039,
+    "text": "GOAL: Serialize Python object graphs (primitives, lists, dicts with string keys) into a JSON-safe graph format and deserialize back, preserving object identity and cycles.\n\nSTATE: File graph_serializer.py contains encode(obj) and decode(s). encode builds nodes with uid references (JSON keys are uid strings). decode parses JSON, validates structure, allocates placeholders, then fills lists/dicts and resolves root.\n\nDONE: encode and decode implement supported types (none, bool, int, float, str, list, dict). Identity and cycles are preserved via uid placeholders. JSON encoding/decoding handles numeric types; tests currently pass.\n\nBROKEN / UNKNOWN:\n- No failing tests, but potential edge cases not explicitly covered by tests:\n  - decode uses a class object _Sentinel as sentinel and compares with \"is _Sentinel\" (works but unconventional).\n  - float handling accepts ints from JSON and casts to float; this is intentional but should be confirmed.\n  - encode stores numeric references (ints) inside v for list/dict; decode accepts ints or strings\u2014consistent but worth validating across implementations.\n  - Unsupported Python types (tuples, sets, non-string dict keys, custom objects) raise ValueError; behavior is by design but may need expansion.\n  - Robustness against malformed inputs (missing uids, non-contiguous uid ranges, invalid node entries) seems handled, but fuzz/malformation tests are limited or absent.\n  - Minor risk: using id(o) keys; if id reuse occurs between get_uid_for and nodes lifecycle (unlikely here) could be problematic in complex environments.\n\nNEXT: Run comprehens"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00853325,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "import json\nfrom typing import Any\n\n\ndef encode(obj: object) -> str:\n    \"\"\"Serialize object graph to a JSON string preserving shared references and cycles.\n\n    Format:\n    {\n      \"root\": uid_str,\n      \"nodes\": { uid_str: {\"t\": type_tag, \"v\": value_or_refs } }\n    }\n\n    type_tag: one of \"int\",\"float\",\"bool\",\"null\",\"str\",\"list\",\"dict\"\n    For list: v is list of uid_str\n    For dict: v is mapping from string key to uid_str\n    For primitives: v is the primitive value (JSON-serializable)\n    \"\"\"\n    obj_to_uid = {}\n    nodes = {}\n    next_uid = 0\n\n    def new_uid():\n        nonlocal next_uid\n        uid = str(next_uid)\n        next_uid += 1\n        return uid\n\n    def add(o: Any) -> str:\n        oid = id(o)\n        if oid in obj_to_uid:\n            return obj_to_uid[oid]\n        # assign uid early to allow cycles\n        uid = new_uid()\n        obj_to_uid[oid] = uid\n\n        # Determine type\n        if o is None:\n            nodes[uid] = {\"t\": \"null\", \"v\": None}\n        elif isinstance(o, bool):\n            # bool is subclass of int so check before int\n            nodes[uid] = {\"t\": \"bool\", \"v\": o}\n        elif isinstance(o, int):\n            nodes[uid] = {\"t\": \"int\", \"v\": o}\n        elif isinstance(o, float):\n            nodes[uid] = {\"t\": \"float\", \"v\": o}\n        elif isinstance(o, str):\n            nodes[uid] = {\"t\": \"str\", \"v\": o}\n        elif isinstance(o, list):\n            # placeholder list to allow cycles\n            nodes[uid] = {\"t\": \"list\", \"v\": []}\n            # fill with references\n            vals = []\n            for item in o:\n                if not _is_supported(item):\n                    raise ValueError(f\"Unsupported type: {type(item)!r}\")\n                vals.append(add(item))\n            nodes[uid][\"v\"] = vals\n        elif isinstance(o, dict):\n            # keys must be strings\n            for k in o.keys():\n                if not isinstance(k, str):\n                    raise ValueError(\"Dict keys must be strings\")\n            nodes[uid] = {\"t\": \"dict\", \"v\": {}}\n            mapping = {}\n            for k, v in o.items():\n                if not _is_supported(v):\n                    raise ValueError(f\"Unsupported type: {type(v)!r}\")\n                mapping[k] = add(v)\n            nodes[uid][\"v\"] = mapping\n        else:\n            raise ValueError(f\"Unsupported type: {type(o)!r}\")\n        return uid\n\n    def _is_supported(x: Any) -> bool:\n        return (x is None or isinstance(x, (bool, int, float, str, list, dict)))\n\n    root_uid = add(obj)\n    out = {\"root\": root_uid, \"nodes\": nodes}\n    return json.dumps(out, separators=(\",\", \":\"), ensure_ascii=False)\n\n\ndef decode(s: str) -> object:\n    \"\"\"Decode string produced by encode back into Python objects, preserving shared refs/cycles.\n\n    Raises ValueError on malformed input.\n    \"\"\"\n    try:\n        data = json.loads(s)\n    except Exception as e:\n        raise ValueError(\"Malformed input: not valid JSON\") from e\n\n    if not isinstance(data, dict):\n        raise ValueError(\"Malformed input: top-level must be object\")\n    if \"root\" not in data or \"nodes\" not in data:\n        raise ValueError(\"Malformed input: missing root or nodes\")\n    nodes = data[\"nodes\"]\n    root = data[\"root\"]\n    if not isinstance(nodes, dict):\n        raise ValueError(\"Malformed input: nodes must be object\")\n    if root not in nodes:\n        raise ValueError(\"Malformed input: root not in nodes\")\n\n    # First pass: validate structure and create placeholders\n    placeholders = {}\n    types = {}\n\n    for uid, node in nodes.items():\n        if not isinstance(uid, str):\n            raise ValueError(\"Malformed input: node uid must be string\")\n        if not isinstance(node, dict):\n            raise ValueError(\"Malformed input: node must be object\")\n        if \"t\" not in node or \"v\" not in node:\n            raise ValueError(\"Malformed input: node missing t or v\")\n        t = node[\"t\"]\n        v = node[\"v\"]\n        types[uid] = t\n        if t == \"null\":\n            placeholders[uid] = None\n        elif t == \"bool\":\n            if not isinstance(v, bool):\n                raise ValueError(\"Malformed input: bool node v must be boolean\")\n            placeholders[uid] = v\n        elif t == \"int\":\n            if not isinstance(v, int):\n                raise ValueError(\"Malformed input: int node v must be integer\")\n            placeholders[uid] = v\n        elif t == \"float\":\n            if not (isinstance(v, float) or isinstance(v, int)):\n                raise ValueError(\"Malformed input: float node v must be number\")\n            placeholders[uid] = float(v)\n        elif t == \"str\":\n            if not isinstance(v, str):\n                raise ValueError(\"Malformed input: str node v must be string\")\n            placeholders[uid] = v\n        elif t == \"list\":\n            if not isinstance(v, list):\n                raise ValueError(\"Malformed input: list node v must be array\")\n            # create empty list placeholder\n            placeholders[uid] = []\n        elif t == \"dict\":\n            if not isinstance(v, dict):\n                raise ValueError(\"Malformed input: dict node v must be object\")\n            # keys must be strings (json ensures), create empty dict placeholder\n            placeholders[uid] = {}\n        else:\n            raise ValueError(\"Malformed input: unknown node type\")\n\n    # Second pass: fill containers resolving references\n    for uid, node in nodes.items():\n        t = node[\"t\"]\n        v = node[\"v\"]\n        if t == \"list\":\n            lst = placeholders[uid]\n            # v should be list of uids (strings)\n            for ref in v:\n                if not isinstance(ref, str) or ref not in placeholders:\n                    raise ValueError(\"Malformed input: invalid reference in list\")\n                lst.append(placeholders[ref])\n        elif t == \"dict\":\n            dct = placeholders[uid]\n            for k, ref in v.items():\n                if not isinstance(k, str):\n                    raise ValueError(\"Malformed input: dict key must be string\")\n                if not isinstance(ref, str) or ref not in placeholders:\n                    raise ValueError(\"Malformed input: invalid reference in dict\")\n                dct[k] = placeholders[ref]\n        # primitives already set\n\n    return placeholders[root]\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.01918185
+}

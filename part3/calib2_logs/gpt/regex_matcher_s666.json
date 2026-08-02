@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "regex_matcher",
+  "seed": 666,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0028195499999999997,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 352,
+    "cost": 0.001478,
+    "text": "GOAL: Provide a reliable full-string regex matcher: return True iff the entire text matches the given pattern, and raise ValueError for malformed patterns.\n\nSTATE: regex_matcher.py contains full_match(pattern: str, text: str) which compiles the pattern with re.compile, converts re.error into ValueError, and uses prog.fullmatch(text) to check full-string match. All existing unit tests pass.\n\nDONE:\n- Pattern compilation and detection of malformed patterns is implemented (re.error \u2192 ValueError).\n- Matching uses re.fullmatch semantics so partial matches are excluded.\n- Basic functionality is correct per current test suite.\n\nBROKEN / UNKNOWN:\n- No explicit handling or tests for non-str inputs (e.g., None, bytes, non-string types); behavior is Python's default (may raise TypeError from re).\n- No support for passing regex flags or precompiled Pattern objects as input.\n- No caching of compiled patterns\u2014recompile on every call (potential performance issue if called frequently with same patterns).\n- No explicit tests for edge cases (unicode, empty pattern/text, extremely large inputs, catastrophic backtracking).\n- Concurrency/thread-safety considerations not evaluated (caching would need care).\n\nNEXT: Implement and test an LRU cache for compiled patterns (e.g., functools.lru_cache or manual cache) to avoid repeated compilation for the same pattern; ensure cache size is reasonable and thread-safe."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0027427999999999997,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "import re\n\n\ndef full_match(pattern: str, text: str) -> bool:\n    \"\"\"Return True iff the entire text matches the given regex pattern.\n\n    Malformed patterns (e.g., unclosed group, class, or stray quantifier)\n    raise ValueError.\n    \"\"\"\n    try:\n        prog = re.compile(pattern)\n    except re.error as e:\n        raise ValueError(str(e))\n    # Use fullmatch semantics: entire string must match\n    return prog.fullmatch(text) is not None\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.007040349999999999
+}

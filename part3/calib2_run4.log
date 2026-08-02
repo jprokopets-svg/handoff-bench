@@ -1,0 +1,23 @@
+[gemini   ] mini_brainfuck             s555 (cached, cost=$0.0052)
+[gemini   ] json_parser                s555 (cached, cost=$0.0539)
+[gemini   ] regex_matcher              s555 (cached, cost=$0.0010)
+[gemini   ] graph_serializer           s555 (cached, cost=$0.0088)
+[gemini   ] avl_tree                   s555 (cached, cost=$0.0181)
+[gemini   ] edit_distance_ops          s555 (cached, cost=$0.0352)
+[gemini   ] calculator_parser          s555 (cached, cost=$0.0533)
+[gemini   ] critical_path              s555 (cached, cost=$0.0067)
+[gemini   ] text_justification         s555 (cached, cost=$0.0059)
+[gemini   ] token_bucket_limiter       s555 (cached, cost=$0.0032)
+[gemini   ] mini_brainfuck             s666 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$0.1930
+[gemini   ] json_parser                s666 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$0.2022
+[gemini   ] regex_matcher              s666 ...
+    EXCLUDED (api_failure: degenerate empty response (finish=stop)) spent=$0.2093
+[gemini   ] graph_serializer           s666 ...
+    a_pass=False b_pass=False cons=CONSUMED transport=True A_complete=False spent=$0.2552
+[gemini   ] avl_tree                   s666 ...
+    a_pass=True b_pass=True cons=CONSUMED transport=True A_complete=True spent=$0.2683
+[gemini   ] edit_distance_ops          s666 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE transport=False A_complete=False spent=$0.3365
+[gemini   ] calculator_parser          s666 ...

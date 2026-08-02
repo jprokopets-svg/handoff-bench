@@ -1,0 +1,11 @@
+GOAL: Implement a fully functional calculator parser that correctly handles operator precedence, associativity, and unary operators.
+STATE: The `evaluate` function orchestrates tokenization, shunting-yard conversion, and postfix evaluation. Tokenization handles numbers, binary operators, and parentheses. Unary plus/minus are identified. Shunting-yard converts infix to postfix. Postfix evaluation calculates the result.
+DONE:
+- Basic arithmetic operations (+, -, *, /, %)
+- Parentheses handling
+- Basic unary plus/minus identification in `tokenize`
+- Shunting-yard algorithm for operator precedence and associativity (mostly)
+- Postfix evaluation of basic operations
+BROKEN:
+- Unary minus with exponentiation: `-2 ** 2` currently evaluates to `(-2) ** 2 = 4`, but should be `-(2 ** 2) = -4`. The current `shunting_yard` logic for unary operators and exponentiation precedence is incorrect.
+NEXT: Adjust the `shunting_yard` logic to correctly handle the precedence of unary minus/plus relative to exponentiation. Unary operators should bind tighter than exponentiation.

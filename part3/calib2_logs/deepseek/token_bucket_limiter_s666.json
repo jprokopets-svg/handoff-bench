@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "token_bucket_limiter",
+  "seed": 666,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": false,
+    "turns": 7,
+    "cost": 0.0058443,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 3
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "run_tests",
+        "run_tests"
+      ],
+      "total_calls": 5
+    }
+  },
+  "brief": {
+    "tokens": 270,
+    "cost": 0.00026115375,
+    "text": "GOAL: Implement a correct token bucket rate limiter that passes all tests.\n\nSTATE: Basic TokenBucket class with capacity, refill_rate, tokens, and last_update. The `allow()` method checks/consumes tokens.\n\nDONE: Core refill logic and token consumption work. Edge cases (tokens <= 0, tokens > capacity) are handled.\n\nBROKEN: The test fails because `allow()` with a fixed `now=0.0` expects the bucket to start full (5 tokens), allow 1, then allow 4, then reject 1. Our implementation fails the second `allow(4, now=0.0)` because `_refill(now)` updates `self.last_update` to 0.0 on the first call, making elapsed=0 for subsequent calls, but we already consumed 1 token, leaving only 4. So `allow(4)` should succeed, but it might be failing due to floating-point comparison or an initialization bug.\n\nNEXT: Ensure `self.last_update` is initialized to the first provided `now` in `allow()` (or a default) to prevent incorrect elapsed time calculation on the first refill. Specifically, on the first call with `now=0.0`, `last_update` should be set to 0.0, not the time at initialization."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0011750095499999998,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 2,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "code": "import time\n\nclass TokenBucket:\n    def __init__(self, capacity, refill_rate):\n        \"\"\"\n        Initialize a token bucket rate limiter.\n        \n        Args:\n            capacity: Maximum number of tokens the bucket can hold.\n            refill_rate: Number of tokens added per unit time (continuous refill).\n        \"\"\"\n        self.capacity = float(capacity)\n        self.refill_rate = float(refill_rate)\n        self.tokens = self.capacity  # Start full\n        self.last_update = None  # Will be set on first call to allow\n    \n    def _refill(self, now):\n        \"\"\"Refill the bucket based on elapsed time.\"\"\"\n        if self.last_update is None:\n            # First call: no elapsed time\n            self.last_update = now\n            return\n        \n        elapsed = now - self.last_update\n        if elapsed > 0:\n            self.tokens += elapsed * self.refill_rate\n            if self.tokens > self.capacity:\n                self.tokens = self.capacity\n        self.last_update = now\n    \n    def allow(self, tokens=1.0, now=None):\n        \"\"\"\n        Check if tokens can be consumed.\n        \n        Args:\n            tokens: Number of tokens to consume (default 1.0).\n            now: Current time for deterministic testing. If None, uses monotonic clock.\n        \n        Returns:\n            True if tokens were consumed, False otherwise.\n        \"\"\"\n        if now is None:\n            now = time.monotonic()\n        \n        # Refill based on current time\n        self._refill(now)\n        \n        # Handle edge cases\n        if tokens <= 0:\n            return True  # No consumption needed\n        if tokens > self.capacity:\n            return False  # Can never satisfy\n        \n        # Check if we have enough tokens\n        if self.tokens >= tokens:\n            self.tokens -= tokens\n            return True\n        else:\n            return False"
+  },
+  "a_passed_at_interrupt": false,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.0072804633
+}

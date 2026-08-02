@@ -1,0 +1,19 @@
+GOAL: Implement a strict JSON parser (parse a single JSON value from a string, raise ValueError on invalid input).
+
+STATE: Full parser implementation in json_parser.py provided. It handles objects, arrays, strings (with escapes), numbers, and literals; whitespace handling and trailing-data detection present. All unit tests currently pass.
+
+DONE: 
+- parse_value dispatch for {}, [], strings, numbers, and literals.
+- parse_object and parse_array with trailing-comma detection.
+- parse_string supports escapes including \uXXXX (consumes 4 hex digits) and rejects raw control chars.
+- parse_number enforces JSON numeric syntax (no leading zeros, fractional/exponent handling).
+- skip_ws, peek/advance helpers, and overall validation (no trailing data).
+- Tests show PASS.
+
+BROKEN / UNKNOWN:
+- Cosmetic/dead-code: unused vars set in parse_literal (i_old, i_new) and an odd nonlocal_i_set = None in parse_string. Comments about nonlocal handling are confusing but not functional.
+- Potential edge/interop issue: \uXXXX handling decodes each escape independently — surrogate pair handling for codepoints > U+FFFF may produce unpaired surrogates in Python strings (possibly undesirable).
+- parse_literal does not explicitly check that the literal is not followed by identifier characters (not usually needed for JSON but worth confirming).
+- No static linting done; minor index-bound checks look correct but could be tightened for clarity.
+
+NEXT: Remove/clean the dead/ confusing code (unused variables and misleading comments) and run a linter and targeted tests — especially add tests for unicode surrog

@@ -1,0 +1,17 @@
+GOAL: Return a minimal sequence of edit operations to transform string a into b. Ops must be applied in order and indices refer to the current string state as earlier ops are applied.
+
+STATE: File edit_distance_ops.py implements Wagner–Fischer DP to compute edit distance, backtracks to produce operations (initially relative to original a), then adjusts indices with an offset to produce final ops whose indices are relative to the evolving string.
+
+DONE: 
+- DP table correctly filled (insert/delete/substitute costs).
+- Backtracking produces a valid reverse operation list.
+- Indices are adjusted via offset so returned ops can be applied sequentially to the original string.
+- Tests provided all pass.
+
+BROKEN / UNKNOWN:
+- No failing tests reported, but correctness beyond provided tests is unverified:
+  - Tie-breaking in backtracking may yield different minimal sequences (still minimal cost).
+  - Need to ensure applying returned ops to a always yields b and that indices never go out of bounds for all edge cases (empty strings, repeated characters).
+  - Performance is O(len(a)*len(b)) — likely fine but untested on very large inputs.
+
+NEXT: The single most important thing to try is to implement and run a validator that applies the returned ops to a (sequentially) and checks the result equals b, and run that validator on randomized and edge-case inputs to catch index/invariant bugs.

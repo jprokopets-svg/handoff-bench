@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "token_bucket_limiter",
+  "seed": 555,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00105922245,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 159,
+    "cost": 0.000114478,
+    "text": "GOAL: Implement a thread-safe token bucket rate limiter for concurrent API usage.\n\nSTATE: Basic token bucket logic is implemented and passes unit tests, but lacks thread safety and real-world integration features.\n\nDONE: Core algorithm works correctly (refill logic, capacity checks). Single-threaded functionality is validated.\n\nBROKEN: Not safe for concurrent access (no locks). Missing practical features like configurable timeouts for waiting, burst handling clarity, and monitoring metrics.\n\nNEXT: Add threading lock (`threading.Lock`) to the `allow` method to ensure state (`tokens`, `last_time`) updates are atomic across threads."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0017521218,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 2,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "write_file"
+      ],
+      "total_calls": 5
+    },
+    "code": "import time\nimport threading\n\nclass TokenBucket:\n    def __init__(self, capacity: float, refill_rate: float):\n        self.capacity = capacity\n        self.refill_rate = refill_rate\n        self.tokens = capacity  # Start full\n        self.last_time = time.monotonic()\n        self.lock = threading.Lock()\n    \n    def allow(self, tokens: float = 1.0, now: float | None = None) -> bool:\n        if tokens <= 0:\n            return True\n        \n        if tokens > self.capacity:\n            return False\n        \n        with self.lock:\n            current_time = now if now is not None else time.monotonic()\n            \n            # Calculate time elapsed since last observation, but never negative\n            time_elapsed = max(0.0, current_time - self.last_time)\n            \n            # Refill tokens based on elapsed time\n            refill_amount = time_elapsed * self.refill_rate\n            self.tokens = min(self.capacity, self.tokens + refill_amount)\n            \n            # Update last observation time\n            self.last_time = current_time\n            \n            # Check if we have enough tokens\n            if self.tokens >= tokens:\n                self.tokens -= tokens\n                return True\n            else:\n                return False"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.00292582225
+}

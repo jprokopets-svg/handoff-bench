@@ -1,0 +1,34 @@
+# BRIEFING: Text Justification Task
+
+**GOAL:**
+Implement full text justification that formats a list of words into lines of exactly `max_width` characters with proper spacing and alignment rules.
+
+**STATE:**
+Complete implementation exists with two functions:
+- `full_justify()`: Main function that greedily packs words into lines
+- `justify_line()`: Helper that formats individual lines based on whether they're the last line
+
+**DONE:**
+✓ All tests passing
+✓ Greedy word packing algorithm working correctly
+✓ Full justification logic for non-last lines:
+  - Calculates total spaces needed
+  - Distributes spaces evenly across gaps
+  - Adds extra spaces left-to-right when spaces don't divide evenly
+✓ Last line handling: left-justified with single spaces and trailing padding
+✓ Single-word line handling: left-justified with padding
+✓ Edge cases appear to be covered
+
+**BROKEN:**
+Nothing currently broken. All tests pass.
+
+**NEXT:**
+No immediate action needed. The task is complete and functional. 
+
+*If continuing work:*
+- Consider code review for edge cases (empty input, very long words, single word, etc.)
+- Verify performance with large inputs if needed
+- Add additional test cases if requirements change
+- Code is well-documented and maintainable as-is
+
+**Summary:** Task successfully completed. Implementation correctly handles greedy packing, full justification with left-to-right space distribution, and proper last-line handling. Ready for deployment or handoff.

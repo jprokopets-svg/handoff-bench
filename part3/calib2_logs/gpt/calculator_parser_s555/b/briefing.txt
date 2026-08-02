@@ -1,0 +1,21 @@
+GOAL: Provide a brief handoff so the next engineer can continue improving the arithmetic expression evaluator.
+
+STATE: evaluate(expr) tokenizes numbers, operators (+ - * / % **), and parentheses; it parses with correct precedence (power, unary, *, /, %, +, -), right-associative exponentiation, and handles division/modulo-by-zero errors. All unit tests currently pass.
+
+DONE:
+- Lexing of integers and decimals like "12" and "3.14".
+- Tokenization of '**', single-char ops and parens.
+- Recursive-descent parser with functions: parse_expression -> add/sub -> mul/div -> factor -> power -> primary.
+- Correct precedence and associativity (including unary vs ** behavior).
+- Error handling for invalid tokens, unbalanced parens, empty expression, division/modulo by zero.
+- Final result converted to float.
+- Test suite indicates PASS.
+
+BROKEN / UNKNOWN:
+- Numeric lexical gaps: numbers that start with a dot (".5"), end with a dot ("1.") or use scientific notation ("1e3", "2E-2") are not accepted by the tokenizer.
+- No explicit handling of integer literals with leading '+' in tokenization context (unary handled in parser, but leading '+' as token is supported).
+- Behavior for exponentiation producing non-real results (e.g., negative base with fractional exponent) and related error semantics is not explicitly tested — may raise math/domain errors.
+- Very large exponents/overflow behavior and precision issues not covered.
+- No support for whitespace-inside-numbers, underscores, or other numeric formats.
+
+NEXT: Add targeted unit tests for numeric literal edge cases (".5", "1.", "1e3", "2E-2"

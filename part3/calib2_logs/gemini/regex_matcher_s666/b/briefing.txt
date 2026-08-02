@@ -1,0 +1,13 @@
+GOAL: Implement a `regex_matcher.py` module that provides a `full_match` function. This function should take a regex pattern and a text string, returning `True` if the pattern fully matches the text, and `False` otherwise. It must also perform robust validation of the regex pattern, raising `ValueError` for malformed patterns with specific, user-friendly messages.
+
+STATE: A `full_match` function exists in `regex_matcher.py` that uses Python's `re` module. It includes some manual pre-checks for common malformed pattern issues (unclosed groups, unclosed character classes, quantifiers without preceding atoms) and also catches `re.error` exceptions to provide more specific `ValueError` messages.
+
+DONE:
+*   The `full_match` function correctly uses `re.fullmatch`.
+*   Basic pre-validation for unclosed groups, unclosed character classes, and quantifiers without preceding atoms is implemented.
+*   `re.error` exceptions are caught and translated into specific `ValueError` messages.
+*   All existing tests are passing.
+
+BROKEN: The current pre-checks for malformed patterns are incomplete and may not catch all cases (e.g., `[a-z` is caught by `re.error` but `[a-z` is not caught by the `if '[' in pattern and ']' not in pattern:` check if `]` is present elsewhere). The goal is to provide *proactive* validation where possible, before `re` raises an error.
+
+NEXT: Enhance the pre-check for unclosed character classes to be more robust. Specifically, ensure that if a `[` is opened, it is properly closed *within the same character class context*, rather than just checking for the presence of `

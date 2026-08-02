@@ -1,0 +1,14 @@
+[deepseek ] mini_brainfuck             s555 (cached, cost=$0.0029)
+[deepseek ] json_parser                s555 (cached, cost=$0.0052)
+[deepseek ] regex_matcher              s555 (cached, cost=$0.0142)
+[deepseek ] graph_serializer           s555 (cached, cost=$0.0046)
+[deepseek ] avl_tree                   s555 (cached, cost=$0.0045)
+[deepseek ] edit_distance_ops          s555 (cached, cost=$0.0039)
+[deepseek ] calculator_parser          s555 (cached, cost=$0.0057)
+[deepseek ] critical_path              s555 (cached, cost=$0.0041)
+[deepseek ] text_justification         s555 (cached, cost=$0.0024)
+[deepseek ] token_bucket_limiter       s555 (cached, cost=$0.0029)
+[deepseek ] mini_brainfuck             s666 (cached, cost=$0.0028)
+[deepseek ] json_parser                s666 ...
+    a_pass=False b_pass=True cons=CONSUMED transport=True A_complete=False spent=$0.0707
+[deepseek ] regex_matcher              s666 ...

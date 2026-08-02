@@ -1,0 +1,12 @@
+GOAL: Implement a function `full_justify` that takes a list of words and a maximum width, and returns a list of strings, where each string is a fully justified line of text.
+
+STATE: The `full_justify` function correctly groups words into lines and calls `format_line`. The `format_line` function handles last lines and single-word lines correctly. It also distributes spaces for justified lines.
+
+DONE:
+- `full_justify` correctly forms lines based on `max_width`.
+- `format_line` correctly handles `is_last_line=True` and `len(words) == 1` cases.
+- `format_line` calculates `spaces_per_gap` and `extra_spaces` for justified lines.
+
+BROKEN: The current test suite is insufficient. The code passes all existing tests, but the problem description for `full_justify` implies specific behavior for single-word lines *within* the main justification logic (not just last lines). The `if num_gaps == 0:` condition in `format_line` is redundant because `len(words) == 1` is already handled. The `current_length` calculation in `full_justify` is slightly off; it includes spaces that aren't part of the word lengths themselves, which could lead to incorrect `total_spaces_needed`.
+
+NEXT: Add a test case for `full_justify` with a single word that fits on a line, but is not the last line, to verify its justification (left-aligned with trailing spaces).

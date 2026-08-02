@@ -1,0 +1,27 @@
+# BRIEFING
+
+**GOAL:**
+Implement a regex matcher supporting: literals, `.`, `[...]`, `(...)`, `|`, `*`, `+`, `?`, `^`, `$`, and backtracking for greedy quantifiers.
+
+**STATE:**
+- Parser structure exists: `parse_pattern()`, `parse_atom()`, `parse_char_class()`
+- Matcher structure exists: `match_from()`, `match_sequence()`, `match_star_backtrack()`
+- AST nodes defined for all regex features
+- Backtracking logic partially implemented via `match_sequence()` trying positions in reverse
+
+**DONE:**
+- Pattern parsing logic (atoms, groups, character classes, quantifiers)
+- Basic matching for literals, dot, char classes, anchors
+- Sequence and alternation matching
+- Character class negation and ranges
+- Escape sequence handling
+
+**BROKEN:**
+- **CRITICAL: File has literal `\n` escape sequences in strings instead of actual newlines** — this causes the SyntaxError on line 1. The entire file content is malformed with escaped newlines.
+- `match_from()` is defined twice (duplicate function)
+- `match_star_greedy()` returns a tuple `('star_result', positions)` but callers expect an integer position or None
+- Backtracking logic in `match_sequence()` only handles quantifiers in first position; doesn't handle quantifiers mid-sequence
+- No test coverage visible; unknown if basic cases work
+
+**NEXT:**
+**Fix the file encoding immediately:** Replace all literal `\n` strings with actual newlines. The file appears to have been incorrectly serialized. Once fixed, remove the duplicate `match_from()` definition and test basic patterns (e.g., `full_match("a", "a")`, `full_match("a*", "aaa")`). Then debug 

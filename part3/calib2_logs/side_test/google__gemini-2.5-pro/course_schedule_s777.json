@@ -1,0 +1,69 @@
+{
+  "family": "gemini",
+  "task": "course_schedule",
+  "seed": 777,
+  "model": "google/gemini-2.5-pro",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.036948749999999995,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 326,
+    "cost": 0.01862625,
+    "text": "GOAL:\nImplement a solution for the Course Schedule problem set. The primary objective is to find a valid topological sort of the courses, representing an order in which they can be taken.\n\nSTATE:\nThe file `course_schedule.py` contains a function `can_finish` that implements Kahn's algorithm. It correctly builds a directed graph from the prerequisites, calculates in-degrees, and uses a queue to process nodes.\n\nDONE:\nThe current implementation successfully determines if a valid course schedule is possible (i.e., if the dependency graph contains no cycles). It passes all tests for this boolean check. The graph construction and cycle detection logic are solid.\n\nBROKEN:\nNothing is functionally broken, but the implementation is incomplete and suboptimal.\n1.  **Incomplete:** The function only returns `True`/`False`. It does not return the actual course order, which is the ultimate goal of a topological sort.\n2.  **Suboptimal:** The code uses a standard Python `list` as a queue with `queue.pop(0)`, which has O(n) time complexity. This should be replaced by `collections.deque` for O(1) pop performance.\n\nNEXT:\nModify the function to capture the topological sort order. Create a result list and append each `course` to it as it's removed from the queue. This will produce the final course schedule."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.05525999999999999,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "from collections import deque\n\ndef can_finish(num_courses: int, prerequisites: list[list[int]]) -> bool:\n    \"\"\"\n    Determines if a valid course schedule is possible.\n\n    This function uses Kahn's algorithm for topological sorting to detect cycles\n    in the course dependency graph.\n\n    Args:\n        num_courses: The total number of courses.\n        prerequisites: A list of prerequisite pairs, where [course, prerequisite]\n                       means you must take 'prerequisite' before 'course'.\n\n    Returns:\n        True if all courses can be finished, False otherwise (if a cycle exists).\n    \"\"\"\n    # 1. Initialize graph and in-degrees\n    graph = [[] for _ in range(num_courses)]\n    in_degree = [0] * num_courses\n\n    for course, prereq in prerequisites:\n        graph[prereq].append(course)\n        in_degree[course] += 1\n\n    # 2. Initialize the queue with courses having an in-degree of 0\n    queue = deque([i for i in range(num_courses) if in_degree[i] == 0])\n\n    # 3. Process the queue\n    courses_taken = 0\n    while queue:\n        course = queue.popleft()\n        courses_taken += 1\n\n        for neighbor in graph[course]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n\n    # 4. Check if all courses were taken\n    return courses_taken == num_courses\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.11083499999999999
+}

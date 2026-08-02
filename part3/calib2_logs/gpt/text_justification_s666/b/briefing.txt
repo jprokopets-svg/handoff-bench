@@ -1,0 +1,15 @@
+GOAL: Implement full text justification: arrange words into lines of length max_width with even space distribution; last line and single-word lines left-justified.
+
+STATE: The file text_justification.py contains a full_justify(words, max_width) implementation that groups words per line, computes space distribution for fully-justified lines, and left-justifies last/single-word lines.
+
+DONE: The algorithm:
+- Accumulates words until adding the next would exceed max_width.
+- For non-last lines with multiple words, distributes spaces evenly, placing the extra spaces on the leftmost gaps.
+- For last line or single-word line, left-justifies and pads with spaces.
+- All existing tests pass (PASS).
+
+BROKEN:
+- Not robust to words longer than max_width. If len(word) > max_width at position i, the inner loop will not advance j (j == i), causing num_words == 0 and either incorrect behavior or an infinite loop.
+- No explicit handling for invalid/edge inputs (e.g., max_width <= 0, extremely long words). Tests didn't cover these cases.
+
+NEXT: Ensure progress when a single word exceeds max_width. The single most important change is to handle words longer than max_width (either by splitting the word into chunks of length <= max_width, or by treating the overlong word as a single line and advancing i). Implement a guard so j > i before progressing (or raise a clear exception for invalid input).

@@ -1,0 +1,69 @@
+{
+  "family": "gemini",
+  "task": "critical_path",
+  "seed": 555,
+  "model": "google/gemini-2.5-flash",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0026255000000000002,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 254,
+    "cost": 0.0008041,
+    "text": "GOAL: Implement a function `critical_path(durations, deps)` that calculates the critical path and project duration for a set of tasks with dependencies.\n\nSTATE: The `critical_path` function is mostly complete and passes all current tests.\n\nDONE:\n- Handles empty task lists.\n- Builds adjacency list and in-degree map.\n- Performs topological sort and cycle detection.\n- Calculates earliest start times for all tasks.\n- Identifies the project duration.\n\nBROKEN:\n- The `longest_path_to` logic for identifying the critical path is incorrect. It currently tracks the path to *each* task, but doesn't correctly propagate the *longest* path when multiple predecessors exist. This means `critical_path_tasks` will likely be wrong if multiple paths converge.\n\nNEXT: Refactor the `longest_path_to` update within the `for u in topological_order` loop. When updating `earliest_start_time[v]`, ensure `longest_path_to[v]` is updated to reflect the path from the predecessor `u` that *resulted* in the new `earliest_start_time[v]`."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00324042,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "\ndef critical_path(durations: dict, deps: list) -> tuple:\n    if not durations:\n        return (0.0, [])\n\n    # Build adjacency list and in-degree map\n    adj = {task: [] for task in durations}\n    in_degree = {task: 0 for task in durations}\n    for u, v in deps:\n        adj[u].append(v)\n        in_degree[v] += 1\n\n    # Topological sort (Kahn's algorithm)\n    q = [task for task in durations if in_degree[task] == 0]\n    topological_order = []\n    while q:\n        u = q.pop(0)\n        topological_order.append(u)\n        for v in adj[u]:\n            in_degree[v] -= 1\n            if in_degree[v] == 0:\n                q.append(v)\n\n    if len(topological_order) != len(durations):\n        raise ValueError(\"Cycle detected in dependency graph\")\n\n    # Calculate earliest start times and longest path to each task\n    earliest_start_time = {task: 0.0 for task in durations}\n    longest_path_to = {task: [task] for task in durations}\n\n    for u in topological_order:\n        for v in adj[u]:\n            if earliest_start_time[u] + durations[u] > earliest_start_time[v]:\n                earliest_start_time[v] = earliest_start_time[u] + durations[u]\n                longest_path_to[v] = longest_path_to[u] + [v]\n\n    # Find project duration and critical path\n    project_duration = 0.0\n    critical_path_tasks = []\n    for task in durations:\n        finish_time = earliest_start_time[task] + durations[task]\n        if finish_time > project_duration:\n            project_duration = finish_time\n            critical_path_tasks = longest_path_to[task]\n\n    return (project_duration, critical_path_tasks)\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0066700200000000005
+}

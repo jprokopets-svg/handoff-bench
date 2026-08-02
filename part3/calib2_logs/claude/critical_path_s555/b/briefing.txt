@@ -1,0 +1,30 @@
+# BRIEFING: Critical Path Algorithm
+
+**GOAL:**
+Implement a critical path method (CPM) solver that computes the minimum project duration and identifies one longest dependency chain through a task network.
+
+**STATE:**
+- Complete implementation in `critical_path.py`
+- Function signature and docstring defined
+- All unit tests passing
+- Algorithm uses Kahn's topological sort + dynamic programming approach
+
+**DONE:**
+✓ Cycle detection via topological sort (raises ValueError if cycle found)
+✓ Graph construction from dependency list
+✓ Longest path computation using DP with predecessor tracking
+✓ Path reconstruction by backtracking from sink node
+✓ Edge cases: empty input returns (0.0, [])
+✓ All test cases passing
+
+**BROKEN:**
+- **Potential issue with multiple sink nodes**: Current code only tracks one sink (the first max found). If multiple tasks have equal max duration with no successors, only one critical path is returned. This may be acceptable per spec ("one longest path") but worth noting.
+- **No validation of input types**: Missing checks for malformed durations dict or deps list (e.g., non-numeric durations, missing task references in deps).
+- **Assumption: all tasks must be reachable**: Code assumes every task in `durations` is referenced in the graph. Tasks with no dependencies and no dependents are handled, but orphaned tasks would be included in path if they're the longest.
+
+**NEXT:**
+**Verify edge case behavior**: Test with:
+1. Multiple disconnected components (e.g., two independent task chains)
+2. Tasks with zero duration
+3. Multiple tasks tied for longest path
+4. Larg

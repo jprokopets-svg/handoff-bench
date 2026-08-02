@@ -1,0 +1,69 @@
+{
+  "family": "gpt",
+  "task": "critical_path",
+  "seed": 555,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00417615,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.00233625,
+    "text": "GOAL: Implement a correct critical_path(durations, deps) routine that returns (project_duration, critical_path_list) and raises ValueError on cycles. If durations empty, return (0.0, []).\n\nSTATE: The current critical_path.py contains a full implementation: collects nodes from durations and deps, builds adjacency/pred lists, uses Kahn's algorithm for topo sort, computes earliest finish times to find the longest path, reconstructs and returns one critical path. Tests report All tests passed.\n\nDONE:\n- Topological sort with cycle detection (Kahn) implemented.\n- Earliest-finish (longest-path in DAG) computed correctly using predecessors.\n- Nodes mentioned in deps but missing from durations are allowed with 0.0 duration.\n- Returns (float duration, path list). Handles empty durations by returning (0.0, []).\n\nBROKEN / UNKNOWN:\n- No failing tests, but some behaviors are underspecified and untested:\n  - Tie-breaking when multiple paths have equal maximum duration: max(...) picks an arbitrary key based on dict iteration order \u2014 not deterministic.\n  - Determinism of topo order: deque init uses set order (nondeterministic across runs/Python versions), which can affect which path is chosen when multiple equivalent paths exist.\n  - Validation: negative durations or non-numeric durations are not checked.\n  - Minor inefficiency/redundant indeg handling (no functional failure, just clutter).\n  - Performance on very large graphs not benchmarked.\n\nNEXT: Make the behavior deterministic for tied critical paths \u2014 e.g., initialize the zero-indegree queue with a sorted list (consistent order) and/o"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0049659,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "code": "from collections import defaultdict, deque\nimport heapq\n\n\ndef critical_path(durations: dict, deps: list) -> tuple:\n    # If durations is empty, return as specified\n    if not durations:\n        return (0.0, [])\n\n    # Collect all nodes from durations and deps\n    nodes = set(durations.keys())\n    for a, b in deps:\n        nodes.add(a)\n        nodes.add(b)\n\n    # Ensure duration default for nodes not in durations\n    dur = {n: float(durations.get(n, 0.0)) for n in nodes}\n\n    # Build graph: adjacency list and predecessors\n    adj = defaultdict(list)\n    preds = defaultdict(list)\n    indeg = {n: 0 for n in nodes}\n    for a, b in deps:\n        adj[a].append(b)\n        preds[b].append(a)\n        indeg[b] = indeg.get(b, 0) + 1\n        # ensure a in indeg (may have been inserted from durations)\n        if a not in indeg:\n            indeg[a] = indeg.get(a, 0)\n\n    # Kahn's algorithm for topo sort with deterministic ordering\n    # Use a heap with string-key tie-break to be deterministic across runs\n    heap = []\n    for n in nodes:\n        if indeg.get(n, 0) == 0:\n            heapq.heappush(heap, (str(n), n))\n\n    topo = []\n    while heap:\n        _, n = heapq.heappop(heap)\n        topo.append(n)\n        for m in adj.get(n, ()):  # neighbors\n            indeg[m] -= 1\n            if indeg[m] == 0:\n                heapq.heappush(heap, (str(m), m))\n\n    if len(topo) != len(nodes):\n        raise ValueError(\"Cycle detected in dependencies\")\n\n    # Compute earliest finish times: for each node, dur + max(earliest_finish of preds)\n    ef = {n: 0.0 for n in nodes}\n    for n in topo:\n        if not preds[n]:\n            ef[n] = dur[n]\n        else:\n            # choose max over predecessors\n            max_pred = max((ef[p] for p in preds[n]), default=0.0)\n            ef[n] = dur[n] + max_pred\n\n    # Project duration is max ef\n    project_duration = max(ef.values()) if ef else 0.0\n\n    # Find one node that attains project_duration (deterministically pick smallest str key)\n    candidates = [n for n, v in ef.items() if abs(v - project_duration) < 1e-12]\n    if not candidates:\n        return (float(project_duration), [])\n    # pick deterministic candidate\n    end = sorted(candidates, key=lambda x: str(x))[0]\n\n    # Reconstruct one critical path by backtracking: at each step pick predecessor\n    # that satisfies ef[cur] == dur[cur] + ef[pred]. If multiple, pick pred with largest ef,\n    # tie-break deterministically by str(pred).\n    path = []\n    cur = end\n    while True:\n        path.append(cur)\n        if not preds[cur]:\n            break\n        # select predecessors satisfying the equality\n        valid_preds = [p for p in preds[cur] if abs(ef[cur] - (dur[cur] + ef[p])) < 1e-12]\n        if not valid_preds:\n            # should not happen, but break defensively\n            break\n        # choose the pred with maximum ef, tie-break by str\n        valid_preds.sort(key=lambda x: ( -ef[x], str(x) ))\n        cur = valid_preds[0]\n    path.reverse()\n    return (float(project_duration), path)\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0114783
+}

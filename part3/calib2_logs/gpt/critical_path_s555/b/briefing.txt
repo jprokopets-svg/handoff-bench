@@ -1,0 +1,19 @@
+GOAL: Implement a correct critical_path(durations, deps) routine that returns (project_duration, critical_path_list) and raises ValueError on cycles. If durations empty, return (0.0, []).
+
+STATE: The current critical_path.py contains a full implementation: collects nodes from durations and deps, builds adjacency/pred lists, uses Kahn's algorithm for topo sort, computes earliest finish times to find the longest path, reconstructs and returns one critical path. Tests report All tests passed.
+
+DONE:
+- Topological sort with cycle detection (Kahn) implemented.
+- Earliest-finish (longest-path in DAG) computed correctly using predecessors.
+- Nodes mentioned in deps but missing from durations are allowed with 0.0 duration.
+- Returns (float duration, path list). Handles empty durations by returning (0.0, []).
+
+BROKEN / UNKNOWN:
+- No failing tests, but some behaviors are underspecified and untested:
+  - Tie-breaking when multiple paths have equal maximum duration: max(...) picks an arbitrary key based on dict iteration order — not deterministic.
+  - Determinism of topo order: deque init uses set order (nondeterministic across runs/Python versions), which can affect which path is chosen when multiple equivalent paths exist.
+  - Validation: negative durations or non-numeric durations are not checked.
+  - Minor inefficiency/redundant indeg handling (no functional failure, just clutter).
+  - Performance on very large graphs not benchmarked.
+
+NEXT: Make the behavior deterministic for tied critical paths — e.g., initialize the zero-indegree queue with a sorted list (consistent order) and/o

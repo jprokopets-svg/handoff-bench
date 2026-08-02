@@ -1,0 +1,7 @@
+[deepseek ] mini_brainfuck             s555 (cached, cost=$0.0029)
+[deepseek ] json_parser                s555 (cached, cost=$0.0052)
+[deepseek ] regex_matcher              s555 (cached, cost=$0.0142)
+[deepseek ] graph_serializer           s555 (cached, cost=$0.0046)
+[deepseek ] avl_tree                   s555 (cached, cost=$0.0045)
+[deepseek ] edit_distance_ops          s555 (cached, cost=$0.0039)
+[deepseek ] calculator_parser          s555 ...

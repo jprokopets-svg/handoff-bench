@@ -1,0 +1,9 @@
+GOAL: Create a Python serializer/deserializer that preserves object graph structure (shared references, cycles) for JSON-compatible types.
+
+STATE: Core encoding/decoding logic implemented. Basic tests pass. Serialization uses `$type`, `$id`, `$ref` schema. Supports None, bool, int, float, str, list, dict (string keys only).
+
+DONE: Primitive type handling, shared reference detection via `id()`, placeholder creation for containers to allow cycles, basic error handling. All existing tests pass.
+
+BROKEN: `memo` dictionary in `encode()` is declared but never used—likely leftover from earlier approach. No explicit cycle detection test shown. Edge cases (e.g., very large integers, NaN floats) not verified.
+
+NEXT: Remove unused `memo` variable and verify cycle handling works with a test case containing a circular reference (e.g., a list that contains itself).

@@ -1,0 +1,9 @@
+GOAL: Implement a calculator parser that evaluates infix arithmetic expressions with support for +, -, *, /, %, **, parentheses, and unary operators.
+
+STATE: Shunting-yard algorithm implemented with tokenization, RPN conversion, and evaluation. Basic operations, precedence, and unary +/- detection are working.
+
+DONE: Tokenization handles numbers, operators, parentheses. Precedence and associativity defined. Unary +/- detection at expression start or after '(' works. RPN conversion and evaluation work for standard cases.
+
+BROKEN: Exponentiation with negative exponent (e.g., '2 ** -1') fails. The unary operator detection does not correctly identify '-' as unary when it follows the '**' operator. This causes tokenization to treat '-' as binary subtraction, leading to insufficient operands during RPN evaluation.
+
+NEXT: Fix `is_unary_operator` to recognize that '+' or '-' following the '**' operator (or any operator) should be treated as unary. Specifically, after token '**', the next '+' or '-' token should be marked as unary.

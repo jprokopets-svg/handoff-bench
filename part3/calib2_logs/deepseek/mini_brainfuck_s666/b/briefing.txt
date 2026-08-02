@@ -1,0 +1,5 @@
+GOAL: Implement a Brainfuck interpreter in Python that passes all provided tests.
+STATE: Core interpreter is complete with tape, pointer management, I/O, and bracket matching. All tests currently pass.
+DONE: Tape initialization, pointer movement, cell arithmetic, input/output, and loop handling with bracket jumping are functional.
+BROKEN: Nothing is currently failing. Edge cases like tape overflow/underflow are handled by clamping, which may deviate from some Brainfuck specs but works for the given tests.
+NEXT: If new tests are added, verify behavior for edge cases (e.g., tape extension on overflow, EOF handling for input) and adjust implementation to match the expected spec.

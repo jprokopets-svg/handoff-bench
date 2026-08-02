@@ -1,0 +1,9 @@
+GOAL: Implement a `search` method for the `AVLTree` class.
+STATE: The `AVLTree` class has `insert`, `delete`, and `contains` methods, along with helper functions for balancing.
+DONE:
+*   `Node` class is defined.
+*   Basic AVL tree operations (`insert`, `delete`, rotations, height/balance calculations) are implemented.
+*   The `contains` method correctly checks for key existence.
+*   All existing tests pass.
+BROKEN: The `search` method is not yet implemented.
+NEXT: Implement the `search` method to return the `Node` object if the key is found, or `None` otherwise. It should leverage the existing `_contains` logic but return the node itself.

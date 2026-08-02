@@ -1,0 +1,68 @@
+{
+  "family": "gpt",
+  "task": "token_bucket_limiter",
+  "seed": 555,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.002923,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    }
+  },
+  "brief": {
+    "tokens": 368,
+    "cost": 0.00250025,
+    "text": "GOAL: Implement a token-bucket rate limiter (capacity + refill_rate), support fractional tokens and deterministic testing by accepting an optional now timestamp.\n\nSTATE: token_bucket_limiter.py contains TokenBucket with __init__, _now, and allow. Uses time.monotonic(), stores floats, starts full, refills based on (now - _last) * refill_rate, handles tokens > capacity (reject), tokens <= 0 (accept and update _last), and accepts an optional now for deterministic decisions.\n\nDONE: All unit tests currently pass. Core behaviors work: starting-full state, fractional token accounting, refill logic when time advances, optional now parameter usage for tests, and basic guardrails for token requests larger than capacity.\n\nBROKEN: No failing tests, but potential issues/unknowns:\n- refill_rate is not validated (negative refill_rate allowed) \u2014 semantics unclear.\n- If a caller supplies a non-monotonic now (earlier than self._last), _last gets lowered which can later produce an inflated refill delta and over-refill tokens.\n- Not thread-safe (no locking) \u2014 concurrent allow() calls can produce races.\n- No handling for NaN/inf or pathological float inputs.\n\nNEXT: Most important single step: prevent backward time moves by clamping the provided now so _last never decreases (e.g., t = max(self._last, self._now(now))) and add validation to __init__ to require refill_rate >= 0; then add unit tests that exercise non-monotonic now and negative refill_rate to confirm behavior."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0078619,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 2,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "write_file"
+      ],
+      "total_calls": 5
+    },
+    "code": "import time\n\n\nclass TokenBucket:\n    def __init__(self, capacity: float, refill_rate: float):\n        \"\"\"Create a token bucket.\n\n        capacity: maximum tokens the bucket can hold (float >= 0)\n        refill_rate: tokens added per unit time (float >= 0)\n        The bucket starts full.\n        \"\"\"\n        if capacity < 0:\n            raise ValueError(\"capacity must be non-negative\")\n        if refill_rate < 0:\n            raise ValueError(\"refill_rate must be non-negative\")\n        self._capacity = float(capacity)\n        self._refill_rate = float(refill_rate)\n        self._tokens = float(capacity)\n        # last observed time (monotonic by default).\n        self._last = time.monotonic()\n        # track whether we've switched to external (test) time\n        self._use_external_time = False\n\n    def _now(self, now: float | None) -> float:\n        return time.monotonic() if now is None else float(now)\n\n    def allow(self, tokens: float = 1.0, now: float | None = None) -> bool:\n        \"\"\"Attempt to consume `tokens` from the bucket.\n\n        tokens > capacity => always False\n        tokens <= 0 => True (no deduction)\n        If enough tokens are available (after refill), deduct and return True,\n        otherwise return False and deduct nothing.\n        \"\"\"\n        # Fast-path for requests that don't consume anything\n        if tokens <= 0:\n            return True\n\n        # If requesting more than capacity, always reject\n        if tokens > self._capacity:\n            return False\n\n        # If caller supplies an external now for deterministic behavior,\n        # and this is the first time we've seen an external timeline,\n        # adopt that timeline's last-observed time so small now values like 0.0\n        # work in tests.\n        if now is not None and not self._use_external_time:\n            self._last = float(now)\n            self._use_external_time = True\n\n        t = self._now(now)\n        # Prevent backward time moves from increasing tokens artificially\n        if t < self._last:\n            t = self._last\n\n        # Refill based on elapsed time\n        elapsed = t - self._last\n        if elapsed > 0 and self._refill_rate > 0:\n            self._tokens = min(self._capacity, self._tokens + elapsed * self._refill_rate)\n        # advance last observed time even if no refill\n        self._last = t\n\n        if self._tokens + 1e-12 >= tokens:\n            self._tokens -= tokens\n            return True\n        return False\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.013285149999999999
+}

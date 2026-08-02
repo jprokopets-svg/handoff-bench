@@ -1,0 +1,9 @@
+GOAL: Implement a complete AVL tree with insert, delete, and search operations, ensuring it passes all functional tests.
+
+STATE: Core AVL tree implementation is written in `avl_tree.py`. It includes Node class, AVLTree class with public methods `insert`, `delete`, `contains`, and all necessary helper methods for rotations, height updates, balancing, and BST operations.
+
+DONE: Implementation appears structurally correct. All provided tests have passed (PASS), indicating basic functionality works for the test cases used.
+
+BROKEN: Unknown if edge cases are fully handled (e.g., duplicate insertions, deletion from empty tree, large sequences). The `_delete` method's rebalancing after deleting a node with two children (using inorder successor) needs verification for all balance scenarios. No in-order traversal or validation method exists to manually inspect tree state.
+
+NEXT: Write a comprehensive test script to validate AVL properties (height-balance invariant) after a series of random insertions and deletions, ensuring no balance factor exceeds |1|.

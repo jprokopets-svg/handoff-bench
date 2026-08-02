@@ -1,0 +1,9 @@
+GOAL: Create a fully compliant Brainfuck interpreter in Python that passes all standard tests.
+
+STATE: Basic interpreter implemented with tape, pointer logic, I/O, and bracket matching. Tests currently pass.
+
+DONE: Core execution loop, bracket pre-processing, input/output handling, and pointer movement with bounds checking.
+
+BROKEN: Pointer behavior on boundary overflow/underflow is inconsistent with typical Brainfuck specs (wraps or errors). Current implementation clamps to tape edges (0 and 29999), which may fail certain programs expecting wrap-around or specific error handling.
+
+NEXT: Adjust pointer behavior to implement proper wrap-around (modulo 30000) as per most common Brainfuck implementations, then re-run test suite to verify compliance.

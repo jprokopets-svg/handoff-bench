@@ -1,0 +1,35 @@
+# BRIEFING: Brainfuck Interpreter
+
+**GOAL:**
+Implement a working Brainfuck interpreter that executes Brainfuck code with proper memory management, I/O handling, and control flow (loops).
+
+**STATE:**
+- Complete implementation of `brainfuck()` function in mini_brainfuck.py
+- 30,000-cell tape initialized with zeros
+- All 8 Brainfuck commands implemented: `>`, `<`, `+`, `-`, `.`, `,`, `[`, `]`
+- Bracket matching preprocessed into a bidirectional map for O(1) jump lookup
+- Input/output handling via string parameters
+- Pointer boundary clamping to prevent out-of-bounds access
+
+**DONE:**
+✓ Bracket validation (detects unbalanced brackets before execution)
+✓ Bracket mapping (efficient jump table for loops)
+✓ Memory tape operations (increment/decrement with wrapping)
+✓ Pointer movement with bounds checking
+✓ Input consumption (`,` command reads from input_str sequentially)
+✓ Output generation (`.` command appends to output list)
+✓ Loop control (skip forward on `[` if cell=0, jump back on `]` if cell≠0)
+✓ All test cases passing
+
+**BROKEN:**
+- Nothing currently failing; all tests pass
+- Note: Cell values wrap at byte boundaries (0-255) not implemented—cells can exceed 255. This may be intentional or a future enhancement depending on spec.
+
+**NEXT:**
+No immediate action required. If additional requirements emerge:
+1. Consider adding cell value wrapping (modulo 256) if strict Brainfuck compliance needed
+2. Add optional debug mode to trace execution
+3. Implement timeout/iteration limits to prevent infinite loops
+4. Add detailed error messages with code position for debugging
+
+**Status:** 

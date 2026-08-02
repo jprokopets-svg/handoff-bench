@@ -1,0 +1,5 @@
+GOAL: Implement `min_edit_ops` to return a list of operations (insert, delete, substitute) to transform string `a` into string `b`.
+STATE: The `dp` table for calculating the minimum edit distance is correctly populated. The traceback logic for reconstructing operations is partially implemented.
+DONE: The `dp` table calculation is correct. The `delete` and `substitute` operation reconstruction logic appears to be mostly correct.
+BROKEN: The `insert` operation reconstruction logic is incorrect, specifically the index for insertion. The current test failure is for `min_edit_ops('', 'abc')`, which expects 3 insert operations. The current code likely fails to produce these or produces them with incorrect indices.
+NEXT: Debug the `insert` operation reconstruction logic, specifically the `operations.insert(0, ('insert', i, b[j - 1]))` line. The index `i` for insertion needs to accurately reflect where the character `b[j-1]` should be inserted into string `a` to match the transformation.

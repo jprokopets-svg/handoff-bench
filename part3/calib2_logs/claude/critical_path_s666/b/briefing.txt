@@ -1,0 +1,33 @@
+# BRIEFING: Critical Path Algorithm
+
+**GOAL:**
+Compute the critical path in a project network—the longest sequence of dependent tasks that determines minimum project completion time. Return both the total duration and the task sequence.
+
+**STATE:**
+- Implementation complete in `critical_path.py`
+- Uses Kahn's algorithm for topological sort + cycle detection
+- Applies dynamic programming to find longest path
+- Backtracks through parent pointers to reconstruct the critical path
+- All test cases passing
+
+**DONE:**
+✓ Cycle detection working (raises ValueError on circular dependencies)
+✓ Topological ordering correct
+✓ Longest path computation via DP (forward pass)
+✓ Path reconstruction via parent backtracking
+✓ Edge cases handled (empty input returns (0.0, []))
+✓ Graph construction handles isolated tasks and missing nodes
+
+**BROKEN:**
+- None identified; all tests pass
+- Code appears logically sound and handles documented requirements
+
+**NEXT:**
+**Validate against real-world edge cases not in current test suite:**
+1. Test with disconnected components (multiple independent task chains)
+2. Test with diamond dependencies (multiple paths converging)
+3. Test with single-task project
+4. Verify performance on large graphs (1000+ tasks)
+5. Confirm parent tracking correctly handles multiple predecessors (if applicable to problem domain)
+
+If all edge cases pass, code is production-ready. If failures occur, likely issue is in parent-pointer logic when multiple tasks feed into a successor—current code only tracks one parent, which may be insufficient for reconstructing the *actual* critical 

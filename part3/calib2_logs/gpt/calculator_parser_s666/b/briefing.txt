@@ -1,0 +1,18 @@
+GOAL: Complete/hand off development of a simple expression parser/evaluator that supports numbers, + - * / % **, unary +/-, and parentheses and returns a float or raises ValueError on invalid input.
+
+STATE: Repository contains calculator_parser.py with a Parser class and evaluate() wrapper. Tokenizer uses TOKEN_REGEX; recursive-descent parser implements precedence: addition/subtraction, multiplication/division/modulo, unary, power (right-associative), primary (numbers and parentheses). Tests currently pass.
+
+DONE:
+- Tokenization of integers and decimal numbers with leading digits (e.g., 12, 3.14).
+- Tokens for operators: PLUS, MINUS, MUL, DIV, MOD, POW, LPAREN, RPAREN.
+- Parsing/evaluation with correct precedence and right-associative exponentiation.
+- Error handling for unexpected tokens, mismatched parentheses, division/modulo by zero, empty input.
+- evaluate() converts result to float and maps unexpected exceptions to ValueError.
+- All current tests pass.
+
+BROKEN / UNKNOWN / LIMITATIONS:
+- TOKEN_REGEX does not accept numbers with a leading dot (e.g., ".5") or numbers that end with a dot (e.g., "2.") and does not support scientific notation (e.g., "1e-3").
+- Tokenizer error messages are generic ("Invalid token") — could be improved for diagnostics.
+- No explicit handling for very large exponents/overflow or domain errors beyond ZeroDivisionError.
+- next() increments pos even when peek() returns EOF — not currently causing failures but could be tightened.
+- No tests for many edge cases (leading-dot floats, trailing-dot floats, chained unary operators in uncommon combos, wh
