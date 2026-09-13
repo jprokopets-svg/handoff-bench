@@ -1,0 +1,32 @@
+[gemini   ] regex_matcher          s313 (cached, cost=$0.2306)
+[gemini   ] graph_serializer       s313 (cached, cost=$0.2373)
+[gemini   ] edit_distance_ops      s313 (cached, cost=$0.2699)
+[gemini   ] calculator_parser      s313 (cached, cost=$0.2001)
+[gemini   ] mini_interpreter       s313 (cached, cost=$0.1043)
+[gemini   ] tcp_state_machine      s313 (cached, cost=$0.0777)
+[gemini   ] concurrent_bank        s313 (cached, cost=$0.1227)
+[gemini   ] bencode_codec          s313 (cached, cost=$0.1619)
+[gemini   ] rpn_assembler          s313 (cached, cost=$0.2658)
+[gemini   ] markdown_table         s313 (cached, cost=$0.2924)
+[gemini   ] csv_pipeline           s313 (cached, cost=$0.2282)
+[gemini   ] regex_matcher          s515 (cached, cost=$0.2043)
+[gemini   ] graph_serializer       s515 (cached, cost=$0.1290)
+[gemini   ] edit_distance_ops      s515 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$2.8355
+[gemini   ] calculator_parser      s515 ...
+    a_pass=False b_pass=False cons=CONSUMED A_complete=False spent=$3.0968
+[gemini   ] mini_interpreter       s515 ...
+    a_pass=False b_pass=False cons=CONSUMED A_complete=False spent=$3.2788
+[gemini   ] tcp_state_machine      s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$3.3642
+[gemini   ] concurrent_bank        s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$3.4889
+[gemini   ] bencode_codec          s515 ...
+    a_pass=False b_pass=False cons=CONSUMED A_complete=False spent=$3.7212
+[gemini   ] rpn_assembler          s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$3.8930
+[gemini   ] markdown_table         s515 ...
+    a_pass=False b_pass=True cons=CONSUMED A_complete=False spent=$4.1190
+[gemini   ] csv_pipeline           s515 ...
+    a_pass=False b_pass=True cons=CONSUMED A_complete=False spent=$4.3545
+wrote /Users/jakeprokopets/handoff-bench/part3/calib3_logs/calib3_results.json

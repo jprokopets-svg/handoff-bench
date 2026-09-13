@@ -1,0 +1,71 @@
+{
+  "family": "gemini",
+  "task": "concurrent_bank",
+  "seed": 313,
+  "model": "google/gemini-2.5-pro",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.02568275,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 341,
+    "cost": 0.01360125,
+    "text": "GOAL: Improve the concurrency of the `Bank` class. The current implementation uses a single, coarse-grained lock, which serializes all operations and creates a performance bottleneck. The goal is to allow non-conflicting operations (i.e., on different accounts) to run in parallel.\n\nSTATE: A fully functional and thread-safe `Bank` class is implemented in `concurrent_bank.py`. It uses a single `threading.Lock` to guard all access to the `self.balances` dictionary.\n\nDONE: The current implementation is correct. All tests pass, indicating that the single lock successfully prevents race conditions and ensures data consistency across all operations (`create_account`, `deposit`, `withdraw`, `transfer`, `balance`).\n\nBROKEN: The concurrency model is inefficient. The single lock means only one thread can perform any action at a time, regardless of which accounts are involved. A deposit into account A will block a withdrawal from account B, even though these operations are independent. This design does not scale.\n\nNEXT: Implement a more fine-grained locking strategy. The single most important thing to try is to replace the one global lock with a per-account lock. This will likely involve storing a lock object for each account. Special attention must be paid to the `transfer` method to acquire locks for both accounts in a fixed order to prevent deadlocks."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.08336787500000001,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "\nimport threading\n\nclass Bank:\n    def __init__(self):\n        self._balances = {}\n        self._locks = {}\n        self._lock = threading.Lock()  # For creating accounts\n\n    def create_account(self, acc_id: str) -> None:\n        with self._lock:\n            if acc_id in self._balances:\n                raise ValueError(f\"Account {acc_id} already exists\")\n            self._balances[acc_id] = 0.0\n            self._locks[acc_id] = threading.Lock()\n\n    def deposit(self, acc_id: str, amount: float) -> None:\n        if amount <= 0:\n            raise ValueError(\"Deposit amount must be positive\")\n        \n        with self._lock:\n            if acc_id not in self._balances:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            account_lock = self._locks[acc_id]\n\n        with account_lock:\n            self._balances[acc_id] += amount\n\n    def withdraw(self, acc_id: str, amount: float) -> None:\n        if amount <= 0:\n            raise ValueError(\"Withdrawal amount must be positive\")\n\n        with self._lock:\n            if acc_id not in self._balances:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            account_lock = self._locks[acc_id]\n\n        with account_lock:\n            if self._balances[acc_id] < amount:\n                raise ValueError(\"Insufficient funds\")\n            self._balances[acc_id] -= amount\n\n    def transfer(self, from_id: str, to_id: str, amount: float) -> None:\n        if amount <= 0:\n            raise ValueError(\"Transfer amount must be positive\")\n        if from_id == to_id:\n            return\n\n        with self._lock:\n            if from_id not in self._balances:\n                raise ValueError(f\"Account {from_id} does not exist\")\n            if to_id not in self._balances:\n                raise ValueError(f\"Account {to_id} does not exist\")\n\n            from_lock = self._locks[from_id]\n            to_lock = self._locks[to_id]\n\n        # Deadlock avoidance\n        lock_first, lock_second = (from_lock, to_lock) if from_id < to_id else (to_lock, from_lock)\n\n        with lock_first:\n            with lock_second:\n                if self._balances[from_id] < amount:\n                    raise ValueError(\"Insufficient funds for transfer\")\n                self._balances[from_id] -= amount\n                self._balances[to_id] += amount\n\n    def balance(self, acc_id: str) -> float:\n        with self._lock:\n            if acc_id not in self._balances:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            account_lock = self._locks[acc_id]\n        \n        with account_lock:\n            return self._balances[acc_id]\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.12265187500000001
+}

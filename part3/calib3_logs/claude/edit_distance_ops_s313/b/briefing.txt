@@ -1,0 +1,24 @@
+GOAL:
+Implement `min_edit_ops(a, b)` that returns a minimal sequence of edit operations transforming string `a` into string `b`. Operations are tuples: `('delete', i)`, `('insert', i, c)`, `('sub', i, c)`. The function must pass all test cases including edge cases like empty strings.
+
+STATE:
+- Levenshtein distance DP table is correctly built
+- Backtracking logic exists to reconstruct operations
+- Code handles base case (a == b)
+- Test failure occurs on: `min_edit_ops('', 'abc')` expecting 3 insertions
+
+DONE:
+- DP table construction is correct (computes minimum edit distance)
+- Character matching detection works
+- Backtracking structure is in place
+- Operations are reversed at the end (correct approach)
+
+BROKEN:
+- **Index tracking during replay is wrong**: When inserting at position `i`, subsequent operations' indices are not adjusted. The `_replay` function likely applies operations sequentially, so insert positions must account for previous insertions.
+- **Insert position logic**: Currently uses `i` (position in original string `a`), but after insertions, indices shift. For empty string → 'abc', all three inserts happen at position 0, but the second insert should be at position 1, third at position 2.
+- **Delete position logic**: Similar issue—after deletions, remaining indices shift.
+
+NEXT:
+**Adjust operation indices to reflect cumulative state changes**: When backtracking, track the "current" position in the evolving string, not the original string position. Specifically:
+- For insertions: use the current length/position after previous operations
+- For deletions: adjust 

@@ -1,0 +1,71 @@
+{
+  "family": "gpt",
+  "task": "csv_pipeline",
+  "seed": 515,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00556625,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.00230375,
+    "text": "GOAL: Parse, transform, sort, and reserialize CSV input with support for quoted fields and escaped quotes; drop rows with status=='skip', optionally sort by \"sort\" column (numeric-first), and emit normalized CSV with trailing newline.\n\nSTATE: The repository has csv_pipeline.py containing a CSV parser/serializer implementing:\n- row/field parsing with quoted fields and \"\" escapes\n- header validation (consistent column counts)\n- transform: drop rows where status == 'skip'\n- sort: numeric-first stable sort on \"sort\" column\n- serialization with quoting when needed\nAll current unit tests pass.\n\nDONE:\n- Parsing of quoted fields and escaped quotes works.\n- Handles EOF and empty-input errors.\n- Row-length validation implemented.\n- status-based filtering and numeric-first sorting implemented and stable.\n- Serialization quotes fields containing , \" or newline and appends final \\n.\n- Tests currently pass.\n\nBROKEN / UNKNOWN:\n- CRLF handling is ad-hoc: code accepts '\\r\\n' only immediately after a closing quote (special-cased), but otherwise '\\r' is treated as a normal character inside unquoted fields \u2014 behavior for Windows-style newlines (CRLF) is inconsistent/unclear.\n- Handling of stray '\\r' characters inside unquoted fields or at row ends is untested.\n- Behavior on blank lines, leading/trailing whitespace, and various newline conventions (CR, LF, CRLF mixed) is unverified.\n- Performance and memory with large inputs untested.\n- Unicode/encoding edge cases not explicitly considered.\n\nNEXT: Create a focused unit test for CRLF input (rows terminated by '\\r\\n' and cases with '\\r' in unquot"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0074619,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "def process_csv(text: str) -> str:\n    if text is None:\n        raise ValueError(\"empty input\")\n    if text == \"\":\n        raise ValueError(\"empty input\")\n\n    rows = []\n    cur_row = []\n    cur_field_chars = []\n    in_quotes = False\n    i = 0\n    n = len(text)\n\n    while i < n:\n        ch = text[i]\n        if in_quotes:\n            if ch == '\"':\n                # possible escaped quote or end-quote\n                if i + 1 < n and text[i + 1] == '\"':\n                    cur_field_chars.append('\"')\n                    i += 2\n                    continue\n                else:\n                    in_quotes = False\n                    i += 1\n                    continue\n            else:\n                # accept any character including newlines\n                cur_field_chars.append(ch)\n                i += 1\n                continue\n        else:\n            # not in quotes\n            if ch == ',':\n                cur_row.append(''.join(cur_field_chars))\n                cur_field_chars = []\n                i += 1\n                continue\n            elif ch == '\\r':\n                # treat CR or CRLF as newline\n                cur_row.append(''.join(cur_field_chars))\n                cur_field_chars = []\n                rows.append(cur_row)\n                cur_row = []\n                i += 1\n                if i < n and text[i] == '\\n':\n                    i += 1\n                continue\n            elif ch == '\\n':\n                cur_row.append(''.join(cur_field_chars))\n                cur_field_chars = []\n                rows.append(cur_row)\n                cur_row = []\n                i += 1\n                continue\n            elif ch == '\"':\n                # start quoted field only if at start of field\n                if len(cur_field_chars) == 0:\n                    in_quotes = True\n                    i += 1\n                    continue\n                else:\n                    # stray quote inside unquoted field; treat as literal\n                    cur_field_chars.append(ch)\n                    i += 1\n                    continue\n            else:\n                cur_field_chars.append(ch)\n                i += 1\n                continue\n\n    # end while\n    if in_quotes:\n        raise ValueError(\"unterminated quoted field\")\n\n    # append last field and row\n    # There are two possibilities: either we ended after a newline which already appended a row,\n    # or we have data in current field/row to append\n    if cur_field_chars or cur_row:\n        cur_row.append(''.join(cur_field_chars))\n        rows.append(cur_row)\n    else:\n        # if nothing was added at all, it means input ended with newline and last row already appended\n        pass\n\n    if not rows:\n        raise ValueError(\"empty input\")\n\n    # header is first row\n    header = rows[0]\n    header_len = len(header)\n\n    data_rows = rows[1:]\n\n    # validate row lengths\n    for r in data_rows:\n        if len(r) != header_len:\n            raise ValueError(\"row has wrong number of columns\")\n\n    # find status and sort columns\n    status_idx = None\n    sort_idx = None\n    for idx, name in enumerate(header):\n        if name == 'status':\n            status_idx = idx\n        if name == 'sort':\n            sort_idx = idx\n\n    # filter out rows where status == 'skip'\n    filtered = []\n    for r in data_rows:\n        if status_idx is not None and r[status_idx] == 'skip':\n            continue\n        filtered.append(r)\n\n    # sort if needed\n    if sort_idx is not None:\n        def sort_key(item):\n            val = item[sort_idx]\n            try:\n                num = float(val)\n                return (0, num)\n            except Exception:\n                return (1, val)\n\n        # stable sort\n        filtered = sorted(filtered, key=sort_key)\n\n    # serialize: header + filtered rows\n    def quote_field(s: str) -> str:\n        need = False\n        if '\"' in s or ',' in s or '\\n' in s or '\\r' in s:\n            need = True\n        if need:\n            return '\"' + s.replace('\"', '\"\"') + '\"'\n        else:\n            return s\n\n    out_lines = []\n    # header\n    out_lines.append(','.join(quote_field(f) for f in header))\n    for r in filtered:\n        out_lines.append(','.join(quote_field(f) for f in r))\n\n    result = '\\n'.join(out_lines) + '\\n'\n    return result\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.015331899999999999
+}

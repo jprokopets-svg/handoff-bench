@@ -1,0 +1,19 @@
+GOAL: Implement a correct TCP connection state machine: accept events, update state per TCP FSM rules, and be fully covered by tests.
+
+STATE: tcp_state_machine.py defines TCPStateMachine with initial state 'CLOSED', a _transitions dict mapping (state, event) -> new_state, and a handle(event) method that looks up the transition, sets self.state, and raises ValueError for invalid transitions. Tests currently run and pass.
+
+DONE:
+- Core class and handle() method implemented.
+- A broad set of common TCP transitions are present (CLOSED, LISTEN, SYN_SENT, SYN_RCVD, ESTABLISHED, CLOSE_WAIT, FIN_WAIT_1/2, CLOSING, LAST_ACK, TIME_WAIT).
+- Invalid transitions raise ValueError.
+- All supplied tests currently pass.
+
+BROKEN / UNKNOWN:
+- Completeness vs RFC 793: it's unclear whether the transitions cover every canonical TCP state/event combination (e.g., RST behavior in all states, simultaneous close/open corner cases).
+- Input handling: events are case-sensitive strings; no validation or normalization.
+- Concurrency/thread-safety not addressed.
+- No logging/auditing of transitions.
+- No explicit unit tests shown for illegal events, unexpected inputs (None, non-string), or race conditions.
+- Behavior for duplicate/ignored events (e.g., repeated ACKs) is unspecified.
+
+NEXT: The single most important thing to try is to validate and complete the transition table against the canonical TCP state diagram (RFC 793) — add any missing state/event pairs (including RST handling and edge cases like simultaneous open/close), then add targeted unit tests for those cases and for invalid inputs to ensur

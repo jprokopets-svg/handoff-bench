@@ -1,0 +1,9 @@
+GOAL: Implement the `md_table_to_html` function to convert a Markdown table string into an HTML table string. The function needs to correctly parse headers, alignment specifiers (e.g., `:---`, `---:`), and data rows, and generate the corresponding HTML tags (`<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`) with correct `align` attributes.
+
+STATE: The `markdown_table.py` file contains the function `md_table_to_html` with a `pass` statement. It is an empty implementation.
+
+DONE: The function signature is defined.
+
+BROKEN: The function currently returns `None`, which causes the single test case to fail with an `AssertionError`. The test expects a complete HTML table string as output, but the function has no logic.
+
+NEXT: Start implementing the function by parsing the input string. The most logical first step is to split the input `text` by newlines (`\n`) to get a list of rows. This will allow you to isolate the header row, the alignment separator row, and the data rows for further processing.

@@ -1,0 +1,9 @@
+GOAL: Implement a compliant Bencode encoder and decoder. The functions should correctly serialize and deserialize supported data types (int, bytes, str, list, dict) and raise errors for unsupported types or malformed data.
+
+STATE: The file `bencode_codec.py` contains implementations for `bencode` and `bdecode`. The encoder handles standard Python types, and the decoder parses a bencoded byte stream. The decoder includes significant error-checking for malformed input.
+
+DONE: The core encoding and decoding logic for integers, byte strings, lists, and dictionaries is implemented. The `bdecode` function appears robust, with checks for unterminated structures, leading zeros in numbers, and other common format violations.
+
+BROKEN: The `bencode` function incorrectly handles boolean values. The provided test traceback shows that `bencode(True)` does not raise an exception as expected. This is because `isinstance(True, int)` evaluates to `True` in Python, causing the function to treat the boolean `True` as the integer `1` and encode it to `b'i1e'`. Bencode does not have a boolean type, so this should be an error.
+
+NEXT: Fix the `bencode` function to explicitly reject booleans. Add a check for `isinstance(obj, bool)` before the `isinstance(obj, int)` check. If the object is a boolean, raise a `ValueError` to correctly flag it as an unsupported type.

@@ -1,0 +1,7 @@
+GOAL: Create a robust JSON serializer/deserializer for Python object graphs that correctly handles shared objects and cycles.
+
+STATE: The current implementation provides `encode` and `decode` functions. `encode` traverses an object graph, identifies unique list/dict objects, and represents them in a flat "objects" list with a "root" pointer. Shared references and cycles are handled using `{"$ref": id}` pointers. The `decode` function uses a two-pass mechanism: first, it creates empty list/dict containers, and second, it populates them by resolving references.
+
+DONE: The core logic for encoding and decoding lists, dictionaries, and primitive types is implemented. The system correctly handles basic shared references and cycles within graphs composed of these types. The existing test suite passes, validating this core functionality.
+
+BROKEN: The implementation is incomplete and not extensible. It only supports a hardcoded set of types (lists,

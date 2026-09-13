@@ -1,0 +1,9 @@
+GOAL: Implement the `evaluate` function in `calculator_parser.py` to parse a mathematical expression string and return the correct floating-point result. The evaluation must respect the standard order of operations (e.g., multiplication before addition).
+
+STATE: The `evaluate` function is currently a stub containing only a `pass` statement. No logic has been implemented.
+
+DONE: The function signature `evaluate(expr: str) -> float` is defined.
+
+BROKEN: The function does not perform any calculation and implicitly returns `None`. This causes the test `assert evaluate('2 + 3 * 4') == 14.0` to fail with an `AssertionError`, as the expected result is `14.0`.
+
+NEXT: Implement the core logic for the `evaluate` function. A robust and safe method is to use Python's built-in `ast` (Abstract Syntax Tree) module to parse the expression. This avoids the security vulnerabilities of the `eval()` function while correctly handling operator precedence. Start by using `ast.parse()` to convert the input string into a syntax tree.

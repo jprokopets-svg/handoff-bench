@@ -1,0 +1,3 @@
+GOAL: The `process_csv` function should correctly parse, filter, sort, and re-serialize CSV data. It must also handle and raise `ValueError` for various malformed inputs, including those with unclosed quotes.
+
+STATE: The function `process_csv` implements the core logic for parsing, filtering based on a 'status' column, and sorting based on a 'sort

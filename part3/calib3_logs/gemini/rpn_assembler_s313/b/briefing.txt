@@ -1,0 +1,9 @@
+GOAL: To build a functional assembler and virtual machine for a custom RPN (Reverse Polish Notation) stack-based assembly language. The system must parse source code, handle labels, and execute the resulting program.
+
+STATE: The current implementation is a single monolithic function, `run_asm`, which performs a two-pass assembly and then simulates the program. The first pass builds a table of labels and their instruction addresses. The second pass assembles the instructions, replacing label names with their addresses. The simulation loop then executes the assembled program.
+
+DONE: The core assembler and VM logic is complete and functional. All implemented instructions work as expected: `PUSH`, `POP`, `DUP`, `SWAP`, all arithmetic ops, `NEG`, `PRINT`, `HALT`, `JMP`, `JZ`, and `JNZ`. Error handling for stack underflow, division by zero, and basic syntax errors is in place. All existing tests are passing.
+
+BROKEN: No known bugs; the current feature set is stable. However, the design is not modular (it's one large function), which will make future expansion difficult. Error reporting is basic and does not include line numbers, making debugging difficult for the user. The language lacks a subroutine mechanism.
+
+NEXT: Implement `CALL` and `RET` instructions to add subroutine support. This will involve pushing the return address (the program counter of the next instruction) onto the stack during a `CALL`, and popping it back into the program counter during a `RET`.

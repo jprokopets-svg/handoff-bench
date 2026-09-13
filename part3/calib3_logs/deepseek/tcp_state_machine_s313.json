@@ -1,0 +1,70 @@
+{
+  "family": "deepseek",
+  "task": "tcp_state_machine",
+  "seed": 313,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0011533179,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 173,
+    "cost": 0.0002219,
+    "text": "GOAL: Implement a TCP state machine that correctly models protocol transitions and passes all validation tests.\n\nSTATE: Basic class structure with transition dictionary implemented. All defined tests currently pass.\n\nDONE: Core state transition logic works. Handles valid transitions and raises ValueError for invalid ones. Property getter for state is functional.\n\nBROKEN: Unknown if all required TCP states/events are covered. No handling for edge cases like repeated events or logging. Error message for invalid transitions is generic.\n\nNEXT: Review the transition table against a standard TCP state diagram to identify and add any missing states (e.g., SYN_RCVD to CLOSED on RST) or events."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.001253109,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "class TCPStateMachine:\n    def __init__(self):\n        self._state = 'CLOSED'\n        # Define all valid transitions as (current_state, event) -> new_state\n        self._transitions = {\n            ('CLOSED', 'OPEN'): 'LISTEN',\n            ('CLOSED', 'SYN'): 'SYN_SENT',\n            ('LISTEN', 'SYN'): 'SYN_RCVD',\n            ('LISTEN', 'RESET'): 'LISTEN',\n            ('SYN_SENT', 'SYN_ACK'): 'ESTABLISHED',\n            ('SYN_SENT', 'SYN'): 'SYN_RCVD',\n            ('SYN_SENT', 'RESET'): 'CLOSED',\n            ('SYN_RCVD', 'ACK'): 'ESTABLISHED',\n            ('SYN_RCVD', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'FIN'): 'CLOSE_WAIT',\n            ('ESTABLISHED', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'RESET'): 'CLOSED',\n            ('FIN_WAIT_1', 'ACK'): 'FIN_WAIT_2',\n            ('FIN_WAIT_1', 'FIN'): 'CLOSING',\n            ('FIN_WAIT_1', 'FIN_ACK'): 'TIME_WAIT',\n            ('FIN_WAIT_2', 'FIN'): 'TIME_WAIT',\n            ('CLOSING', 'ACK'): 'TIME_WAIT',\n            ('CLOSE_WAIT', 'CLOSE'): 'LAST_ACK',\n            ('LAST_ACK', 'ACK'): 'CLOSED',\n            ('TIME_WAIT', 'TIMEOUT'): 'CLOSED',\n            ('TIME_WAIT', 'RESET'): 'CLOSED',\n        }\n    \n    @property\n    def state(self):\n        return self._state\n    \n    def handle(self, event: str) -> str:\n        key = (self._state, event)\n        if key not in self._transitions:\n            raise ValueError(f\"Invalid transition from {self._state} with event {event}\")\n        \n        self._state = self._transitions[key]\n        return self._state"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.0026283269
+}

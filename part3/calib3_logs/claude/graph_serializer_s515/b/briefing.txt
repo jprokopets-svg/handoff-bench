@@ -1,0 +1,24 @@
+# BRIEFING: Graph Serializer Debug
+
+**GOAL:**
+Implement a serializer that encodes/decodes Python objects (int, float, bool, None, str, list, dict) while preserving shared references and cycles.
+
+**STATE:**
+- `encode()` function converts objects to a tagged string format (e.g., "I5" for int 5, "S1:x" for string "x")
+- `decode()` function parses the tagged string back to objects
+- Reference tracking system uses `seen` dict (encode) and `refs` dict (decode) to handle cycles
+- Test case: `[1, 2.5, True, None, 'x', {'a': [1]}]`
+
+**DONE:**
+- Type markers implemented (N, B, I, F, S, L, D)
+- Reference ID generation working
+- List and dict structure encoding/decoding framework in place
+- Cycle handling infrastructure (refs stored before parsing contents)
+
+**BROKEN:**
+The integer decoder is consuming too many characters. When parsing "I1F2.5...", it reads "1F2.5BTNS1" as the integer because the delimiter check `s[pos[0]] not in '[]{},":` doesn't stop at 'F' (float marker). The parser needs delimiters between consecutive type-marked values.
+
+**Root cause:** Type markers are single characters, but there's no separator between encoded values. "I1F2.5" is ambiguous—the integer parser can't tell where "I1" ends and "F2.5" begins.
+
+**NEXT:**
+Add a delimiter (e.g., ",") between all encoded values in lists/dicts, or use a length-prefix encoding for integers/floats similar to strings. The simplest fix: modify `encode_value()` to insert "," between list items and between dict key-value pairs, then update `decode_value()` to stop parsing at ",", "]", "}", or end of string. This requires updatin

@@ -1,0 +1,9 @@
+GOAL: Return minimal edit operations (delete, insert, sub) transforming string a into b, with indices referencing the *current* string state after prior operations.
+
+STATE: DP table correctly computes Levenshtein distance. Backtracking identifies operations but uses indices from the *original* string (a), not the dynamically changing string during replay.
+
+DONE: DP logic, operation type detection, and basic backtracking work. Matches and empty-string cases are handled.
+
+BROKEN: Operation indices are incorrect for insertions and deletions after the first operation because they don't account for prior index shifts. Specifically, the test `min_edit_ops('', 'abc')` fails because insert indices are off during replay.
+
+NEXT: Modify backtracking to compute indices relative to the *evolving* string. Track a "current position" offset during backtrack reconstruction, or recompute indices by simulating the transformation forward from the start.

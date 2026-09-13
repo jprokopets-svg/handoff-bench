@@ -1,0 +1,29 @@
+GOAL:
+Maintain a TCP state machine implementation that correctly models RFC 793 connection lifecycle transitions. The state machine must handle all valid state-event combinations and reject invalid ones.
+
+STATE:
+A complete TCP state machine class exists with:
+- Initial state: CLOSED
+- 21 defined state transitions covering the full connection lifecycle (CLOSED → LISTEN → SYN_RCVD → ESTABLISHED → FIN_WAIT_1/2 → TIME_WAIT → CLOSED)
+- A `handle(event)` method that transitions states and raises ValueError for invalid transitions
+- All unit tests currently passing
+
+DONE:
+- Core state machine logic implemented and functional
+- Transition table covers standard TCP handshake (3-way), data transfer, and graceful close (4-way)
+- Error handling for invalid state-event combinations
+- Test suite validates the implementation
+
+BROKEN:
+- Unknown edge cases or missing transitions that real-world TCP implementations handle:
+  - Simultaneous open/close scenarios
+  - Behavior when receiving unexpected events in certain states (e.g., SYN in ESTABLISHED)
+  - Timeout handling completeness
+  - Whether all RFC 793 transitions are actually covered
+- No validation that transitions match RFC 793 specification exactly
+- No documentation of which transitions are implemented vs. optional
+
+NEXT:
+**Cross-reference the transition table against RFC 793 Section 3.2 (Connection State Diagram) to identify any missing or incorrect transitions.** Specifically:
+1. Verify all 11 states are present and correctly named
+2. Check for missing transitions (e.g., LISTEN receiving SYN_ACK, ESTABLISHED receiving RST in vario

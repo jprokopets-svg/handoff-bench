@@ -1,0 +1,71 @@
+{
+  "family": "claude",
+  "task": "tcp_state_machine",
+  "seed": 313,
+  "model": "anthropic/claude-haiku-4.5",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.013756999999999998,
+    "tool_summary": {
+      "counts": {
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.002844,
+    "text": "GOAL:\nMaintain a TCP state machine implementation that correctly models RFC 793 connection lifecycle transitions. The state machine must handle all valid state-event combinations and reject invalid ones.\n\nSTATE:\nA complete TCP state machine class exists with:\n- Initial state: CLOSED\n- 21 defined state transitions covering the full connection lifecycle (CLOSED \u2192 LISTEN \u2192 SYN_RCVD \u2192 ESTABLISHED \u2192 FIN_WAIT_1/2 \u2192 TIME_WAIT \u2192 CLOSED)\n- A `handle(event)` method that transitions states and raises ValueError for invalid transitions\n- All unit tests currently passing\n\nDONE:\n- Core state machine logic implemented and functional\n- Transition table covers standard TCP handshake (3-way), data transfer, and graceful close (4-way)\n- Error handling for invalid state-event combinations\n- Test suite validates the implementation\n\nBROKEN:\n- Unknown edge cases or missing transitions that real-world TCP implementations handle:\n  - Simultaneous open/close scenarios\n  - Behavior when receiving unexpected events in certain states (e.g., SYN in ESTABLISHED)\n  - Timeout handling completeness\n  - Whether all RFC 793 transitions are actually covered\n- No validation that transitions match RFC 793 specification exactly\n- No documentation of which transitions are implemented vs. optional\n\nNEXT:\n**Cross-reference the transition table against RFC 793 Section 3.2 (Connection State Diagram) to identify any missing or incorrect transitions.** Specifically:\n1. Verify all 11 states are present and correctly named\n2. Check for missing transitions (e.g., LISTEN receiving SYN_ACK, ESTABLISHED receiving RST in vario"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.020088,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 6
+    },
+    "retry_events": [],
+    "code": "class TCPStateMachine:\n    def __init__(self):\n        self.state = 'CLOSED'\n        # Define the transition table: (state, event) -> new_state\n        self.transitions = {\n            ('CLOSED', 'OPEN'): 'LISTEN',\n            ('CLOSED', 'SYN'): 'SYN_SENT',\n            ('LISTEN', 'SYN'): 'SYN_RCVD',\n            ('LISTEN', 'RESET'): 'LISTEN',\n            ('SYN_SENT', 'SYN_ACK'): 'ESTABLISHED',\n            ('SYN_SENT', 'SYN'): 'SYN_RCVD',\n            ('SYN_SENT', 'RESET'): 'CLOSED',\n            ('SYN_RCVD', 'ACK'): 'ESTABLISHED',\n            ('SYN_RCVD', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'FIN'): 'CLOSE_WAIT',\n            ('ESTABLISHED', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'RESET'): 'CLOSED',\n            ('FIN_WAIT_1', 'ACK'): 'FIN_WAIT_2',\n            ('FIN_WAIT_1', 'FIN'): 'CLOSING',\n            ('FIN_WAIT_1', 'FIN_ACK'): 'TIME_WAIT',\n            ('FIN_WAIT_2', 'FIN'): 'TIME_WAIT',\n            ('CLOSING', 'ACK'): 'TIME_WAIT',\n            ('CLOSE_WAIT', 'CLOSE'): 'LAST_ACK',\n            ('LAST_ACK', 'ACK'): 'CLOSED',\n            ('TIME_WAIT', 'TIMEOUT'): 'CLOSED',\n            ('TIME_WAIT', 'RESET'): 'CLOSED',\n        }\n    \n    def handle(self, event: str) -> str:\n        \"\"\"\n        Handle an event and transition to the new state.\n        \n        Args:\n            event: The event to handle\n            \n        Returns:\n            The new state after the transition\n            \n        Raises:\n            ValueError: If the (current state, event) pair is not a valid transition\n        \"\"\"\n        key = (self.state, event)\n        if key not in self.transitions:\n            raise ValueError(f\"Invalid transition from {self.state} with event {event}\")\n        \n        self.state = self.transitions[key]\n        return self.state\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.036689
+}

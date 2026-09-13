@@ -1,0 +1,26 @@
+GOAL: finish and harden the rpn_assembler: parse, validate, resolve labels, execute the stack-based instruction set and return printed output.
+
+STATE: complete rpn_assembler.py present. It:
+- Parses lines, strips comments, accepts labels and instructions.
+- Collects labels -> instruction indices.
+- Validates mnemonics and operand counts.
+- Parses PUSH ints, keeps jump labels then resolves them.
+- Executes instructions (stack ops, arithmetic, jumps) and collects PRINT output.
+
+DONE:
+- Parsing and label collection implemented.
+- Operand-count and mnemonic validation done.
+- PUSH integer parsing and jump label resolution done.
+- Execution engine handles PUSH/POP/DUP/SWAP/ADD/SUB/MUL/DIV/NEG/PRINT/HALT/JMP/JZ/JNZ.
+- Stack underflow, division by zero, unknown mnemonics and undefined labels raise ValueError.
+- All tests passed.
+
+BROKEN / UNKNOWN:
+- Error messages are generic (e.g., "wrong operand count", "undefined label") and do not include source line info though Instruction.src_line is stored but unused.
+- Division uses Python floor division (b // a) which differs from truncation-toward-zero semantics some specs expect for negative values.
+- Mnemonics are case-sensitive (must be uppercase); not documented or tested.
+- Label regex allows names starting with digits (may be undesirable).
+- No execution step limit — infinite loops will hang the VM.
+- No tests for edge cases (negative division behavior, large integers, malformed input variations).
+
+NEXT: Implement source-aware errors: use Instruction.src_line when raising ValueError during validation/execution to produce precise er

@@ -1,0 +1,27 @@
+GOAL:
+Maintain a working TCP state machine implementation that correctly models RFC 793 connection lifecycle transitions (CLOSED → LISTEN → SYN_RCVD → ESTABLISHED → FIN_WAIT_* → TIME_WAIT → CLOSED). The implementation should handle state transitions via events and reject invalid transitions.
+
+STATE:
+- Core TCP state machine class implemented with 21 defined transitions
+- Transition table covers: passive open (LISTEN), active open (SYN_SENT), connection establishment (SYN_ACK/ACK), data transfer (ESTABLISHED), and graceful/abrupt closure paths
+- `handle(event)` method processes events and updates internal state
+- All existing tests passing
+
+DONE:
+- State machine structure is sound
+- Transition table appears comprehensive for standard TCP flows
+- Error handling for invalid transitions works (raises ValueError)
+- Basic happy-path scenarios (open, establish, close) functional
+
+BROKEN:
+- Potential edge cases not covered:
+  - SYN_RCVD → RESET transition missing (should go to CLOSED)
+  - CLOSE_WAIT → RESET transition missing (should go to CLOSED)
+  - FIN_WAIT_2 → RESET transition missing (should go to CLOSED)
+  - No handling for simultaneous close scenarios (both sides send FIN simultaneously)
+  - TIME_WAIT state may need additional event handling
+  - No validation that events are semantically valid (e.g., can you really send ACK from CLOSED?)
+  - Missing transitions for retransmission/timeout scenarios in early states
+
+NEXT:
+Add missing RESET event transitions to all active states (SYN_RCVD, CLOSE_WAIT, FIN_WAIT_2, CLOSING) to properly handle connection aborts. This is the most c

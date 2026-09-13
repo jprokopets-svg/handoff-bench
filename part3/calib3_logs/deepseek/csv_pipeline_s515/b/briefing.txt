@@ -1,0 +1,9 @@
+GOAL: Implement RFC-4180 CSV parser with row filtering (drop rows where 'status' = 'skip') and stable sorting (by 'sort' column, numeric values first, then lexicographic).
+
+STATE: Core implementation complete in `csv_pipeline.py`. Functions: `process_csv` (orchestrator), `parse_csv`, `parse_field`, `serialize_csv`. All unit tests currently passing.
+
+DONE: Parsing handles quoted fields, escaped quotes, and newlines. Filtering by 'status' column works. Sorting by 'sort' column correctly separates numeric (float) and non-numeric values. Serialization quotes fields only when necessary and escapes quotes.
+
+BROKEN: Nothing known to be failing. Edge cases like empty input, malformed CSV (e.g., unclosed quotes), or rows with varying column counts are handled via exceptions.
+
+NEXT: No immediate action required. The module is functional and tested. Future work could involve performance optimization or extending transformations per new requirements.

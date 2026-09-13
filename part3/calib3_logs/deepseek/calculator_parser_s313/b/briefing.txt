@@ -1,0 +1,9 @@
+GOAL: Build a calculator parser that evaluates mathematical expressions with +, -, *, /, %, **, parentheses, and unary operators.
+
+STATE: Shunting-yard implementation with tokenization, syntax checking, and RPN evaluation. Unary +/- detection works for cases like "-5" or "(-3)".
+
+DONE: Basic arithmetic, operator precedence, parentheses, error handling for division by zero, syntax validation.
+
+BROKEN: Exponentiation with negative exponents fails (e.g., "2 ** -1"). The unary detection incorrectly marks '-' as unary when it's part of a binary exponentiation. Current logic treats '-' after '**' as unary, breaking binary operation expectation.
+
+NEXT: Fix `is_unary_operator()` to correctly identify when '+' or '-' are part of a binary operation after '**'. Specifically, after '**', the next '+' or '-' should be treated as binary (for the exponent), not unary.

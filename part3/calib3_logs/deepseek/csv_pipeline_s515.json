@@ -1,0 +1,69 @@
+{
+  "family": "deepseek",
+  "task": "csv_pipeline",
+  "seed": 515,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00135368805,
+    "tool_summary": {
+      "counts": {
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 238,
+    "cost": 0.00043638,
+    "text": "GOAL: Implement RFC-4180 CSV parser with row filtering (drop rows where 'status' = 'skip') and stable sorting (by 'sort' column, numeric values first, then lexicographic).\n\nSTATE: Core implementation complete in `csv_pipeline.py`. Functions: `process_csv` (orchestrator), `parse_csv`, `parse_field`, `serialize_csv`. All unit tests currently passing.\n\nDONE: Parsing handles quoted fields, escaped quotes, and newlines. Filtering by 'status' column works. Sorting by 'sort' column correctly separates numeric (float) and non-numeric values. Serialization quotes fields only when necessary and escapes quotes.\n\nBROKEN: Nothing known to be failing. Edge cases like empty input, malformed CSV (e.g., unclosed quotes), or rows with varying column counts are handled via exceptions.\n\nNEXT: No immediate action required. The module is functional and tested. Future work could involve performance optimization or extending transformations per new requirements."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00224244,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "def process_csv(text: str) -> str:\n    \"\"\"Parse RFC-4180 CSV, apply transformations, and re-serialize.\"\"\"\n    if not text:\n        raise ValueError(\"Empty input\")\n    \n    # Parse CSV\n    rows = []\n    i = 0\n    n = len(text)\n    \n    def parse_field() -> str:\n        \"\"\"Parse a single CSV field.\"\"\"\n        nonlocal i\n        if i >= n:\n            return \"\"\n        \n        if text[i] == '\"':\n            # Quoted field\n            i += 1  # Skip opening quote\n            field_chars = []\n            while i < n:\n                if text[i] == '\"':\n                    if i + 1 < n and text[i + 1] == '\"':\n                        # Escaped quote\n                        field_chars.append('\"')\n                        i += 2\n                    else:\n                        # Closing quote\n                        i += 1\n                        # Skip to comma or newline\n                        while i < n and text[i] != ',' and text[i] != '\\n':\n                            if text[i] == '\"':\n                                # Should not have unescaped quote after closing\n                                raise ValueError(\"Unescaped quote in field\")\n                            i += 1\n                        break\n                else:\n                    field_chars.append(text[i])\n                    i += 1\n            else:\n                # Reached end of input without closing quote\n                raise ValueError(\"Unterminated quoted field\")\n            return ''.join(field_chars)\n        else:\n            # Unquoted field\n            start = i\n            while i < n and text[i] != ',' and text[i] != '\\n':\n                i += 1\n            return text[start:i]\n    \n    def parse_row() -> list[str]:\n        \"\"\"Parse a single CSV row.\"\"\"\n        nonlocal i\n        row = []\n        while True:\n            field = parse_field()\n            row.append(field)\n            \n            if i >= n or text[i] == '\\n':\n                if i < n and text[i] == '\\n':\n                    i += 1  # Skip newline\n                break\n            elif text[i] == ',':\n                i += 1  # Skip comma\n            else:\n                # Should not happen\n                break\n        return row\n    \n    # Parse all rows\n    while i < n:\n        row = parse_row()\n        if row:  # Skip empty rows (e.g., trailing newline)\n            rows.append(row)\n    \n    if not rows:\n        raise ValueError(\"No rows found\")\n    \n    # Header is first row\n    header = rows[0]\n    header_len = len(header)\n    \n    # Validate all rows have same column count as header\n    for idx, row in enumerate(rows):\n        if len(row) != header_len:\n            raise ValueError(f\"Row {idx} has different column count than header\")\n    \n    # Data rows are everything after header\n    data_rows = rows[1:]\n    \n    # TRANSFORMATIONS\n    \n    # 1. Filter by 'status' column if it exists\n    if 'status' in header:\n        status_idx = header.index('status')\n        filtered_rows = []\n        for row in data_rows:\n            if row[status_idx] != 'skip':\n                filtered_rows.append(row)\n        data_rows = filtered_rows\n    \n    # 2. Sort by 'sort' column if it exists\n    if 'sort' in header and data_rows:\n        sort_idx = header.index('sort')\n        \n        def sort_key(row):\n            value = row[sort_idx]\n            try:\n                # Try to parse as float\n                return (0, float(value))  # 0 for numeric group\n            except ValueError:\n                return (1, value)  # 1 for non-numeric group\n        \n        # Stable sort\n        data_rows.sort(key=sort_key)\n    \n    # FORMAT: Re-serialize as CSV\n    result_rows = []\n    \n    def needs_quoting(field: str) -> bool:\n        \"\"\"Check if a field needs to be quoted.\"\"\"\n        return ',' in field or '\"' in field or '\\n' in field\n    \n    def serialize_field(field: str) -> str:\n        \"\"\"Serialize a single field with proper quoting.\"\"\"\n        if needs_quoting(field):\n            # Escape quotes by doubling them\n            escaped = field.replace('\"', '\"\"')\n            return f'\"{escaped}\"'\n        return field\n    \n    # Add header\n    result_rows.append(','.join(serialize_field(f) for f in header))\n    \n    # Add data rows\n    for row in data_rows:\n        result_rows.append(','.join(serialize_field(f) for f in row))\n    \n    # Join with newlines and add trailing newline\n    return '\\n'.join(result_rows) + '\\n'"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.0040325080499999996
+}

@@ -1,0 +1,24 @@
+GOAL: Implement and validate a CSV processing pipeline that
+- parses RFC-4180-like CSV,
+- drops rows with status == "skip",
+- optionally stable-sorts by the "sort" column (numeric-first, then lexicographic),
+- and outputs a correctly quoted CSV string.
+
+STATE: csv_pipeline.py contains a complete implementation: parser, filter, sort, and serializer. All unit tests currently pass.
+
+DONE:
+- CSV parsing with quoted fields and escaped double-quotes implemented.
+- Detection of unterminated quotes and invalid characters after closing quote.
+- Filtering out rows where status == 'skip' if header contains status.
+- Stable sorting by sort column with numeric-first semantics.
+- Re-quoting fields when rebuilding CSV.
+- All provided tests currently pass.
+
+BROKEN / UNKNOWN:
+- CRLF (\r\n) line endings are not explicitly handled; '\r' will be treated as data.
+- Behavior with carriage returns inside fields, or inputs using only '\r' line endings, is unverified.
+- Performance and memory for very large files unknown (everything is in-memory).
+- Handling of optional whitespace after closing quote (e.g., '"a" ,b') — currently treated as invalid.
+- Robustness to malformed headers, missing columns, or mixed column counts beyond current checks untested.
+
+NEXT: Add targeted tests for CRLF line endings and carriage-return handling (e.g., inputs with "\r\n", "\r", and fields containing '\r') and adjust parsing to normalize or accept CRLF if needed.

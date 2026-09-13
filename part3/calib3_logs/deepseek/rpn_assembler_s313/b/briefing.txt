@@ -1,0 +1,9 @@
+GOAL: Create a working RPN assembler that parses source code, executes instructions, and returns printed output.
+
+STATE: Core assembler is implemented with two-pass parsing (labels, instructions). Supports basic stack ops, arithmetic, jumps, and PRINT/HALT. Test suite passes.
+
+DONE: Parsing handles labels, comments, whitespace. Instruction validation works. Execution loop with stack operations, jumps, and output collection functions correctly.
+
+BROKEN: JMP/JZ/JNZ instructions store label name as operand but don't resolve it before execution (line 79 stores raw operand). This causes label resolution to fail during execution because operand is string label name, not resolved address.
+
+NEXT: Fix instruction storage for jumps: in first pass, store label name as string operand; in second pass, resolve via labels dict. Currently line 79 incorrectly stores operand for non-PUSH mnemonics without distinction.

@@ -1,0 +1,9 @@
+GOAL: Implement a simple RPN assembler that can parse and execute a stack-based assembly language with basic arithmetic, stack operations, and jumps.
+
+STATE: Core assembler is written and passes all provided tests. It includes parsing, label resolution, and execution of instructions (PUSH, POP, DUP, SWAP, ADD, SUB, MUL, DIV, NEG, PRINT, HALT, JMP, JZ, JNZ). Error handling for invalid operations is in place.
+
+DONE: Source parsing, label collection, instruction execution loop, and stack operations are functional. All tests pass.
+
+BROKEN: Nothing is currently broken, but the system lacks input/output instructions (e.g., READ) and more complex control flow (e.g., CALL/RET). Error messages could be more detailed (e.g., line numbers).
+
+NEXT: Add an INPUT or READ instruction to pop a value from an input list and push it onto the stack, enhancing program interactivity.

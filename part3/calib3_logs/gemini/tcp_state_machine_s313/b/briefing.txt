@@ -1,0 +1,14 @@
+GOAL:
+Implement a robust TCP state machine class that correctly models state transitions based on events, as specified by RFC 793.
+
+STATE:
+A `TCPStateMachine` class exists in `tcp_state_machine.py`. It uses a dictionary to map `(current_state, event)` tuples to the `next_state`. The `handle(event)` method processes an event, updates the internal state, and returns the new state.
+
+DONE:
+The core transition logic for the primary, valid state transitions is implemented. The current implementation passes all existing tests, confirming the correctness of the transitions defined in the `self.transitions` dictionary.
+
+BROKEN:
+No known bugs, but the error handling is not robust. The `handle()` method raises a `ValueError` for any invalid event/state combination. A production-ready state machine should handle invalid inputs gracefully without crashing. The test suite is likely insufficient as it doesn't cover these failure cases.
+
+NEXT:
+Modify the `handle()` method. Instead of raising a `ValueError` for an invalid transition, it should return the string `'ERROR'` and the machine's internal state should remain unchanged.

@@ -1,0 +1,9 @@
+GOAL: Implement the Bencode encoding (`bencode`) and decoding (`bdecode`) functions. Bencode is a data serialization format used by BitTorrent that supports integers, byte strings, lists, and dictionaries.
+
+STATE: The `bencode_codec.py` file contains empty function stubs for `bencode` and `bdecode`. No implementation logic exists yet.
+
+DONE: The basic file structure and function signatures are in place.
+
+BROKEN: The `bencode` function is failing its first and most basic test case. The test `assert bencode(42) == b'i42e'` raises an `AssertionError`. This is expected, as the function body is empty and does not return the correct byte string for an integer.
+
+NEXT: Implement the integer encoding logic within the `bencode` function. Add a type check for `int`. If the object is an integer, format it as `b'i<integer>e'` and return it. This will fix the current failing test and be the first step towards a complete implementation.

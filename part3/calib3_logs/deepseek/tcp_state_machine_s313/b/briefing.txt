@@ -1,0 +1,9 @@
+GOAL: Implement a TCP state machine that correctly models protocol transitions and passes all validation tests.
+
+STATE: Basic class structure with transition dictionary implemented. All defined tests currently pass.
+
+DONE: Core state transition logic works. Handles valid transitions and raises ValueError for invalid ones. Property getter for state is functional.
+
+BROKEN: Unknown if all required TCP states/events are covered. No handling for edge cases like repeated events or logging. Error message for invalid transitions is generic.
+
+NEXT: Review the transition table against a standard TCP state diagram to identify and add any missing states (e.g., SYN_RCVD to CLOSED on RST) or events.

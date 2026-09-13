@@ -1,0 +1,71 @@
+{
+  "family": "gpt",
+  "task": "tcp_state_machine",
+  "seed": 313,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00234105,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.00157325,
+    "text": "GOAL: Implement a correct TCP connection state machine: accept events, update state per TCP FSM rules, and be fully covered by tests.\n\nSTATE: tcp_state_machine.py defines TCPStateMachine with initial state 'CLOSED', a _transitions dict mapping (state, event) -> new_state, and a handle(event) method that looks up the transition, sets self.state, and raises ValueError for invalid transitions. Tests currently run and pass.\n\nDONE:\n- Core class and handle() method implemented.\n- A broad set of common TCP transitions are present (CLOSED, LISTEN, SYN_SENT, SYN_RCVD, ESTABLISHED, CLOSE_WAIT, FIN_WAIT_1/2, CLOSING, LAST_ACK, TIME_WAIT).\n- Invalid transitions raise ValueError.\n- All supplied tests currently pass.\n\nBROKEN / UNKNOWN:\n- Completeness vs RFC 793: it's unclear whether the transitions cover every canonical TCP state/event combination (e.g., RST behavior in all states, simultaneous close/open corner cases).\n- Input handling: events are case-sensitive strings; no validation or normalization.\n- Concurrency/thread-safety not addressed.\n- No logging/auditing of transitions.\n- No explicit unit tests shown for illegal events, unexpected inputs (None, non-string), or race conditions.\n- Behavior for duplicate/ignored events (e.g., repeated ACKs) is unspecified.\n\nNEXT: The single most important thing to try is to validate and complete the transition table against the canonical TCP state diagram (RFC 793) \u2014 add any missing state/event pairs (including RST handling and edge cases like simultaneous open/close), then add targeted unit tests for those cases and for invalid inputs to ensur"
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0031615999999999997,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "class TCPStateMachine:\n    def __init__(self):\n        # initial state\n        self.state = 'CLOSED'\n        # transitions: (state, event) -> new_state\n        self._transitions = {\n            ('CLOSED', 'OPEN'): 'LISTEN',\n            ('CLOSED', 'SYN'): 'SYN_SENT',\n            ('LISTEN', 'SYN'): 'SYN_RCVD',\n            ('LISTEN', 'RESET'): 'LISTEN',\n            ('SYN_SENT', 'SYN_ACK'): 'ESTABLISHED',\n            ('SYN_SENT', 'SYN'): 'SYN_RCVD',\n            ('SYN_SENT', 'RESET'): 'CLOSED',\n            ('SYN_RCVD', 'ACK'): 'ESTABLISHED',\n            ('SYN_RCVD', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'FIN'): 'CLOSE_WAIT',\n            ('ESTABLISHED', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'RESET'): 'CLOSED',\n            ('FIN_WAIT_1', 'ACK'): 'FIN_WAIT_2',\n            ('FIN_WAIT_1', 'FIN'): 'CLOSING',\n            ('FIN_WAIT_1', 'FIN_ACK'): 'TIME_WAIT',\n            ('FIN_WAIT_2', 'FIN'): 'TIME_WAIT',\n            ('CLOSING', 'ACK'): 'TIME_WAIT',\n            ('CLOSE_WAIT', 'CLOSE'): 'LAST_ACK',\n            ('LAST_ACK', 'ACK'): 'CLOSED',\n            ('TIME_WAIT', 'TIMEOUT'): 'CLOSED',\n            ('TIME_WAIT', 'RESET'): 'CLOSED',\n        }\n\n    def handle(self, event: str) -> str:\n        key = (self.state, event)\n        if key not in self._transitions:\n            raise ValueError(f\"Invalid event '{event}' in state '{self.state}'\")\n        new_state = self._transitions[key]\n        self.state = new_state\n        return self.state\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0070758999999999996
+}

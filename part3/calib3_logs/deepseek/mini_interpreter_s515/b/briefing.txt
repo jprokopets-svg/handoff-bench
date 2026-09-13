@@ -1,0 +1,9 @@
+GOAL: Build a mini interpreter that runs simple programs with assignments, arithmetic, comparisons, print, input, if/else, and while loops.
+
+STATE: Tokenizer, expression parser (AST), and statement executor are implemented. Basic structure is in place but failing on first test.
+
+DONE: Tokenization handles INT, NAME, OP, COMP, parentheses. Parser builds AST nodes (BinOp, IntLit, Var). Statement classes (Assign, Print, etc.) defined. Control flow (If, While) parsing attempted.
+
+BROKEN: Token object uses `.name` attribute in parser, but tokenizer stores variable names as `.value` (not `.name`). This causes AttributeError when parsing simple assignment `x = 5`. Also, statement parsing logic for blocks (if/else) may be fragile.
+
+NEXT: Fix the Token attribute mismatch: in `parse_primary()`, change `Var(tok.name)` to `Var(tok.value)` since NAME tokens store the identifier string in `value`. Then re-run basic test.

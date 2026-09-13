@@ -1,0 +1,3 @@
+GOAL: The `process_csv` function should correctly parse RFC-4180 CSVs, apply filtering and sorting transformations, and handle malformed input by raising a `ValueError`.
+
+STATE: The current implementation handles basic CSV parsing, filtering rows where `status` is 'skip', and sorting by a `sort` column (handling mixed numeric/string data). It uses the

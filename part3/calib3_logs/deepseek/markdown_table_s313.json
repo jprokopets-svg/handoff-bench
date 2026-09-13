@@ -1,0 +1,70 @@
+{
+  "family": "deepseek",
+  "task": "markdown_table",
+  "seed": 313,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00221970575,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 170,
+    "cost": 0.00034286,
+    "text": "GOAL: Convert a Markdown table string to an HTML table string, handling escaped pipes and alignment specifiers.\n\nSTATE: Core function `md_table_to_html` is implemented. It parses rows, validates separator format, extracts alignments, and builds HTML with proper escaping.\n\nDONE: Basic parsing, alignment detection, HTML generation, and escaping work. All existing tests pass.\n\nBROKEN: No known failures. Edge cases like extremely long cells, nested HTML in Markdown, or malformed tables beyond validation may need handling but are untested.\n\nNEXT: Add a test for a table with escaped pipe characters (`\\|`) in cell content to ensure they are preserved correctly in the output HTML."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0013959231,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "import re\n\ndef md_table_to_html(text: str) -> str:\n    # Split text into lines and ignore blank lines\n    lines = [line.rstrip('\\n') for line in text.splitlines()]\n    non_blank_lines = [line for line in lines if line.strip() != '']\n    \n    # Check we have at least 2 non-blank lines (header and separator)\n    if len(non_blank_lines) < 2:\n        raise ValueError(\"Fewer than two non-blank lines\")\n    \n    # Parse rows\n    header_line = non_blank_lines[0]\n    separator_line = non_blank_lines[1]\n    body_lines = non_blank_lines[2:]\n    \n    # Helper function to parse a row into cells\n    def parse_row(line: str):\n        # Remove optional leading and trailing '|'\n        line = line.strip()\n        if line.startswith('|'):\n            line = line[1:]\n        if line.endswith('|') and not line.endswith('\\\\|'):\n            line = line[:-1]\n        \n        # Split by unescaped '|' characters\n        cells = []\n        current = []\n        i = 0\n        while i < len(line):\n            if line[i] == '\\\\' and i + 1 < len(line) and line[i + 1] == '|':\n                current.append('|')\n                i += 2\n            elif line[i] == '|':\n                cells.append(''.join(current).strip())\n                current = []\n                i += 1\n            else:\n                current.append(line[i])\n                i += 1\n        cells.append(''.join(current).strip())\n        \n        return cells\n    \n    # Parse header, separator, and body rows\n    header_cells = parse_row(header_line)\n    separator_cells = parse_row(separator_line)\n    body_rows = [parse_row(line) for line in body_lines]\n    \n    # Validate separator has same number of cells as header\n    if len(separator_cells) != len(header_cells):\n        raise ValueError(\"Column-count mismatch in separator\")\n    \n    # Validate each separator cell matches the pattern\n    alignments = []\n    pattern = re.compile(r'^:?-{3,}:?$')\n    for cell in separator_cells:\n        if not pattern.match(cell):\n            raise ValueError(\"Separator cell does not match pattern\")\n        \n        # Determine alignment\n        if cell.startswith(':') and cell.endswith(':'):\n            alignments.append('center')\n        elif cell.startswith(':'):\n            alignments.append('left')\n        elif cell.endswith(':'):\n            alignments.append('right')\n        else:\n            alignments.append(None)\n    \n    # Validate body rows have correct number of cells\n    for row in body_rows:\n        if len(row) != len(header_cells):\n            raise ValueError(\"Column-count mismatch in body row\")\n    \n    # Helper function to escape HTML special characters\n    def escape_html(text: str) -> str:\n        text = text.replace('&', '&amp;')\n        text = text.replace('<', '&lt;')\n        text = text.replace('>', '&gt;')\n        return text\n    \n    # Build HTML\n    html_parts = ['<table>']\n    \n    # Build header\n    header_html = ['<thead><tr>']\n    for i, cell in enumerate(header_cells):\n        escaped = escape_html(cell)\n        if alignments[i]:\n            header_html.append(f'<th align=\"{alignments[i]}\">{escaped}</th>')\n        else:\n            header_html.append(f'<th>{escaped}</th>')\n    header_html.append('</tr></thead>')\n    html_parts.append(''.join(header_html))\n    \n    # Build body\n    if body_rows:\n        body_html = ['<tbody>']\n        for row in body_rows:\n            body_html.append('<tr>')\n            for i, cell in enumerate(row):\n                escaped = escape_html(cell)\n                if alignments[i]:\n                    body_html.append(f'<td align=\"{alignments[i]}\">{escaped}</td>')\n                else:\n                    body_html.append(f'<td>{escaped}</td>')\n            body_html.append('</tr>')\n        body_html.append('</tbody>')\n        html_parts.append(''.join(body_html))\n    else:\n        html_parts.append('<tbody></tbody>')\n    \n    html_parts.append('</table>')\n    \n    return '\\n'.join(html_parts)"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.00395848885
+}

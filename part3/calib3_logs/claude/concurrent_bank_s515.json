@@ -1,0 +1,71 @@
+{
+  "family": "claude",
+  "task": "concurrent_bank",
+  "seed": 515,
+  "model": "anthropic/claude-haiku-4.5",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.013611000000000002,
+    "tool_summary": {
+      "counts": {
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 1,
+      "call_order": [
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.002915,
+    "text": "# BRIEFING: concurrent_bank.py\n\n**GOAL:**\nImplement a thread-safe bank system supporting concurrent account operations (create, deposit, withdraw, transfer, balance) with atomicity guarantees and proper error handling.\n\n**STATE:**\n- Complete `Bank` class with 6 methods implemented\n- Uses `threading.Lock()` for synchronization\n- All operations validate inputs and account existence\n- Transfer operation is atomic (both debit/credit or neither)\n- Test suite exists and reports all tests passing\n\n**DONE:**\n\u2713 Thread-safe account creation with duplicate prevention\n\u2713 Deposit/withdraw with positive amount validation\n\u2713 Atomic transfer with pre-flight checks (both accounts exist, sufficient balance)\n\u2713 Balance queries with account existence check\n\u2713 All operations protected by single global lock\n\u2713 Comprehensive error messages with ValueError exceptions\n\u2713 No negative balances allowed (enforced in withdraw)\n\n**BROKEN:**\n- **Unknown**: No test file visible\u2014cannot verify test coverage or edge cases\n- **Potential issue**: Single global lock may be overly conservative for scalability (all operations serialize), but acceptable for correctness\n- **Potential issue**: No `get_all_accounts()` or account listing method (may not be required)\n\n**NEXT:**\nVerify the test suite covers:\n1. **Concurrent stress test**: Multiple threads simultaneously transferring between accounts to confirm no race conditions\n2. **Transfer atomicity**: Confirm that failed transfers (insufficient balance, missing account) leave state unchanged\n3. **Edge cases**: Zero/negative amounts, non-existent accounts, self-transfers\n4."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.021436999999999998,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 6
+    },
+    "retry_events": [],
+    "code": "import threading\n\n\nclass Bank:\n    def __init__(self):\n        self._lock = threading.Lock()\n        self._accounts = {}  # acc_id -> balance\n    \n    def create_account(self, acc_id: str) -> None:\n        \"\"\"Create a new account with zero balance. Raises ValueError if account already exists.\"\"\"\n        with self._lock:\n            if acc_id in self._accounts:\n                raise ValueError(f\"Account {acc_id} already exists\")\n            self._accounts[acc_id] = 0.0\n    \n    def deposit(self, acc_id: str, amount: float) -> None:\n        \"\"\"Deposit amount into account. Raises ValueError if amount <= 0 or account missing.\"\"\"\n        if amount <= 0:\n            raise ValueError(f\"Deposit amount must be positive, got {amount}\")\n        \n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            self._accounts[acc_id] += amount\n    \n    def withdraw(self, acc_id: str, amount: float) -> None:\n        \"\"\"Withdraw amount from account. Raises ValueError if amount <= 0, account missing, or insufficient balance.\"\"\"\n        if amount <= 0:\n            raise ValueError(f\"Withdrawal amount must be positive, got {amount}\")\n        \n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            if self._accounts[acc_id] < amount:\n                raise ValueError(f\"Insufficient balance in account {acc_id}\")\n            self._accounts[acc_id] -= amount\n    \n    def transfer(self, from_id: str, to_id: str, amount: float) -> None:\n        \"\"\"Atomically transfer amount from one account to another. \n        Raises ValueError if amount <= 0, either account missing, or insufficient funds.\n        If transfer fails, nothing changes.\"\"\"\n        if amount <= 0:\n            raise ValueError(f\"Transfer amount must be positive, got {amount}\")\n        \n        with self._lock:\n            # Check both accounts exist\n            if from_id not in self._accounts:\n                raise ValueError(f\"Account {from_id} does not exist\")\n            if to_id not in self._accounts:\n                raise ValueError(f\"Account {to_id} does not exist\")\n            \n            # Check sufficient balance\n            if self._accounts[from_id] < amount:\n                raise ValueError(f\"Insufficient balance in account {from_id}\")\n            \n            # Perform atomic transfer\n            self._accounts[from_id] -= amount\n            self._accounts[to_id] += amount\n    \n    def balance(self, acc_id: str) -> float:\n        \"\"\"Get the balance of an account. Raises ValueError if account missing.\"\"\"\n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            return self._accounts[acc_id]\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 3
+  },
+  "transport_complete": true,
+  "cost": 0.037963
+}

@@ -1,0 +1,71 @@
+{
+  "family": "gpt",
+  "task": "graph_serializer",
+  "seed": 515,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.00678905,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 400,
+    "cost": 0.0036145,
+    "text": "GOAL: Serialize and deserialize Python object graphs to JSON while preserving shared references and cycles. Supported: int, float, bool, None, str, list, dict (string keys).\n\nSTATE: encode/decode implemented in graph_serializer.py. encode assigns unique indices by object id, emits nodes list with type tags and child indices. decode validates structure, creates placeholders for containers and primitives, then fills containers to restore graph with identity preservation. Quick manual test harness present; unit tests all passed.\n\nDONE:\n- Round-trip encode/decode works for listed supported types.\n- Shared references and cyclic lists/dicts are preserved.\n- Decode performs strict validation of input shape and types (rejects malformed inputs).\n- Handles JSON serialization and deserialization.\n\nBROKEN / UNKNOWN:\n- No support for tuples, sets, or non-string dict keys (unsupported types raise ValueError).\n- Potentially surprising behavior due to using id() for immutables (small-int/string interning may create apparent sharing).\n- encode swallows json.dumps exceptions (re-raises without context).\n- decode accepts numeric floats that JSON may parse as int (converted to float) \u2014 deliberate but may be unexpected.\n- No explicit limits/protection against deeply nested or maliciously large inputs (recursion/memory attack risk).\n- No tests for tuples/sets, large graphs, or adversarial/malformed JSON beyond basic cases.\n\nNEXT: Add support and tests for tuples (and/or sets) \u2014 implement tuple serialization (\"t\":\"tuple\",\"v\":[...]) and ensure decode reconstructs a tuple while preserving identity "
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.0075026500000000005,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "import json\nfrom typing import Any, Dict, List\n\n\ndef encode(obj: object) -> str:\n    # Assign a unique index to each Python object by its id()\n    # Build node entries describing type and references by index\n    seen = {}  # id(obj) -> index\n    nodes = []\n\n    def add(o):\n        oid = id(o)\n        if oid in seen:\n            return seen[oid]\n        idx = len(nodes)\n        seen[oid] = idx\n        # placeholder to reserve index\n        nodes.append(None)\n\n        # Determine type and representation\n        if o is None:\n            nodes[idx] = {\"t\": \"none\"}\n        elif isinstance(o, bool):\n            # bool is a subclass of int, check before int\n            nodes[idx] = {\"t\": \"bool\", \"v\": o}\n        elif isinstance(o, int):\n            nodes[idx] = {\"t\": \"int\", \"v\": o}\n        elif isinstance(o, float):\n            nodes[idx] = {\"t\": \"float\", \"v\": o}\n        elif isinstance(o, str):\n            nodes[idx] = {\"t\": \"str\", \"v\": o}\n        elif isinstance(o, list):\n            # recursively add children\n            children = []\n            for item in o:\n                children.append(add(item))\n            nodes[idx] = {\"t\": \"list\", \"v\": children}\n        elif isinstance(o, dict):\n            # only allow string keys\n            mapping = {}\n            for k, v in o.items():\n                if not isinstance(k, str):\n                    raise ValueError(\"Only string dict keys are supported\")\n                mapping[k] = add(v)\n            nodes[idx] = {\"t\": \"dict\", \"v\": mapping}\n        else:\n            raise ValueError(f\"Unsupported type: {type(o)!r}\")\n        return idx\n\n    root_idx = add(obj)\n    out = {\"root\": root_idx, \"nodes\": nodes}\n    try:\n        return json.dumps(out, separators=(\",\", \":\"), ensure_ascii=False)\n    except (TypeError, ValueError):\n        # propagate as ValueError\n        raise\n\n\ndef decode(s: str) -> object:\n    try:\n        data = json.loads(s)\n    except Exception as e:\n        raise ValueError(\"Malformed input: not valid JSON\") from e\n\n    if not isinstance(data, dict):\n        raise ValueError(\"Malformed input: top-level must be an object\")\n    if \"root\" not in data or \"nodes\" not in data:\n        raise ValueError(\"Malformed input: missing root or nodes\")\n    root = data[\"root\"]\n    nodes = data[\"nodes\"]\n    if not isinstance(root, int):\n        raise ValueError(\"Malformed input: root must be int\")\n    if not isinstance(nodes, list):\n        raise ValueError(\"Malformed input: nodes must be list\")\n\n    # First pass: create placeholders or primitive values\n    n = len(nodes)\n    if not (0 <= root < n):\n        raise ValueError(\"Malformed input: root index out of range\")\n\n    objects: List[Any] = [None] * n\n\n    for i, node in enumerate(nodes):\n        if not isinstance(node, dict):\n            raise ValueError(\"Malformed input: each node must be object\")\n        if \"t\" not in node:\n            raise ValueError(\"Malformed input: node missing type\")\n        t = node[\"t\"]\n        if t == \"none\":\n            objects[i] = None\n        elif t == \"bool\":\n            if \"v\" not in node or not isinstance(node[\"v\"], bool):\n                raise ValueError(\"Malformed input: invalid bool node\")\n            objects[i] = node[\"v\"]\n        elif t == \"int\":\n            if \"v\" not in node or not isinstance(node[\"v\"], int):\n                # JSON may parse numbers as int or float; require int\n                raise ValueError(\"Malformed input: invalid int node\")\n            objects[i] = node[\"v\"]\n        elif t == \"float\":\n            if \"v\" not in node or not (isinstance(node[\"v\"], float) or isinstance(node[\"v\"], int)):\n                # JSON may give ints for floats; accept int too and convert\n                raise ValueError(\"Malformed input: invalid float node\")\n            objects[i] = float(node[\"v\"])\n        elif t == \"str\":\n            if \"v\" not in node or not isinstance(node[\"v\"], str):\n                raise ValueError(\"Malformed input: invalid str node\")\n            objects[i] = node[\"v\"]\n        elif t == \"list\":\n            if \"v\" not in node or not isinstance(node[\"v\"], list):\n                raise ValueError(\"Malformed input: invalid list node\")\n            # placeholder list to be filled later\n            objects[i] = []\n        elif t == \"dict\":\n            if \"v\" not in node or not isinstance(node[\"v\"], dict):\n                raise ValueError(\"Malformed input: invalid dict node\")\n            # keys must be strings and values indices\n            objects[i] = {}\n        else:\n            raise ValueError(\"Malformed input: unknown node type\")\n\n    # Second pass: fill containers\n    for i, node in enumerate(nodes):\n        t = node[\"t\"]\n        if t == \"list\":\n            children = node[\"v\"]\n            lst = objects[i]\n            for idx in children:\n                if not isinstance(idx, int) or not (0 <= idx < n):\n                    raise ValueError(\"Malformed input: invalid child index\")\n                lst.append(objects[idx])\n        elif t == \"dict\":\n            mapping = node[\"v\"]\n            d = objects[i]\n            for k, idx in mapping.items():\n                if not isinstance(k, str):\n                    raise ValueError(\"Malformed input: dict keys must be strings\")\n                if not isinstance(idx, int) or not (0 <= idx < n):\n                    raise ValueError(\"Malformed input: invalid dict child index\")\n                d[k] = objects[idx]\n\n    return objects[root]\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0179062
+}

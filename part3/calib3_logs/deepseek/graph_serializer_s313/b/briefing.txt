@@ -1,0 +1,9 @@
+GOAL: Serialize/deserialize Python object graphs (int, float, bool, None, str, list, dict) preserving sharing and cycles via JSON.
+
+STATE: Implementation complete for encode/decode with type codes (0=int,1=float,2=bool,3=None,4=str,5=list,6=dict). Uses index mapping for lists/dicts to track identity; primitives encoded as values without identity tracking.
+
+DONE: All tests pass. Handles nested structures, string-only dict keys, cycles, and object sharing correctly.
+
+BROKEN: None known—all tests pass. Potential edge cases (e.g., very large integers, NaN floats) not explicitly tested but likely handled by JSON.
+
+NEXT: No immediate action required; code is functional. If extending, consider adding support for tuples/sets or performance optimizations.

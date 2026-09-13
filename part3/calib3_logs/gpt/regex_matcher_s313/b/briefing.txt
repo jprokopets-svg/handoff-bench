@@ -1,0 +1,20 @@
+GOAL: Continue developing and hardening the simple regex engine (regex_matcher.py) — verify correctness on edge cases, fix any bugs, and extend features if needed.
+
+STATE: The repository contains a complete parser and VM-like matcher for a subset of regex: literals, dot, char classes (with ranges and negation), sequence, alternation, grouping, quantifiers (* + ?), begin/end anchors, and escaping. parse_pattern builds an AST; full_match runs ast.match(text, 0). Current test suite reports all tests passed.
+
+DONE: 
+- Parser for atoms, character classes (including ranges and escapes), groups, alternation, and quantifiers.
+- Node implementations: Literal, Dot, CharClass, Sequence, Alternation, Star, Plus, Question, BeginAnchor, EndAnchor.
+- Matching engine returns all reachable positions (supports nondeterminism), full_match checks for full-string match.
+- Basic error handling via PatternError -> ValueError on parse errors.
+- Existing tests green.
+
+BROKEN / UNKNOWN:
+- Edge cases not fully validated: empty character classes, classes starting with ']', and semantics chosen for empty/ambiguous constructs.
+- Behavior for reversed ranges handled by swapping — correctness vs spec unclear.
+- Performance/backtracking risks on pathological patterns (exponential blowup) not measured.
+- No support for advanced features (group captures, non-greedy quantifiers, lookaround, character class escapes like \d, Unicode classes).
+- Potential gaps around anchors in the middle of patterns and interaction with alternation.
+- No fuzz/edge-case test coverage reported.
+
+NEXT: Run a focused edge-case test

@@ -1,0 +1,16 @@
+GOAL: Return a minimal sequence of edit operations (delete, insert, sub) that transforms string a into b; sequence length must equal Levenshtein distance and operations apply sequentially to the current string.
+
+STATE: Implementation present in edit_distance_ops.py. Uses a DP table dp[i][j] = distance from suffix a[i:] to b[j:], computed by iterating i and j downward. Then simulates forward from i=j=0, maintaining a mutable s=list(a) and pos index, emitting ops by consulting dp to choose sub/delete/insert. Tests were run.
+
+DONE:
+- DP table computed correctly for all i,j including base cases.
+- Forward simulation emits operations and mutates s to track positions.
+- All provided tests passed (PASS).
+
+BROKEN / UNKNOWN:
+- No failing tests, but tie-breaking between equally-optimal operations is arbitrary (code prefers substitution if dp matches, then delete, else insert). This is acceptable but undocumented and may affect which minimal sequence is returned.
+- No explicit verification in code that len(ops) == dp[0][0] or that applying ops to a yields b (tests covered current cases but broader coverage unknown).
+- Performance on very long strings untested (DP is O(mn) as expected).
+- Type annotation list[tuple] requires Python 3.9+; compatibility with older runtimes not checked.
+
+NEXT: Run property-based tests (e.g., randomly generate pairs a,b) that (1) verify applying the returned ops to a produces b and (2) assert len(ops) == computed Levenshtein distance; also examine cases with multiple optimal paths to confirm desired tie-breaking or document it.

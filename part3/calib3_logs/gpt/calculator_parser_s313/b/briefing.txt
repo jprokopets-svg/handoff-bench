@@ -1,0 +1,22 @@
+GOAL: Finish/hand off development of a small arithmetic expression tokenizer/parser/evaluator that supports +, -, *, /, %, parentheses, unary +/-, and exponentiation (**), producing a float result.
+
+STATE: The repository contains calculator_parser.py with a working tokenizer, recursive-descent Parser, and evaluate(s) entrypoint. Tests were run and all tests passed.
+
+DONE:
+- Tokenization of integers and decimals that start with a digit (regex \d+(?:\.\d+)?).
+- Recognition of operators: PLUS, MINUS, MUL, DIV, MOD, POW, LPAREN, RPAREN, EOF.
+- Parser implements precedence: add/sub → mul/div/mod → unary → power → primary.
+- Right-associative exponentiation implemented via recursive parsing.
+- Division/modulo-by-zero checks with ValueError.
+- Parentheses and unary operators handled.
+- evaluate(s) returns float result.
+- Current test suite passing.
+
+BROKEN / UNKNOWN:
+- Numbers that start with a decimal point (e.g., ".5") are not recognized because tokenize only triggers number parsing when the current char is a digit.
+- Scientific notation (e.g., "1e-3", "2.5E6") is not supported.
+- Trailing-dot numbers like "2." are not recognized by the current regex.
+- No tests for very large exponents, negative zero edge-cases, or malformed multi-character invalid tokens.
+- No support for functions/variables, implicit multiplication, or unary precedence differences beyond current behavior (may need spec confirmation).
+
+NEXT: Implement more robust number parsing: change the tokenizer to accept numbers starting with '.' and scientific notation. Concretely, replace num_re with something like r"(?

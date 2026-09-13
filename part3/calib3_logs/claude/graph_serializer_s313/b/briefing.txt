@@ -1,0 +1,37 @@
+# BRIEFING: graph_serializer.py
+
+**GOAL:**
+Implement a serialization system that encodes Python object graphs to JSON strings while preserving shared references and cycles, then decodes them back to identical object structures.
+
+**STATE:**
+- Complete implementation of `encode()` and `decode()` functions
+- Supports: int, float, bool, None, str, list, dict (string keys only)
+- Uses object ID tracking and reference system to handle shared references and cycles
+- Encoding creates a package with "root" pointer and "objects" table
+- Decoding reconstructs objects with cycle-safe placeholder strategy
+- All tests passing
+
+**DONE:**
+✓ Primitive type handling (int, float, bool, None, str)
+✓ Container type encoding (list, dict) with reference tracking
+✓ Cycle detection via object ID mapping
+✓ Cycle-safe decoding with placeholder insertion before recursive descent
+✓ JSON serialization/deserialization
+✓ Error handling for invalid JSON, malformed packages, invalid references
+✓ Dict key validation (strings only)
+✓ Reference caching during decode to prevent re-processing
+
+**BROKEN:**
+- None identified; all tests pass
+
+**NEXT:**
+Deploy to production. If issues arise later, prioritize:
+1. Performance profiling on large graphs (current implementation uses linear search via `id()`)
+2. Support for additional types (tuple, set, custom classes) if requirements expand
+3. Optimization of reference tracking for deeply nested structures
+
+---
+
+**Notes for next agent:**
+- Code is stable and test-verified
+- Architecture uses two-phase approach: encode with reference table, decode with cycle-safe reconstr

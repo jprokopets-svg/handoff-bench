@@ -1,0 +1,9 @@
+GOAL: To create a robust assembler and simulator for a simple RPN stack-based virtual machine.
+
+STATE: The project consists of a single Python file, `rpn_assembler.py`, containing one large function, `run_asm`. This function handles the entire pipeline: parsing source code, assembling it into an intermediate representation, and then simulating its execution.
+
+DONE: The core functionality is complete and appears to be working correctly, as indicated by passing tests. The system can handle parsing source with comments and labels, assembling various instructions (stack, arithmetic, control flow), resolving jump labels to addresses, and simulating the final program. Runtime errors like stack underflow are also handled.
+
+BROKEN: Functionally, nothing is broken. The main weakness is architectural. The `run_asm` function is monolithic, combining three distinct responsibilities: parsing, assembling, and simulation. This makes the code difficult to maintain, test in isolation, and extend with new features.
+
+NEXT: Refactor the `run_asm` function. The most important first step is to separate the simulation logic from the assembly logic. Create a distinct `simulate(program)` function or a `VM` class that takes the assembled program as input and executes it, returning the final output.

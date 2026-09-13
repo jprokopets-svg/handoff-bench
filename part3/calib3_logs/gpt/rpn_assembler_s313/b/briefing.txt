@@ -1,0 +1,24 @@
+GOAL: Continue work on rpn_assembler.run_asm — ensure parsing, label resolution and VM execution are correct and robust; pick up where interrupted and address any edge cases or spec mismatches.
+
+STATE: Full implementation present in rpn_assembler.py. It:
+- Parses lines, comments, labels, and instructions.
+- Validates operands.
+- Resolves label names to instruction indices.
+- Executes stack-based VM with arithmetic, jumps, PRINT and HALT.
+- Returns concatenated printed lines.
+
+DONE:
+- Parser/assembler and VM implemented end-to-end.
+- Label resolution implemented (labels map to instruction indices).
+- Error handling for unknown mnemonics, invalid operands, stack underflow, division by zero, duplicate/undefined labels.
+- All existing tests passed.
+
+BROKEN / UNKNOWN:
+- No failing tests, but potential spec/edge issues not covered by tests:
+  - LABEL_RE allows labels that start with digits (regex: ^[A-Za-z0-9_]+$). Spec may require starting with a letter/underscore.
+  - DIV uses Python floor division (b // a), which floors toward -inf; spec might expect truncation toward zero.
+  - Behavior for very large integers, integer overflow, or nonstandard whitespace/escape cases not validated.
+  - No tests for negative division cases, label characters like '-', or labels colliding with numeric literals.
+  - Absence of HALT is handled by falling off end; confirm if that matches spec.
+
+NEXT: Run targeted unit tests for the edge cases above — especially negative-operand division to verify intended rounding (if trunc-to-zero is required, change DIV to int(b / a) or math.trunc), and label-name

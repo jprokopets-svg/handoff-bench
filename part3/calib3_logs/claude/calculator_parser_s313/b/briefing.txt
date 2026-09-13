@@ -1,0 +1,27 @@
+# BRIEFING: Calculator Parser Fix
+
+**GOAL:**
+Implement a recursive descent parser for infix arithmetic expressions supporting +, -, *, /, %, ** operators with correct operator precedence and associativity.
+
+**STATE:**
+- Complete tokenizer and parser framework exists
+- Operator precedence chain: expression → term → power → unary → primary
+- Right-associative exponentiation implemented
+- All basic operations (+-*/%()) tokenize and parse
+
+**DONE:**
+- Tokenization handles numbers, decimals, operators, parentheses
+- Error handling for division/modulo by zero
+- Unary +/- operators work correctly
+- Parenthesized expressions parse
+- Basic arithmetic operations function
+
+**BROKEN:**
+- **Critical: `**` operator not tokenized correctly**
+  - Tokenizer checks for `**` AFTER consuming first `*` as single operator
+  - When `2 ** 3 ** 2` is tokenized, first `*` is consumed as `('*', '*')`, leaving second `*` orphaned
+  - Parser then encounters unexpected `*` token in parse_primary()
+  - Test expects `2 ** 3 ** 2 = 512` (which is 2^(3^2) = 2^9 = 512)
+
+**NEXT:**
+Fix tokenizer's `**` detection: Move the `**` check BEFORE the single `*` check. The current logic at line ~65 checks for `**` only after already handling single operators. Reorder so that when we encounter `*`, we immediately look ahead for a second `*` before appending a single-`*` token. This will properly tokenize `**` as a single token `('**', '**')` instead of two separate `*` tokens.

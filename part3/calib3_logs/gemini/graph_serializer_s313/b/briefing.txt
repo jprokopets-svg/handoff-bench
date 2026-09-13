@@ -1,0 +1,9 @@
+GOAL: Implement a robust Python module for serializing and deserializing object graphs to JSON, correctly handling shared references and cycles.
+
+STATE: The `graph_serializer.py` module has functional `encode` and `decode` implementations. `encode` traverses the object graph, identifies unique containers, and uses `"$ref"` objects to represent shared/cyclic references. `decode` uses a two-pass approach: first creating empty containers, then populating them to correctly reconstruct the original graph structure.
+
+DONE: The core logic is complete and passes all existing tests. This includes serialization and deserialization of basic types, nested lists/dicts, objects with shared references, and objects with cyclical references.
+
+BROKEN: No known test failures. However, the test suite's coverage of edge cases is unknown. The `decode` function's internal helper, `_reconstruct`, has logic for building lists/dicts that appears redundant with the main population loop. While this works for current tests, it complicates the logic and may hide subtle bugs. The code also lacks type hints and comprehensive docstrings.
+
+NEXT: Expand the test suite to cover more edge cases. Specifically, test empty containers (`[]`, `{}`), deeply nested structures, graphs with multiple disjoint cycles, and various forms of malformed input to `decode` to ensure robustness before attempting to refactor or simplify the logic.

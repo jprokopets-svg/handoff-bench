@@ -1,0 +1,9 @@
+GOAL: Implement min_edit_ops to return correct edit operations transforming string a into b, with indices valid for sequential application.
+
+STATE: DP table correctly computes Levenshtein distance. Backtracking identifies operations but indices are off after the first operation due to not adjusting for prior changes in the string length/positions.
+
+DONE: DP and backtracking logic work. Operations are correctly identified (delete, insert, sub) in reverse, then reversed.
+
+BROKEN: Index adjustment simulation is flawed. The current code re-simulates operations on the original string using the indices from the reversed list, but these indices are from the DP perspective (original string positions) and don't account for shifts caused by earlier operations in the final forward sequence.
+
+NEXT: Fix the index adjustment. After backtracking, walk through the operations in forward order while maintaining a running index offset map or directly building the result_ops list with correct indices by simulating the transformation step-by-step from the original string, updating indices dynamically.

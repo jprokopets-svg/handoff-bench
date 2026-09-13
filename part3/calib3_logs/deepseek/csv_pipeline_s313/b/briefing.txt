@@ -1,0 +1,9 @@
+GOAL: Create a CSV parser that reads input text, filters rows where status='skip', sorts by 'sort' column (numeric first, then lexicographic), and outputs valid CSV.
+
+STATE: Core parsing and transformation logic is implemented. The code handles quoted fields, escaped quotes, and basic CSV formatting.
+
+DONE: CSV parsing works correctly. Filtering by 'status' column and sorting by 'sort' column (numeric priority) functions. Output formatting with proper quoting/escaping is operational. All existing tests pass.
+
+BROKEN: No known failures. However, edge cases like fields with leading/trailing spaces may not be quoted (RFC 4180 compliance is ambiguous here). The parser also does not handle carriage returns (`\r`) or empty input files gracefully beyond raising ValueError.
+
+NEXT: Enhance robustness by adding support for `\r\n` line endings and optionally trimming/quoting fields with surrounding whitespace per CSV spec interpretation.

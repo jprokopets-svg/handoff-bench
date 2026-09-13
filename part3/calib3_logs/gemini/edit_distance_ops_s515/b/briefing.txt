@@ -1,0 +1,9 @@
+GOAL: Implement the `min_edit_ops` function. It must return the sequence of operations (insert, delete, substitute) to transform string `a` into string `b`. The length of the returned list of operations should be equal to the Levenshtein distance.
+
+STATE: The `min_edit_ops` function is defined but contains only a `pass` statement. It does not return anything, leading to an implicit `None` return.
+
+DONE: The function signature `def min_edit_ops(a: str, b: str) -> list[tuple]:` is correctly defined in the file.
+
+BROKEN: The tests are failing with a `TypeError: object of type 'NoneType' has no len()`. This is because the function returns `None` instead of the expected list of operations. The core logic is completely unimplemented.
+
+NEXT: Implement the dynamic programming algorithm to compute the edit distance matrix. This matrix will store the cost of transforming prefixes of `a` into prefixes of `b`. This is the first and most crucial step before you can backtrack to find the actual edit operations.

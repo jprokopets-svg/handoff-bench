@@ -1,0 +1,71 @@
+{
+  "family": "gemini",
+  "task": "tcp_state_machine",
+  "seed": 313,
+  "model": "google/gemini-2.5-pro",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.029464999999999998,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 282,
+    "cost": 0.01770375,
+    "text": "GOAL:\nImplement a robust TCP state machine class that correctly models state transitions based on events, as specified by RFC 793.\n\nSTATE:\nA `TCPStateMachine` class exists in `tcp_state_machine.py`. It uses a dictionary to map `(current_state, event)` tuples to the `next_state`. The `handle(event)` method processes an event, updates the internal state, and returns the new state.\n\nDONE:\nThe core transition logic for the primary, valid state transitions is implemented. The current implementation passes all existing tests, confirming the correctness of the transitions defined in the `self.transitions` dictionary.\n\nBROKEN:\nNo known bugs, but the error handling is not robust. The `handle()` method raises a `ValueError` for any invalid event/state combination. A production-ready state machine should handle invalid inputs gracefully without crashing. The test suite is likely insufficient as it doesn't cover these failure cases.\n\nNEXT:\nModify the `handle()` method. Instead of raising a `ValueError` for an invalid transition, it should return the string `'ERROR'` and the machine's internal state should remain unchanged."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.030575875,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "class TCPStateMachine:\n    def __init__(self):\n        self.state = 'CLOSED'\n        self.transitions = {\n            ('CLOSED', 'OPEN'): 'LISTEN',\n            ('CLOSED', 'SYN'): 'SYN_SENT',\n            ('LISTEN', 'SYN'): 'SYN_RCVD',\n            ('LISTEN', 'RESET'): 'LISTEN',\n            ('SYN_SENT', 'SYN_ACK'): 'ESTABLISHED',\n            ('SYN_SENT', 'SYN'): 'SYN_RCVD',\n            ('SYN_SENT', 'RESET'): 'CLOSED',\n            ('SYN_RCVD', 'ACK'): 'ESTABLISHED',\n            ('SYN_RCVD', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'FIN'): 'CLOSE_WAIT',\n            ('ESTABLISHED', 'CLOSE'): 'FIN_WAIT_1',\n            ('ESTABLISHED', 'RESET'): 'CLOSED',\n            ('FIN_WAIT_1', 'ACK'): 'FIN_WAIT_2',\n            ('FIN_WAIT_1', 'FIN'): 'CLOSING',\n            ('FIN_WAIT_1', 'FIN_ACK'): 'TIME_WAIT',\n            ('FIN_WAIT_2', 'FIN'): 'TIME_WAIT',\n            ('CLOSING', 'ACK'): 'TIME_WAIT',\n            ('CLOSE_WAIT', 'CLOSE'): 'LAST_ACK',\n            ('LAST_ACK', 'ACK'): 'CLOSED',\n            ('TIME_WAIT', 'TIMEOUT'): 'CLOSED',\n            ('TIME_WAIT', 'RESET'): 'CLOSED',\n        }\n\n    def handle(self, event: str) -> str:\n        if (self.state, event) in self.transitions:\n            self.state = self.transitions[(self.state, event)]\n            return self.state\n        else:\n            raise ValueError('Invalid event for current state')\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.077744625
+}

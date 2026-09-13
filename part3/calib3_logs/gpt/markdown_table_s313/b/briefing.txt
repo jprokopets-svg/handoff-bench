@@ -1,0 +1,20 @@
+GOAL: Convert a Markdown-style pipe table to HTML reliably (headers, alignments, body rows, escaped pipes).
+
+STATE: The repository contains markdown_table.py with md_table_to_html(text). It tokenizes lines, strips optional outer unescaped pipes, splits cells honoring backslash-escaped pipes (\|), validates separator row (--- with optional : for alignment), escapes HTML in cell contents, and emits a <table> with <thead> and <tbody>.
+
+DONE:
+- Splitting into nonblank lines; header, separator, and body extraction implemented.
+- Leading/trailing unescaped pipe removal implemented.
+- Cell splitting that treats \| as a literal pipe and preserves other backslashes.
+- Separator validation and left/center/right alignment detection.
+- HTML escaping for &, <, > and HTML assembly with align attributes.
+- All current unit tests pass.
+
+BROKEN / UNKNOWN:
+- No handling for inline code spans/backtick-delimited segments: pipes inside `code` will be treated as separators unless escaped.
+- No handling for fenced code blocks or inline HTML affecting parsing; complex Markdown features (links, emphasis, nested backticks) are not parsed, may mis-split.
+- Use of deprecated align attribute (HTML5 recommends CSS/text-align) — tests cover current behavior but may be semantically outdated.
+- Edge cases around multiple backslashes before pipes (e.g., "\\\|") need more test coverage to ensure escapes are interpreted as intended.
+- No support for colspan/rowspan, multiline cells, or relaxed GFM variants.
+
+NEXT: Add unit tests that include pipes inside inline code spans and sequences of backslashes before p

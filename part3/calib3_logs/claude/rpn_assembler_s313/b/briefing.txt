@@ -1,0 +1,28 @@
+# BRIEFING: RPN Assembler
+
+**GOAL:**
+Implement a working RPN (Reverse Polish Notation) stack-based assembler that parses and executes assembly code with arithmetic operations, stack manipulation, control flow, and I/O.
+
+**STATE:**
+Complete implementation of `run_asm()` function in rpn_assembler.py with:
+- Two-pass parser (labels collection, then instruction parsing)
+- Full instruction set: PUSH, POP, DUP, SWAP, ADD, SUB, MUL, DIV, NEG, PRINT, HALT, JMP, JZ, JNZ
+- Stack-based execution engine with program counter
+- Comment stripping and label validation
+- All test cases passing
+
+**DONE:**
+✓ Parsing: Comments removed, labels collected, instructions tokenized
+✓ Validation: Label uniqueness, jump targets defined, operand counts checked
+✓ Stack ops: DUP, SWAP, POP work correctly with underflow detection
+✓ Arithmetic: ADD, SUB, MUL, DIV, NEG implemented with proper operand order
+✓ Control flow: JMP (unconditional), JZ/JNZ (conditional jumps) functional
+✓ I/O: PRINT pops and outputs values with newlines
+✓ Error handling: Comprehensive ValueError messages for all failure modes
+✓ Test suite: All tests passing
+
+**BROKEN:**
+Nothing identified. Code is complete and functional.
+
+**NEXT:**
+No action required. The implementation is complete and all tests pass. If future requirements emerge (e.g., new instructions, additional validation, performance optimization), review test failures and implement accordingly. Otherwise, this task is ready for deployment.

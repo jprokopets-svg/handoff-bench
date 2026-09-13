@@ -1,0 +1,19 @@
+GOAL: Serialize and deserialize Python object graphs to JSON while preserving shared references and cycles. Supported: int, float, bool, None, str, list, dict (string keys).
+
+STATE: encode/decode implemented in graph_serializer.py. encode assigns unique indices by object id, emits nodes list with type tags and child indices. decode validates structure, creates placeholders for containers and primitives, then fills containers to restore graph with identity preservation. Quick manual test harness present; unit tests all passed.
+
+DONE:
+- Round-trip encode/decode works for listed supported types.
+- Shared references and cyclic lists/dicts are preserved.
+- Decode performs strict validation of input shape and types (rejects malformed inputs).
+- Handles JSON serialization and deserialization.
+
+BROKEN / UNKNOWN:
+- No support for tuples, sets, or non-string dict keys (unsupported types raise ValueError).
+- Potentially surprising behavior due to using id() for immutables (small-int/string interning may create apparent sharing).
+- encode swallows json.dumps exceptions (re-raises without context).
+- decode accepts numeric floats that JSON may parse as int (converted to float) — deliberate but may be unexpected.
+- No explicit limits/protection against deeply nested or maliciously large inputs (recursion/memory attack risk).
+- No tests for tuples/sets, large graphs, or adversarial/malformed JSON beyond basic cases.
+
+NEXT: Add support and tests for tuples (and/or sets) — implement tuple serialization ("t":"tuple","v":[...]) and ensure decode reconstructs a tuple while preserving identity 

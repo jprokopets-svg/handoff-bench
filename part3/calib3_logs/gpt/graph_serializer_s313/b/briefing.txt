@@ -1,0 +1,17 @@
+GOAL: Complete/hand off work on a serializer that encodes Python object graphs (preserving sharing and cycles) to JSON and decodes them back. Ensure robustness and cover edge cases.
+
+STATE: graph_serializer.py implements encode(obj) and decode(s). encode produces a JSON object {"root": ..., "nodes": {...}} with container nodes assigned string ids. decode reconstructs objects from that representation. Current test suite runs and reports all tests passed.
+
+DONE:
+- encode supports int, float, bool, None, str, list, dict (string keys).
+- Shared references and cycles are preserved via node ids and $ref wrappers.
+- decode parses JSON, builds placeholders, fills lists/dicts, and validates many malformed cases.
+- Tests currently pass.
+
+BROKEN / UNKNOWN:
+- Some edge cases not explicitly validated by tests: nodes missing "t" or "v", nodes with extra unexpected fields, non-string node ids in JSON input, or node entries where "v" is omitted (create-placeholder logic permits v is None during placeholder creation but later requires correct types).
+- decode error messages are generic; behavior for unusual but legal JSON layouts (e.g., root as a non-$ref dict) is covered but could be brittle.
+- Performance/recursion limits on very large or deeply recursive graphs untested.
+- No fuzzing or adversarial malformed-input tests run yet.
+
+NEXT: Add targeted unit tests for malformed inputs and edge cases: missing/invalid node fields, non-string node ids, unknown $ref targets, extra keys in $ref dicts, omitted "v", very deep graphs, and shared-reference scenarios; then run tests and adjust decode v

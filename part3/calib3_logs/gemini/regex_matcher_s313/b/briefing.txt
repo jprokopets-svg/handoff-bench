@@ -1,0 +1,9 @@
+GOAL: Implement the `full_match` function in `regex_matcher.py` to determine if a given `pattern` string matches the entire `text` string. The initial scope appears to be simple literal matching.
+
+STATE: The `full_match` function exists as a stub with a `pass` statement. It takes a `pattern` and `text` string and is type-hinted to return a boolean.
+
+DONE: The function signature and file structure are in place.
+
+BROKEN: The function has no implementation. It implicitly returns `None`, causing the test `assert full_match('abc', 'abc') == True` to fail with an `AssertionError`.
+
+NEXT: Implement the most basic logic to pass the failing test. A simple string comparison, `return pattern == text`, will satisfy the current test case and serve as the starting point for handling more complex patterns.

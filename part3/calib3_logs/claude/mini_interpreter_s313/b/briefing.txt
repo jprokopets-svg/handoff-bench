@@ -1,0 +1,39 @@
+# BRIEFING: Mini Interpreter Fix
+
+**GOAL:**
+Implement a tiny imperative language interpreter supporting variables, arithmetic, comparisons, if/else, while loops, and print statements.
+
+**STATE:**
+- Complete interpreter with tokenizer, expression parser (with proper precedence), and statement execution
+- Supports: assignments, print(), if/else, while loops, input()
+- Expression parser handles: arithmetic (+,-,*,/,%), comparisons (==,!=,<,<=,>,>=), parentheses, variables, integers
+
+**DONE:**
+- Expression evaluation with correct operator precedence ✓
+- Variable storage and assignment ✓
+- Basic if/while statement parsing ✓
+- Print and input functionality ✓
+- Block nesting detection (mostly) ✓
+
+**BROKEN:**
+The `find_block_end()` function fails on if/else blocks. Root cause: it counts braces but doesn't properly handle the `else {` clause that appears *after* the closing `}` of the if block.
+
+Current logic:
+1. Finds closing `}` for if block (depth reaches 0)
+2. Returns that index
+3. Main code then looks for `else {` on the next line
+4. But `find_block_end()` is called again for the else block starting from wrong position
+
+**Problem scenario:**
+```
+if 0 {
+print(1)
+}
+else {
+print(2)
+}
+```
+When parsing else block, `find_block_end(line_idx)` starts after `else {` but the depth counter starts at 1, expecting to find a matching `}`. The logic breaks because it's not accounting for the `{` in `else {`.
+
+**NEXT:**
+Fix `find_block_end()` to properly initialize depth when called after `else {`. The function should check if the starting line contains `{` and adjust initial depth accordingly

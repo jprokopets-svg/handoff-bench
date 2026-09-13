@@ -1,0 +1,3 @@
+GOAL: The task is to create a calculator that correctly evaluates mathematical expressions from a string, respecting operator precedence, associativity, parentheses, and unary operators.
+
+STATE: The code implements a Shunting-yard based algorithm to parse and evaluate expressions. It handles tokenization, operator precedence/associativity, and identifies unary vs. binary operators. It supports basic arithmetic, exponentiation (`**`), and

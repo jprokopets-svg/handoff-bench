@@ -1,0 +1,9 @@
+GOAL: Implement regex full_match supporting literals, ., *, +, ?, ^, $, [], (), |, and escaped metacharacters.
+
+STATE: Recursive descent parser built; pattern parsed into atoms with quantifiers. Backtracking matcher handles anchors and basic quantifiers. Character classes and escapes implemented.
+
+DONE: Parsing works for most constructs. Anchors and quantifier backtracking logic appears functional.
+
+BROKEN: Groups (parentheses) are parsed but not integrated into matching. Currently, groups are passed as atoms to atom_matches, which raises an error. The match function cannot process group atoms.
+
+NEXT: Modify the matching logic to handle group atoms. For a group atom, the match function should try each alternative sequence (from parse_alternatives) recursively, respecting quantifiers on the group itself.

@@ -1,0 +1,19 @@
+GOAL: Implement/maintain a bencode codec: encode Python objects to bencode bytes and decode bencode bytes to Python values, matching bencode spec and test suite.
+
+STATE: bencode_codec.py implemented. bencode() handles int, bytes, str (encoded UTF-8), list, dict (keys must be str). bdecode() parses bytes/bytearray and returns ints, bytes for strings, lists, and dicts (dict keys are bytes). Tests currently run and pass.
+
+DONE:
+- Encoding: ints as i<decimal>e, bytes as <len>:<data>, lists and dicts (dict keys UTF-8 encoded, sorted by raw key bytes).
+- Decoding: robust parsing with strict format checks (no leading zeros, no "-0", missing terminators, length checks).
+- Good error messages for malformed input.
+- Handles bytearray input, converts bytearray dict keys to bytes.
+- All provided tests pass.
+
+BROKEN / UNKNOWN:
+- Asymmetry: encode accepts str (UTF-8) but decode returns byte strings, not str — no automatic UTF-8 decoding or option to return text.
+- No public option/flag to control string decoding or dict-key decoding to str.
+- Unsupported types explicitly rejected (bool, None, float, tuple) — behavior likely intended but could surprise callers.
+- No higher-level API docs or convenience wrappers; behavior for very large integers or non-UTF-8 data in strings untested.
+- No explicit test coverage visible for round-trip str<->str or for non-ASCII dict keys.
+
+NEXT: Add/implement an option to bdecode (e.g., decode_strings: bool=True/False or encoding param) that, when enabled, decodes byte strings and dict keys to Python str via UTF-8, ensuring symmetry with bencode and adding 

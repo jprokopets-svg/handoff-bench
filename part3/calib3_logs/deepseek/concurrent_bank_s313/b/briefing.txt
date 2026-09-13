@@ -1,0 +1,9 @@
+GOAL: Implement a concurrent banking system that is thread-safe and handles basic operations (create, deposit, withdraw, transfer, balance) correctly.
+
+STATE: A Bank class exists with a single global lock protecting all operations on a dictionary of accounts. All unit tests are currently passing.
+
+DONE: Core functionality works correctly in a single-threaded context. The global lock ensures thread safety for all methods, preventing race conditions.
+
+BROKEN: Performance under high concurrency is poor due to the coarse-grained global lock, which serializes all operations. This defeats the purpose of concurrency for independent accounts.
+
+NEXT: Refactor to use fine-grained locking (e.g., per-account locks) for the `transfer` method to allow concurrent operations on unrelated accounts, while maintaining atomicity for the transfer itself.

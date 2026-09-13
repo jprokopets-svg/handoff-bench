@@ -1,0 +1,35 @@
+# BRIEFING: Calculator Parser Fix
+
+**GOAL:**
+Implement a recursive descent parser for infix arithmetic expressions with correct operator precedence and associativity. Must handle: `** (right-assoc)`, unary `+/-`, `*/%`, `+-`, parentheses, and decimals.
+
+**STATE:**
+- Complete tokenizer and parser structure implemented
+- Precedence hierarchy: expression → term → unary → power → primary
+- Token validation with parenthesis balancing
+- All operator implementations present
+
+**DONE:**
+- Tokenization works correctly
+- Operator precedence ordering is correct
+- Right-associativity for `**` implemented
+- Parenthesis handling functional
+- Division/modulo by zero checks in place
+
+**BROKEN:**
+- **Critical: Unary operators after `**` fail** — Test `2 ** -1` crashes
+- Root cause: `parse_power()` calls `parse_power()` recursively for right side, which calls `parse_primary()` directly, skipping `parse_unary()`
+- This breaks expressions like `2 ** -1`, `2 ** +3`, `2 ** -2 ** 3`
+- The right operand of `**` needs to handle unary operators before recursing
+
+**NEXT:**
+Change `parse_power()` line 99 from:
+```python
+right = self.parse_power()
+```
+to:
+```python
+right = self.parse_unary()
+```
+
+This allows unary operators to bind tighter than the recursive power call, maintaining right-associativity while supporting unary minus/plus on the right side of exponentiation. The recursion still happens within `parse_unary()` → `parse_power()` chain for proper right-associativity of chained exponents.

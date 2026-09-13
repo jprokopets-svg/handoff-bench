@@ -1,0 +1,9 @@
+GOAL: Implement full_match(pattern, text) to return True iff the entire text matches the given regex pattern, raising ValueError for malformed patterns.
+
+STATE: Current implementation in regex_matcher.py delegates to Python's re: it compiles pattern (catching re.error and re-raising as ValueError) and returns compiled.fullmatch(text) is not None.
+
+DONE: Tests all pass. The function correctly detects malformed patterns via re.compile and maps re.error -> ValueError. fullmatch semantics are applied, so only full-string matches return True.
+
+BROKEN: It is unknown whether using Python's re module is acceptable for the project spec (the original task may have expected a custom regex engine with restricted features). Potential semantic mismatches vs. the intended engine are unverified (supported constructs, backreferences, lookarounds, Unicode handling, escape semantics, performance and determinism). No additional edge-case tests beyond the provided suite have been run.
+
+NEXT: Confirm project requirements: is using Python's re module allowed? If yes, finalize and document. If no, implement a custom regex matcher matching the problem's specified grammar/semantics (start by listing supported operators and implementing a parser + NFA-based matcher).

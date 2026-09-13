@@ -1,0 +1,13 @@
+GOAL: Allow parse_program/run_program to parse top-level source (no surrounding braces). Fix parser so simple programs like "x = 5\nprint(x)" don't raise "Unbalanced braces" and tests pass.
+
+STATE: Tokenizer, expression parser (ExprParser), evaluator (eval_expr) and executor (exec_block/run_program) are present. parse_program calls parse_block(lines, 0). parse_block is written to parse brace-delimited blocks and currently expects a closing '}'; if end-of-lines is reached without '}', it raises ValueError('Unbalanced braces').
+
+DONE: Tokenization, expression parsing, evaluation, statement parsing for if/while/print/assign/input, and execution are implemented and mostly working. The failing test reproduces a top-level program without braces.
+
+BROKEN: parse_block does not handle top-level (EOF) as a valid end-of-block. parse_program invokes parse_block for top-level, so programs without a trailing '}' hit the Unbalanced braces exception. Stack trace: parse_program -> parse_block -> ValueError('Unbalanced braces').
+
+NEXT: Modify parse_block to accept a "top" flag (default False) or detect top-level call and, if at EOF while top is True, return (stmts, i, '') instead of raising. Minimal change: change signature to def parse_block(lines, start, top=False): and in parse_program call parse_block(lines, 0, top=True). At the end of parse_block replace the final raise with:
+    if top:
+        return stmts, i, ''
+    raise ValueError('Unbalanced braces')
+This should allow top-level parsing to finish normally.

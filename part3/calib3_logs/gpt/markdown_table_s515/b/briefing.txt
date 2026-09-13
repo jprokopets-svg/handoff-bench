@@ -1,0 +1,21 @@
+GOAL: Convert a Markdown-style table string into an HTML <table> with proper header/body, column alignment, escaping of HTML, and support for escaped pipe characters.
+
+STATE: File markdown_table.py contains md_table_to_html(text:str) which:
+- Splits nonblank lines, parses header, separator, and body.
+- split_row handles optional leading/trailing '|' and unescaped '|' separators, treating '\|' as literal pipe.
+- Parses separator cells to derive alignments (left/center/right/none).
+- Escapes HTML chars (&, <, >) and builds <thead> and <tbody> with <th>/<td> using align attribute.
+
+DONE:
+- Core conversion works and all existing tests pass.
+- Header/body separation, column-count validation, alignment parsing, cell trimming, HTML escaping, and basic escaped-pipe handling are implemented.
+
+BROKEN / UNKNOWN:
+- Edge cases not covered by tests:
+  - Pipes inside code spans/backticks (e.g., `a|b`) are not specially handled.
+  - Complex escaping interactions: sequences of backslashes immediately before a trailing/inner '|' (e.g., "\\\|") may behave incorrectly.
+  - Leading/trailing pipe escaping logic is slightly ad-hoc (trailing '|' uses backslash count after potentially removing leading '|') — could have subtle index/shift issues.
+  - Uses deprecated align attribute instead of CSS/text-align (presentation choice).
+  - No support for colspan/rowspan or inline Markdown in cells.
+
+NEXT: Add focused unit tests to expose edge cases: pipes inside backticks/code spans, various sequences of backslashes before trailing and inner pipes (odd/even counts), leading escaped '|' at start of line, a

@@ -1,0 +1,15 @@
+GOAL: Implement a thread-safe in-memory bank with create/deposit/withdraw/transfer/balance operations that pass tests and behave correctly under concurrency.
+
+STATE: concurrent_bank.py implements Bank with a single threading.Lock protecting a _balances dict. All public operations validate inputs and use the lock when accessing/modifying balances. Tests report: all tests passed.
+
+DONE:
+- Basic correctness: create_account, deposit, withdraw, transfer, balance implemented and validated.
+- Concurrency safety (coarse-grained): a single lock serializes access, preventing races in the tested scenarios.
+- Tests: unit tests (provided) passed.
+
+BROKEN / UNKNOWN:
+- No functional failures indicated by tests.
+- Unknowns: behavior under heavy concurrent load (performance, contention), possible latency due to global lock, floating-point precision issues (no Decimal), potential need for higher concurrency or per-account locking, and edge-case behavior under interrupted/long-running callbacks (none present).
+- No stress/integration tests run to detect subtle races or bottlenecks.
+
+NEXT: Run a multi-threaded stress test (many threads performing randomized create/deposit/withdraw/transfer operations, checking invariants such as total funds and no negative balances) to verify correctness under contention and measure contention/throughput. If contention is a problem, refactor to per-account locks with consistent lock ordering to improve concurrency.

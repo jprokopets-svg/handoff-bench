@@ -1,0 +1,63 @@
+{
+  "family": "gemini",
+  "task": "csv_pipeline",
+  "seed": 313,
+  "model": "google/gemini-2.5-pro",
+  "excluded": false,
+  "a": {
+    "passed": false,
+    "turns": 4,
+    "cost": 0.0949975,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 3
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 87,
+    "cost": 0.02092375,
+    "text": "GOAL: The `process_csv` function should correctly parse, filter, sort, and re-serialize CSV data. It must also handle and raise `ValueError` for various malformed inputs, including those with unclosed quotes.\n\nSTATE: The function `process_csv` implements the core logic for parsing, filtering based on a 'status' column, and sorting based on a 'sort"
+  },
+  "b": {
+    "passed": false,
+    "turns": 5,
+    "cost": 0.11227612499999999,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file"
+      ],
+      "total_calls": 2
+    },
+    "retry_events": [],
+    "code": "\nimport csv\nimport io\n\ndef process_csv(text: str) -> str:\n    if not text:\n        raise ValueError(\"Empty input\")\n\n    try:\n        reader = csv.reader(io.StringIO(text))\n        header = next(reader)\n        data = list(reader)\n    except (csv.Error, StopIteration) as e:\n        raise ValueError(\"CSV parsing error\") from e\n\n    if any(len(row) != len(header) for row in data):\n        raise ValueError(\"Inconsistent row length\")\n\n    if 'status' in header:\n        status_index = header.index('status')\n        data = [row for row in data if row[status_index] != 'skip']\n\n    if 'sort' in header:\n        sort_index = header.index('sort')\n        def sort_key(row):\n            value = row[sort_index]\n            try:\n                return (0, float(value))\n            except ValueError:\n                return (1, value)\n        data.sort(key=sort_key)\n\n    output = io.StringIO()\n    writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL, lineterminator='\\n')\n    writer.writerow(header)\n    writer.writerows(data)\n\n    result = output.getvalue()\n    if not result.endswith('\\n'):\n        result += '\\n'\n        \n    return result\n"
+  },
+  "a_passed_at_interrupt": false,
+  "consumption": {
+    "verdict": "NO-SOLUTION-WRITE",
+    "first_read_briefing": 0,
+    "first_solution_write": null
+  },
+  "transport_complete": false,
+  "cost": 0.22819737499999998
+}

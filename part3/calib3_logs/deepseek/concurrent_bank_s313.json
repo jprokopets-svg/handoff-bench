@@ -1,0 +1,68 @@
+{
+  "family": "deepseek",
+  "task": "concurrent_bank",
+  "seed": 313,
+  "model": "deepseek/deepseek-v3.2",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0013681668,
+    "tool_summary": {
+      "counts": {
+        "read_file": 2,
+        "write_file": 1,
+        "run_tests": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "read_file",
+        "write_file",
+        "run_tests"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 211,
+    "cost": 0.0002234,
+    "text": "GOAL: Implement a concurrent banking system that is thread-safe and handles basic operations (create, deposit, withdraw, transfer, balance) correctly.\n\nSTATE: A Bank class exists with a single global lock protecting all operations on a dictionary of accounts. All unit tests are currently passing.\n\nDONE: Core functionality works correctly in a single-threaded context. The global lock ensures thread safety for all methods, preventing race conditions.\n\nBROKEN: Performance under high concurrency is poor due to the coarse-grained global lock, which serializes all operations. This defeats the purpose of concurrency for independent accounts.\n\nNEXT: Refactor to use fine-grained locking (e.g., per-account locks) for the `transfer` method to allow concurrent operations on unrelated accounts, while maintaining atomicity for the transfer itself."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00194576475,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 2,
+        "read_file": 2,
+        "write_file": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_briefing",
+        "read_file",
+        "read_file",
+        "write_file"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "import threading\nfrom typing import Dict\n\n\nclass Bank:\n    def __init__(self):\n        self._accounts: Dict[str, float] = {}\n        self._lock = threading.Lock()\n\n    def create_account(self, acc_id: str) -> None:\n        \"\"\"Create a new account with zero balance.\"\"\"\n        with self._lock:\n            if acc_id in self._accounts:\n                raise ValueError(f\"Account {acc_id} already exists\")\n            self._accounts[acc_id] = 0.0\n\n    def deposit(self, acc_id: str, amount: float) -> None:\n        \"\"\"Deposit amount into account.\"\"\"\n        if amount <= 0:\n            raise ValueError(\"Amount must be positive\")\n        \n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            self._accounts[acc_id] += amount\n\n    def withdraw(self, acc_id: str, amount: float) -> None:\n        \"\"\"Withdraw amount from account.\"\"\"\n        if amount <= 0:\n            raise ValueError(\"Amount must be positive\")\n        \n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            if self._accounts[acc_id] < amount:\n                raise ValueError(\"Insufficient funds\")\n            self._accounts[acc_id] -= amount\n\n    def transfer(self, from_id: str, to_id: str, amount: float) -> None:\n        \"\"\"Transfer amount from one account to another.\"\"\"\n        if amount <= 0:\n            raise ValueError(\"Amount must be positive\")\n        \n        with self._lock:\n            if from_id not in self._accounts:\n                raise ValueError(f\"Account {from_id} does not exist\")\n            if to_id not in self._accounts:\n                raise ValueError(f\"Account {to_id} does not exist\")\n            if self._accounts[from_id] < amount:\n                raise ValueError(\"Insufficient funds\")\n            \n            self._accounts[from_id] -= amount\n            self._accounts[to_id] += amount\n\n    def balance(self, acc_id: str) -> float:\n        \"\"\"Get current balance of account.\"\"\"\n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(f\"Account {acc_id} does not exist\")\n            return self._accounts[acc_id]"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 4
+  },
+  "transport_complete": true,
+  "cost": 0.00353733155
+}

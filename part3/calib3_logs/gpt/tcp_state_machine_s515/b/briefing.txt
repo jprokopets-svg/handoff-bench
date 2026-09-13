@@ -1,0 +1,20 @@
+GOAL: Implement a TCP state machine class that updates TCP connection state given events (model TCP state transitions).
+
+STATE: tcp_state_machine.py contains TCPStateMachine with:
+- self.state initialized to 'CLOSED'
+- _transitions dict mapping (state, event) -> new_state
+- handle(event) that looks up transition, updates state, returns new state, and raises ValueError on invalid transitions
+
+DONE:
+- Core state machine implemented and exercised by tests
+- All provided tests pass (PASS)
+- Invalid transitions produce a ValueError, preventing silent failures
+
+BROKEN / UNKNOWN:
+- Coverage vs TCP RFC is unknown: some transitions/events may be missing or use nonstandard event names (e.g., 'OPEN' behavior for active vs passive open not distinguished)
+- No exposure of valid events per state (helper/query API missing)
+- No handling for event normalization (case sensitivity) or unexpected input types
+- No logging, no concurrency/thread-safety considerations
+- No explicit docs/comments or unit tests for edge cases (repeated events, invalid sequences, or tolerance behavior)
+
+NEXT: Add targeted tests to exercise missing/ambiguous transitions and align behavior with the TCP specification (e.g., clarify active vs passive OPEN, verify all RFC transitions). Fix the transitions table or add handling based on test failures.

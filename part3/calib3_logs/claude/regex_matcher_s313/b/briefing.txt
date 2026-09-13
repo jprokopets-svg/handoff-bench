@@ -1,0 +1,29 @@
+# BRIEFING: Regex Matcher - Quantifier Backtracking Issue
+
+**GOAL:**
+Implement a regex matcher supporting literals, dots, character classes, quantifiers (*, +, ?), groups, alternation, anchors, and escapes. Must pass all test cases including greedy matching with proper backtracking.
+
+**STATE:**
+- Parser is complete and working: converts pattern string to AST
+- Basic matching logic implemented for all node types
+- Quantifier matching uses greedy approach with backtracking
+- Test suite exists but failing on: `full_match('a*ab', 'aaab')` should return `True`
+
+**DONE:**
+- Pattern parsing (alternation, sequences, atoms, classes, groups, escapes)
+- Character class matching with ranges and negation
+- Anchor handling (^ and $)
+- Dot and literal matching
+- Basic quantifier structure
+
+**BROKEN:**
+The greedy backtracking algorithm in `match_greedy()` is fundamentally flawed:
+- Current logic: matches greedily, then backtracks only if the *next* recursive call fails
+- Problem: doesn't backtrack to allow subsequent pattern atoms to match
+- Example: `'a*ab'` on `'aaab'` — the `a*` consumes all three `a`s, then `a` fails to match `b`, but backtracking never happens because `match_greedy()` only returns after consuming, never tries fewer matches
+- The function needs to continue matching the *rest of the pattern* after each greedy attempt, not just try more quantifier matches
+
+**NEXT:**
+Rewrite `match_quantifier()` and `match_greedy()` to use proper backtracking:
+1. For `*` and `+`: collect all possible match lengths (0 to max)
+2. Try matching the rest of the pattern at each length, starting

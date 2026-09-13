@@ -1,0 +1,9 @@
+GOAL: Build a mini interpreter for a simple language with variables, arithmetic, comparisons, print, if/else, while, and input().
+
+STATE: Interpreter mostly implemented. Can parse assignments, print, if/else, while loops, and evaluate arithmetic/comparison expressions. Code is structured with recursive descent parsing.
+
+DONE: Basic parsing and execution flow works. Expression evaluation handles operators with correct precedence (comparison, add/sub, mul/div/mod). Variable assignment and print statements function.
+
+BROKEN: The error shows `evaluate_expr` receiving `"=6)"` as an expression, which is invalid. This suggests a parsing issue where an assignment like `x = 6` is not being split correctly, possibly due to extra characters or malformed input. The `execute_statement` assignment logic may not be robust.
+
+NEXT: Fix the assignment parsing in `execute_statement`. Ensure the line split on '=' correctly isolates the variable name and the full expression, trimming whitespace and handling edge cases to prevent malformed expressions like `"=6)"` from reaching `evaluate_expr`.

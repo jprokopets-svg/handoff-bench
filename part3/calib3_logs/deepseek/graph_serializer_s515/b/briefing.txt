@@ -1,0 +1,9 @@
+GOAL: Create a graph serializer that encodes Python objects to strings and decodes back, preserving shared references and cycles.
+
+STATE: encode() appears functional, handling basic types, containers, and reference tracking. decode() has parsing logic but fails on the simplest test.
+
+DONE: encode() passes check_type and serializes with @list, @dict, @ref prefixes. decode() has parse_value for null, bool, string, numbers.
+
+BROKEN: decode() fails immediately on "@ref0" format. The parser expects digits after '@' but finds 'r' from "ref". The format string is wrong: encode() outputs "@ref0", but decode() expects "@0ref".
+
+NEXT: Fix the decode parser to correctly match the "@ref{id}" format produced by encode(). Update the parsing logic in the '@' branch to look for "ref" before reading the ID number.

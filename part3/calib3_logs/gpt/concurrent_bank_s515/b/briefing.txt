@@ -1,0 +1,18 @@
+GOAL: Maintain a thread-safe in-memory Bank supporting create_account, deposit, withdraw, transfer, and balance while ensuring correctness under concurrency.
+
+STATE: Implementation in concurrent_bank.py uses a single threading.RLock() protecting a dict of account_id -> float balance. All public methods acquire the lock for their critical section. Unit tests present have passed.
+
+DONE:
+- create_account, deposit, withdraw, transfer, balance implemented.
+- All operations validate positive amounts and account existence.
+- Operations executed under a global RLock, so atomicity and basic thread-safety ensured.
+- Current test suite: All tests passed.
+
+BROKEN / UNKNOWN:
+- Concurrency behaviour under heavy, real concurrent load not validated (only unit tests ran).
+- Performance: single global lock serializes all operations and may be a bottleneck for many threads.
+- Deadlock risk low now, but if switching to per-account locks must ensure consistent lock ordering.
+- Monetary correctness: using float may cause rounding errors; NaN/inf not checked.
+- No persistence, logging, or transaction history; no tests for stress, fairness, or timeouts.
+
+NEXT: Run targeted multithreaded stress tests (many threads doing random deposits/withdrawals/transfers) that assert invariants: total system balance preserved for transfers, no negative balances, and no uncaught exceptions or deadlocks. Use those tests to decide whether to keep the global lock or implement per-account locks with strict ordering and/or replace float with Decimal.

@@ -1,0 +1,9 @@
+GOAL: Improve the performance and concurrency of the `Bank` class. The current implementation is thread-safe but inefficient due to a single, coarse-grained lock that serializes all bank operations, creating a bottleneck.
+
+STATE: A `Bank` class exists with basic operations (`create_account`, `deposit`, `withdraw`, `transfer`, `balance`). All operations are protected by a single `threading.Lock` instance (`self._lock`), ensuring correctness in a multi-threaded environment.
+
+DONE: The current implementation is functionally correct and passes all existing tests. It successfully prevents race conditions by locking the entire `_accounts` dictionary for every operation.
+
+BROKEN: Concurrency is severely limited. The global lock means that an operation on one account (e.g., `deposit('A', 100)`) blocks any other concurrent operation on any other account (e.g., `withdraw('B', 50)`). This negates the benefits of multi-threading for unrelated operations.
+
+NEXT: Implement a fine-grained locking strategy. The single most important step is to replace the one global lock with a per-account locking mechanism. This likely involves storing a `threading.Lock` object with each account's data. This will allow operations on different accounts to execute in parallel. Pay close attention to the `transfer` method to avoid deadlocks by establishing a consistent lock acquisition order (e.g., always lock the account with the lower ID first).

@@ -1,0 +1,9 @@
+GOAL: Improve the concurrency of the `Bank` class. The current implementation uses a single, coarse-grained lock, which serializes all operations and creates a performance bottleneck. The goal is to allow non-conflicting operations (i.e., on different accounts) to run in parallel.
+
+STATE: A fully functional and thread-safe `Bank` class is implemented in `concurrent_bank.py`. It uses a single `threading.Lock` to guard all access to the `self.balances` dictionary.
+
+DONE: The current implementation is correct. All tests pass, indicating that the single lock successfully prevents race conditions and ensures data consistency across all operations (`create_account`, `deposit`, `withdraw`, `transfer`, `balance`).
+
+BROKEN: The concurrency model is inefficient. The single lock means only one thread can perform any action at a time, regardless of which accounts are involved. A deposit into account A will block a withdrawal from account B, even though these operations are independent. This design does not scale.
+
+NEXT: Implement a more fine-grained locking strategy. The single most important thing to try is to replace the one global lock with a per-account lock. This will likely involve storing a lock object for each account. Special attention must be paid to the `transfer` method to acquire locks for both accounts in a fixed order to prevent deadlocks.

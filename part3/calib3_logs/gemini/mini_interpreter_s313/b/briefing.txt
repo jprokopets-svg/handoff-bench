@@ -1,0 +1,9 @@
+GOAL: To create a functional interpreter for a simple, C-like procedural language. The interpreter must handle variable assignment, arithmetic/comparison expressions, `if/else` control flow, `while` loops, and basic I/O (`print`, `input`).
+
+STATE: The code consists of a main interpreter loop (`run_program`), a control-flow pre-processor (`build_jump_map`), an expression evaluator (`evaluate`), and a tokenizer (`tokenize`). The structure is mostly complete, implementing a shunting-yard algorithm for expression evaluation and a jump map for handling block structures.
+
+DONE: The core architectural components are in place. The `build_jump_map` appears to correctly handle `if`, `else`, and `while` block structures. The `evaluate` function is set up to handle standard operators and variable lookups. The main loop uses regex to identify different statement types.
+
+BROKEN: The entire script fails to execute due to a fundamental syntax error. The provided code is wrapped in an unterminated triple-quoted string (`"""...""`), as shown by the `SyntaxError` in the traceback. This prevents the Python interpreter from parsing the file, so no tests can run. There may be other logical errors, but this syntax issue is the primary blocker.
+
+NEXT: Fix the `SyntaxError` by removing the opening `"""` at the beginning of the file and the closing `""` at the end. This will make the code a valid Python module and allow the test suite to execute against the interpreter's logic.

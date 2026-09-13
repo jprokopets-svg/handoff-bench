@@ -1,0 +1,37 @@
+# BRIEFING: markdown_table.py
+
+**GOAL:** Convert GitHub-flavored markdown tables to strict HTML with proper alignment support.
+
+**STATE:** 
+- Complete implementation of `md_table_to_html()` function with helper functions
+- Handles header row, separator row with alignment markers, and body rows
+- Supports optional leading/trailing pipes and escaped pipes (`\|`)
+- Alignment parsing: `:---` (left), `---:` (right), `:---:` (center)
+- HTML escaping for `&`, `<`, `>`
+- All tests passing
+
+**DONE:**
+- ✅ Row parsing with pipe handling and whitespace trimming
+- ✅ Alignment detection from separator row
+- ✅ Column count validation across all rows
+- ✅ HTML table structure generation (`<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`)
+- ✅ Alignment attributes on cells (`align="left|center|right"`)
+- ✅ Basic HTML escaping
+- ✅ Error handling for malformed tables
+
+**BROKEN:** 
+- Nothing currently failing (all tests pass)
+- Potential edge cases not yet tested:
+  - Empty cells
+  - Cells with only whitespace
+  - Very long content
+  - Unicode/special characters beyond basic HTML entities
+  - Nested markdown syntax (bold, links, etc.)
+
+**NEXT:** 
+Verify the implementation handles real-world markdown tables by testing with:
+1. A complex table with mixed alignments and special characters
+2. Edge case: empty cells and whitespace-only cells
+3. Confirm HTML output is valid and renders correctly in a browser
+
+The code is production-ready pending integration testing.

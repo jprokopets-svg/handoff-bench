@@ -1,0 +1,9 @@
+GOAL: Implement the `min_edit_ops` function to return the list of operations (insert, delete, substitute) to transform string `a` into string `b`, corresponding to the Levenshtein distance.
+
+STATE: The file `edit_distance_ops.py` contains the function `min_edit_ops` with an empty implementation (`pass`).
+
+DONE: The function signature is defined. The test suite is running and correctly identifies the failure.
+
+BROKEN: The function currently returns `None` because it is not implemented. This causes a `TypeError` in the test suite, as it expects a list of operations and tries to call `len()` on the `None` result.
+
+NEXT: Implement the dynamic programming algorithm to calculate the edit distance. The DP table should store not just the cost, but also backpointers or information to allow for backtracking from the final cell to reconstruct the sequence of edit operations.

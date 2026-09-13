@@ -1,0 +1,9 @@
+GOAL: Build a thread-safe banking system with concurrent operations and comprehensive testing.
+
+STATE: Basic Bank class implemented with account creation, deposit, withdrawal, transfer, and balance checking. Thread safety achieved via a single global lock.
+
+DONE: Core functionality works correctly; all current tests pass. Basic concurrency protection is in place.
+
+BROKEN: Single lock may cause performance bottlenecks under high concurrency. No deadlock prevention for operations requiring multiple resources. Missing stress tests for concurrent edge cases.
+
+NEXT: Implement fine-grained locking using account-level locks to improve concurrency while maintaining thread safety for transfers.

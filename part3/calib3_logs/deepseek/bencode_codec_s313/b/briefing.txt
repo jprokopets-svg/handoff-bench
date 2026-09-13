@@ -1,0 +1,5 @@
+GOAL: Implement a correct Bencode encoder/decoder in Python.
+STATE: Core encoding/decoding logic exists for ints, bytes, strings, lists, dicts. Tests are failing.
+DONE: Basic structure, type handling, dictionary key sorting, integer/string format validation.
+BROKEN: Failing test indicates `bencode(True)` (a boolean) raises an error, but test expects it to raise a `ValueError`. Our code currently raises `ValueError` for unsupported types, but the test assertion is failing. Likely our error message or exception type doesn't match test expectation.
+NEXT: Check exact test expectation for unsupported types. Ensure `bencode()` raises a `ValueError` (not just any exception) for non-supported inputs like `True`. Adjust the final `else` clause if needed.

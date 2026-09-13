@@ -1,0 +1,159 @@
+[claude   ] regex_matcher          s313 (cached, cost=$0.1581)
+[claude   ] graph_serializer       s313 (cached, cost=$0.0676)
+[claude   ] edit_distance_ops      s313 (cached, cost=$0.0758)
+[claude   ] calculator_parser      s313 (cached, cost=$0.1070)
+[claude   ] mini_interpreter       s313 (cached, cost=$0.2007)
+[claude   ] tcp_state_machine      s313 (cached, cost=$0.0367)
+[claude   ] concurrent_bank        s313 (cached, cost=$0.0480)
+[claude   ] bencode_codec          s313 (cached, cost=$0.0489)
+[claude   ] rpn_assembler          s313 (cached, cost=$0.0555)
+[claude   ] markdown_table         s313 (cached, cost=$0.0498)
+[claude   ] csv_pipeline           s313 (cached, cost=$0.0456)
+[claude   ] regex_matcher          s515 (cached, cost=$0.1729)
+[claude   ] graph_serializer       s515 (cached, cost=$0.2358)
+[claude   ] edit_distance_ops      s515 (cached, cost=$0.0699)
+[claude   ] calculator_parser      s515 (cached, cost=$0.0540)
+[claude   ] mini_interpreter       s515 ...
+    a_pass=False b_pass=False cons=CONSUMED A_complete=False spent=$1.6271
+[claude   ] tcp_state_machine      s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.6647
+[claude   ] concurrent_bank        s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.7027
+[claude   ] bencode_codec          s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.7565
+[claude   ] rpn_assembler          s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.8052
+[claude   ] markdown_table         s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.8533
+[claude   ] csv_pipeline           s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.8996
+[gpt      ] regex_matcher          s313 ...
+    a_pass=True b_pass=False cons=CONSUMED A_complete=True spent=$1.9186
+[gpt      ] graph_serializer       s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$1.9377
+[gpt      ] edit_distance_ops      s313 ...
+    a_pass=False b_pass=False cons=CONSUMED A_complete=False spent=$1.9516
+[gpt      ] calculator_parser      s313 ...
+    a_pass=True b_pass=False cons=CONSUMED A_complete=True spent=$1.9893
+[gpt      ] mini_interpreter       s313 ...
+    a_pass=False b_pass=True cons=CONSUMED A_complete=False spent=$2.0266
+[gpt      ] tcp_state_machine      s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.0337
+[gpt      ] concurrent_bank        s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.0409
+[gpt      ] bencode_codec          s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.0556
+[gpt      ] rpn_assembler          s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.0720
+[gpt      ] markdown_table         s313 ...
+    a_pass=True b_pass=False cons=NO-SOLUTION-WRITE A_complete=True spent=$2.0926
+[gpt      ] csv_pipeline           s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.1124
+[gpt      ] regex_matcher          s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.1222
+[gpt      ] graph_serializer       s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.1401
+[gpt      ] edit_distance_ops      s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.1529
+[gpt      ] calculator_parser      s515 ...
+    a_pass=True b_pass=False cons=CONSUMED A_complete=True spent=$2.1907
+[gpt      ] mini_interpreter       s515 ...
+    a_pass=False b_pass=False cons=CONSUMED A_complete=False spent=$2.2251
+[gpt      ] tcp_state_machine      s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.2321
+[gpt      ] concurrent_bank        s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.2396
+[gpt      ] bencode_codec          s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.2564
+[gpt      ] rpn_assembler          s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.2705
+[gpt      ] markdown_table         s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.2868
+[gpt      ] csv_pipeline           s515 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.3022
+[gemini   ] regex_matcher          s313 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$2.5327
+[gemini   ] graph_serializer       s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$2.7701
+[gemini   ] edit_distance_ops      s313 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$3.0400
+[gemini   ] calculator_parser      s313 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$3.2400
+[gemini   ] mini_interpreter       s313 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$3.3444
+[gemini   ] tcp_state_machine      s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$3.4221
+[gemini   ] concurrent_bank        s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$3.5448
+[gemini   ] bencode_codec          s313 ...
+    a_pass=False b_pass=True cons=CONSUMED A_complete=False spent=$3.7067
+[gemini   ] rpn_assembler          s313 ...
+    a_pass=True b_pass=True cons=CONSUMED A_complete=True spent=$3.9725
+[gemini   ] markdown_table         s313 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$4.2650
+[gemini   ] csv_pipeline           s313 ...
+    a_pass=False b_pass=False cons=NO-SOLUTION-WRITE A_complete=False spent=$4.4932
+[gemini   ] regex_matcher          s515 ...
+    a_pass=True b_pass=False cons=NO-SOLUTION-WRITE A_complete=True spent=$4.6974
+[gemini   ] graph_serializer       s515 ...
+    EXCLUDED (api_failure: HTTP 400: {"error":{"message":"Provider returned error","code":400,) spent=$4.8264
+nohup: setsid: No such file or directory
+SUPERVISOR: launch attempt 1
+[claude   ] regex_matcher          s313 (cached, cost=$0.1581)
+[claude   ] graph_serializer       s313 (cached, cost=$0.0676)
+[claude   ] edit_distance_ops      s313 (cached, cost=$0.0758)
+[claude   ] calculator_parser      s313 (cached, cost=$0.1070)
+[claude   ] mini_interpreter       s313 (cached, cost=$0.2007)
+[claude   ] tcp_state_machine      s313 (cached, cost=$0.0367)
+[claude   ] concurrent_bank        s313 (cached, cost=$0.0480)
+[claude   ] bencode_codec          s313 (cached, cost=$0.0489)
+[claude   ] rpn_assembler          s313 (cached, cost=$0.0555)
+[claude   ] markdown_table         s313 (cached, cost=$0.0498)
+[claude   ] csv_pipeline           s313 (cached, cost=$0.0456)
+[claude   ] regex_matcher          s515 (cached, cost=$0.1729)
+[claude   ] graph_serializer       s515 (cached, cost=$0.2358)
+[claude   ] edit_distance_ops      s515 (cached, cost=$0.0699)
+[claude   ] calculator_parser      s515 (cached, cost=$0.0540)
+[claude   ] mini_interpreter       s515 (cached, cost=$0.2008)
+[claude   ] tcp_state_machine      s515 (cached, cost=$0.0377)
+[claude   ] concurrent_bank        s515 (cached, cost=$0.0380)
+[claude   ] bencode_codec          s515 (cached, cost=$0.0538)
+[claude   ] rpn_assembler          s515 (cached, cost=$0.0487)
+[claude   ] markdown_table         s515 (cached, cost=$0.0481)
+[claude   ] csv_pipeline           s515 (cached, cost=$0.0463)
+[gpt      ] regex_matcher          s313 (cached, cost=$0.0191)
+[gpt      ] graph_serializer       s313 (cached, cost=$0.0190)
+[gpt      ] edit_distance_ops      s313 (cached, cost=$0.0139)
+[gpt      ] calculator_parser      s313 (cached, cost=$0.0377)
+[gpt      ] mini_interpreter       s313 (cached, cost=$0.0373)
+[gpt      ] tcp_state_machine      s313 (cached, cost=$0.0071)
+[gpt      ] concurrent_bank        s313 (cached, cost=$0.0072)
+[gpt      ] bencode_codec          s313 (cached, cost=$0.0147)
+[gpt      ] rpn_assembler          s313 (cached, cost=$0.0164)
+[gpt      ] markdown_table         s313 (cached, cost=$0.0206)
+[gpt      ] csv_pipeline           s313 (cached, cost=$0.0198)
+[gpt      ] regex_matcher          s515 (cached, cost=$0.0099)
+[gpt      ] graph_serializer       s515 (cached, cost=$0.0179)
+[gpt      ] edit_distance_ops      s515 (cached, cost=$0.0128)
+[gpt      ] calculator_parser      s515 (cached, cost=$0.0378)
+[gpt      ] mini_interpreter       s515 (cached, cost=$0.0344)
+[gpt      ] tcp_state_machine      s515 (cached, cost=$0.0071)
+[gpt      ] concurrent_bank        s515 (cached, cost=$0.0075)
+[gpt      ] bencode_codec          s515 (cached, cost=$0.0168)
+[gpt      ] rpn_assembler          s515 (cached, cost=$0.0141)
+[gpt      ] markdown_table         s515 (cached, cost=$0.0163)
+[gpt      ] csv_pipeline           s515 (cached, cost=$0.0153)
+[gemini   ] regex_matcher          s313 (cached, cost=$0.2306)
+[gemini   ] graph_serializer       s313 (cached, cost=$0.2373)
+[gemini   ] edit_distance_ops      s313 (cached, cost=$0.2699)
+[gemini   ] calculator_parser      s313 (cached, cost=$0.2001)
+[gemini   ] mini_interpreter       s313 (cached, cost=$0.1043)
+[gemini   ] tcp_state_machine      s313 (cached, cost=$0.0777)
+[gemini   ] concurrent_bank        s313 (cached, cost=$0.1227)
+[gemini   ] bencode_codec          s313 (cached, cost=$0.1619)
+[gemini   ] rpn_assembler          s313 (cached, cost=$0.2658)
+[gemini   ] markdown_table         s313 (cached, cost=$0.2924)
+[gemini   ] csv_pipeline           s313 (cached, cost=$0.2282)
+[gemini   ] regex_matcher          s515 (cached, cost=$0.2043)
+[gemini   ] graph_serializer       s515 (cached, cost=$0.1290)
+[gemini   ] edit_distance_ops      s515 ...

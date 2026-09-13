@@ -1,0 +1,9 @@
+GOAL: Implement a TCP state machine that correctly models protocol transitions, passes all tests, and handles edge cases.
+
+STATE: Basic class structure exists with transition dictionary and handle method. Current implementation passes provided tests.
+
+DONE: Core state transition logic works. Basic error handling for invalid transitions implemented. Property getter for current state functions.
+
+BROKEN: Missing state validation for incoming events. No handling for duplicate/ignored events in certain states (e.g., multiple SYNs in LISTEN). No support for logging or debugging. Timeout mechanism absent except for TIME_WAIT state.
+
+NEXT: Add input validation to the handle() method to reject undefined events before transition lookup, ensuring cleaner error messages and preventing silent failures.

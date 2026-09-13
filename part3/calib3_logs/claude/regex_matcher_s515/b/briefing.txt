@@ -1,0 +1,35 @@
+# BRIEFING: Regex Matcher - Quantifier Backtracking Issue
+
+## GOAL
+Implement a full regex matcher supporting literals, dots, character classes, quantifiers (*, +, ?), groups, alternation, and anchors. Must pass all test cases including greedy matching with backtracking.
+
+## STATE
+- Parser fully implemented with proper precedence (alternation → concatenation → quantified atoms)
+- All regex node classes defined: Literal, Dot, CharClass, Anchor, Epsilon, Group, Concatenation, Alternation, Star, Plus, Optional
+- Character classes with ranges and negation working
+- Escape sequences handled
+- Groups and alternation parsing complete
+
+## DONE
+- Parsing logic is correct
+- Basic matching for literals, dots, character classes works
+- Anchor handling (^ and $) implemented
+- Optional (?) quantifier works correctly
+- Plus (+) quantifier appears functional
+
+## BROKEN
+**Critical: Star (*) quantifier backtracking is broken**
+
+Test case failing: `full_match('a*ab', 'aaab')` returns False but should return True
+
+**Root cause:** The `Star.match()` method has a logic error:
+```python
+for try_pos in reversed(positions):
+    yield_pos = try_pos
+    return yield_pos
+return -1
+```
+
+This loop immediately returns the first (longest) position without actually attempting to match the rest of the pattern. It doesn't integrate with the parent `Concatenation` to try shorter matches on backtracking.
+
+**The problem:** Quantifiers need to support backtracking at the concatenation level. When `a*` matches "aaa" in "aaab", it consumes all three 'a's, leaving "b" for the remaining "ab" pattern. The pattern fail

@@ -1,0 +1,31 @@
+# BRIEFING: CSV Pipeline
+
+**GOAL:**
+Implement a complete CSV processing pipeline that parses RFC-4180 format, transforms data (filter rows by status, sort by numeric/lexicographic rules), and re-serializes to CSV with trailing newline.
+
+**STATE:**
+- `csv_pipeline.py` contains three functions: `process_csv()`, `parse_csv()`, and `format_csv()`
+- All unit tests currently passing
+- Code handles quoted fields, escaped quotes (""→"), multiline fields, and column validation
+
+**DONE:**
+✓ RFC-4180 parsing with quote/escape handling
+✓ Row filtering (drop status='skip')
+✓ Sorting by 'sort' column (numeric values first, then lexicographic)
+✓ CSV re-serialization with proper quoting rules
+✓ Input validation (empty input, column count mismatch)
+✓ Trailing newline in output
+✓ All tests passing
+
+**BROKEN:**
+- None identified; code appears functionally complete
+- Edge cases to verify: empty CSV (header only), all rows filtered, missing 'sort'/'status' columns, whitespace handling
+
+**NEXT:**
+Run integration tests with real-world CSV data to verify:
+1. Handling of edge cases (empty data, single row, all filtered)
+2. Performance with large files
+3. Verify sort stability and numeric/lexicographic boundary cases
+4. Test with CSV containing special characters, Unicode, trailing spaces
+
+If all integration tests pass, code is production-ready. If failures occur, prioritize fixing sort key logic or quote escaping edge cases.

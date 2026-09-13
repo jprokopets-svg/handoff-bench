@@ -1,0 +1,13 @@
+GOAL: Implement a minimal interpreter entrypoint so tests pass. Specifically provide a run_program(program: str) -> str that executes a tiny program language used by the tests and returns the captured stdout (e.g. run_program('x = 5\nprint(x)') -> '5\n').
+
+STATE: mini_interpreter.py is currently empty. The test suite calls run_program from that module. The test harness and test file exist and expect run_program to be defined and behave as above.
+
+DONE: Test framework runs and reports failure trace. We confirmed the immediate failure is a NameError because run_program is undefined.
+
+BROKEN: No interpreter implementation exists. Unknowns: full language spec for the interpreter (what statements/expressions are required: only assignment and print? arithmetic? strings? function calls?), desired error handling, and security constraints (whether using Python exec() is acceptable). Tests at least require variable assignment, printing a variable, and returning stdout string.
+
+NEXT: Implement run_program(program: str) -> str that:
+- Executes the provided program text in a small environment,
+- Supports assignments and print statements,
+- Captures and returns stdout exactly as tests expect.
+A pragmatic first try: run each line in a controlled namespace using Python's exec/eval with captured stdout (io.StringIO + contextlib.redirect_stdout). Maintain a dict for variables and use exec for statements, eval for expressions; ensure print output is captured and returned. Run tests after implementing.

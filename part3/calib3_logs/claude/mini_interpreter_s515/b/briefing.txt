@@ -1,0 +1,30 @@
+# BRIEFING: mini_interpreter.py
+
+**GOAL:** Implement a tiny imperative language interpreter supporting variables, expressions, if/else, while loops, print, and input.
+
+**STATE:** 
+- Core expression parser with operator precedence (comparison, additive, multiplicative, primary)
+- Statement execution: assignment, print, if/while blocks
+- Tokenizer handles numbers, identifiers, operators
+- Input/output handling via `input()` and `print()`
+
+**DONE:**
+- Expression evaluation works (arithmetic, comparisons, variables)
+- Basic if statements execute
+- While loops functional
+- Assignment and print statements parse correctly
+- Operator precedence correct
+
+**BROKEN:**
+- **if/else block detection fails** — The code searches for `else {` after the closing `}` of the if block, but the brace-counting logic for finding the if block's end is incorrect. When it encounters `}`, it breaks immediately instead of properly tracking nested braces.
+- Specifically: In `execute_block()` at line ~160, the condition `if brace_count == 0: break` exits the loop before incrementing `block_end`, leaving `block_end` pointing to the `}` line itself rather than the line after it.
+- This causes the else detection to look at the wrong line index.
+
+**NEXT:**
+Fix the brace-matching logic in the if/while block detection. After the loop that finds the closing brace, ensure `block_end` points to the line *after* the `}`. The issue is:
+```python
+while block_end < len(lines) and brace_count > 0:
+    if lines[block_end] == '}':
+        brace_count -= 1
+        if brace_count == 0:
+            break  # ← EXIT HERE, bloc

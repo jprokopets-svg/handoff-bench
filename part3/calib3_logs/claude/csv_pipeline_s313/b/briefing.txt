@@ -1,0 +1,38 @@
+# BRIEFING: CSV Pipeline Handoff
+
+**GOAL:**
+Implement a CSV parser and transformer that:
+1. Parses RFC-4180 compliant CSV (handles quoted fields, escaped quotes, multiline fields)
+2. Filters out rows where `status` column equals `'skip'`
+3. Sorts by `sort` column (numeric values first, then lexicographic)
+4. Re-serializes to CSV with trailing newline
+
+**STATE:**
+Complete implementation exists with four functions:
+- `process_csv()` - main orchestrator
+- `_parse_csv()` - RFC-4180 parser with quote/escape handling
+- `_sort_rows()` - custom sort with numeric-first logic
+- `_format_csv()` + `_quote_field()` - serialization with proper escaping
+
+All unit tests passing.
+
+**DONE:**
+✓ CSV parsing handles quoted fields, escaped quotes (`""`), and multiline fields
+✓ Row filtering by `status == 'skip'` works
+✓ Sorting logic correctly prioritizes numeric values (0, num) before strings (1, str)
+✓ Field quoting applied only when necessary (comma, quote, or newline present)
+✓ Trailing newline added to output
+✓ Column count validation across all rows
+✓ Error handling for unterminated quotes and empty input
+
+**BROKEN:**
+Nothing currently failing. All edge cases covered:
+- Empty input raises ValueError
+- Mismatched column counts raise ValueError
+- Missing `status` or `sort` columns handled gracefully (skipped if not found)
+- Trailing empty fields preserved correctly
+
+**NEXT:**
+**Integration testing**: Verify the pipeline works end-to-end with real-world CSV files. Specifically:
+1. Test with large files (performance/memory)
+2. Test with unusual but valid RFC-4180 inputs (all fields quoted, emp

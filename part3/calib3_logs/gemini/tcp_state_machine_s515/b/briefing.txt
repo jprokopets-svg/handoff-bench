@@ -1,0 +1,9 @@
+GOAL: Create a robust and complete model of the TCP state machine based on RFC 793.
+
+STATE: A Python class `TCPStateMachine` is implemented. It uses a dictionary to define state transitions and a `handle` method to process events. The initial state is 'CLOSED'. Invalid transitions raise a `ValueError`.
+
+DONE: The core logic for handling the currently defined state transitions is working. The provided test suite passes completely, indicating the implemented paths are functioning as tested.
+
+BROKEN: Nothing is actively broken according to the tests. However, the behavior for invalid events (raising an exception) may need refinement. The coverage of the test suite is unknown, so we cannot be certain all transitions are correctly implemented or that edge cases are handled.
+
+NEXT: Validate the `self.transitions` dictionary against the canonical TCP state diagram from RFC 793. This will verify the correctness of the current model and identify any missing states or transitions that need to be implemented and tested.

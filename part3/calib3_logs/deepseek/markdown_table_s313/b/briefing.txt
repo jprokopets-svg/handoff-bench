@@ -1,0 +1,9 @@
+GOAL: Convert a Markdown table string to an HTML table string, handling escaped pipes and alignment specifiers.
+
+STATE: Core function `md_table_to_html` is implemented. It parses rows, validates separator format, extracts alignments, and builds HTML with proper escaping.
+
+DONE: Basic parsing, alignment detection, HTML generation, and escaping work. All existing tests pass.
+
+BROKEN: No known failures. Edge cases like extremely long cells, nested HTML in Markdown, or malformed tables beyond validation may need handling but are untested.
+
+NEXT: Add a test for a table with escaped pipe characters (`\|`) in cell content to ensure they are preserved correctly in the output HTML.

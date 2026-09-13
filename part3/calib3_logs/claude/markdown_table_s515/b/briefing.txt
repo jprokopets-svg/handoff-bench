@@ -1,0 +1,42 @@
+# BRIEFING: markdown_table.py
+
+**GOAL:**
+Convert GitHub-flavored markdown tables to strict HTML with proper alignment support and HTML escaping.
+
+**STATE:**
+- Complete implementation with 6 functions handling parsing, validation, and HTML generation
+- All tests currently passing
+- Supports:
+  - Header + separator + body rows
+  - Column alignment (left/right/center via colons in separator)
+  - Escaped pipes (`\|`) within cells
+  - Optional leading/trailing pipes
+  - HTML entity escaping for `&`, `<`, `>`
+
+**DONE:**
+✓ Row parsing with pipe splitting logic  
+✓ Separator validation (`:?-{3,}:?` pattern)  
+✓ Alignment detection and HTML attribute generation  
+✓ HTML escaping for special characters  
+✓ Error handling for mismatched column counts  
+✓ Whitespace trimming from cells  
+
+**BROKEN:**
+- **Unknown edge cases**: Code hasn't been tested against:
+  - Inline HTML/markdown in cells (bold, links, code)
+  - Empty cells or cells with only whitespace
+  - Tables with no body rows (header + separator only)
+  - Multiple consecutive pipes (`||`)
+  - Cells containing newlines
+  - Very long tables or deeply nested content
+- **Potential issue**: `align` attribute is deprecated HTML; should use `style="text-align:..."` or CSS classes for modern HTML5
+- **No validation**: Doesn't check if separator has minimum 3 dashes per spec
+
+**NEXT:**
+Verify the code handles **empty cells** correctly. Test with input like:
+```
+| A | | C |
+|---|---|---|
+| 1 | 2 | 3 |
+```
+If this fails, the issue is likely in `parse_row()` or whitespace handling. If it passes, consider modernizing the alignment output t

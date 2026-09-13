@@ -1,0 +1,19 @@
+GOAL: Maintain/extend a simple arithmetic expression parser/evaluator that supports + - * / % ** unary +/- and parentheses, returning a float and raising ValueError for invalid input.
+
+STATE: Provided code tokenizes numbers (digits with optional decimal part), operators including '**', handles precedence (right-assoc exponent), unary operators, parentheses, and evaluates expressions to float. Tests currently all pass.
+
+DONE:
+- Tokenizer recognizes integers and decimal numbers with leading digits (e.g., 3, 3.14), operators (+ - * / % ( ) **), and whitespace.
+- Parser implements grammar: add/sub → mul/div → factor → power → primary.
+- Right-associative exponentiation implemented and unary operators allowed in exponent.
+- Division/modulo-by-zero detection raises ParseError.
+- evaluate() enforces full-consumption of tokens and returns float.
+- Test suite currently passes.
+
+BROKEN / UNKNOWN:
+- number_re does NOT accept numbers with a leading decimal point (e.g., ".5") or trailing dot ("1.") or scientific notation ("1e3" / "1E-3"). These inputs are currently rejected as invalid tokens.
+- Behavior for very large exponents/overflow/NaN not explicitly handled.
+- Tokenizer rejects None (raises ParseError) and evaluate() raises ValueError('Empty expression') for empty string; intended semantics for empty input may need clarification.
+- Minor: parse_power catches ZeroDivisionError but simply re-raises — unclear necessity.
+
+NEXT: The single most important thing to try is to extend number_re (and tests) to accept common numeric formats: leading-dot decimals (".5"), trailing-dot ("1."), a

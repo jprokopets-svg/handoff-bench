@@ -1,0 +1,9 @@
+GOAL: Implement a regex matcher that supports literals, ., *, +, ?, character classes, groups, alternation, anchors ^$, and escapes.
+
+STATE: Parser and basic matcher implemented. Tests are failing on simple case 'ab*c' matching 'ac'.
+
+DONE: Parsing works for all constructs. Matching logic handles sequences, groups, quantifiers with backtracking.
+
+BROKEN: Quantifier matching logic is flawed. The backtracking loop in match_node for Quantifier incorrectly handles the minimum matches and position tracking. For pattern 'ab*c' with text 'ac', it fails to match zero 'b's because the logic doesn't properly allow zero repetitions when min=0.
+
+NEXT: Fix the Quantifier matching in match_node to correctly handle greedy matching with min=0, ensuring it can skip the quantified node entirely when appropriate and still match following nodes.

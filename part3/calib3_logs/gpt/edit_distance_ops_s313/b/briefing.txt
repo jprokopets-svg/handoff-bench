@@ -1,0 +1,9 @@
+GOAL: Return a minimal sequence of edit operations (delete i, insert i c, sub i c) that transforms string a into b. Indices must refer to the current string state as operations are applied sequentially (so forward order with correct positions).
+
+STATE: Code computes Levenshtein dp table correctly (dp filled with proper costs). It then backtraces from (m,n) to produce ops_rev and reverses it to get forward ops.
+
+DONE: dp table filling is correct. Backtrace finds correct operation types in reverse (matches dp comparisons).
+
+BROKEN: The produced forward op list has wrong indices for insert/delete because the backtrace builds ops in reverse-time indices and a naive reverse yields inserts at the wrong positions (failing test: a='' b='abc' produces inserts at 0,0,0 reversed to 0,0,0 sequence that produces "cba" instead of "abc"). In short: index semantics are not converted from reverse-time to forward-time.
+
+NEXT: Replace the reverse-time backtrace with a forward reconstruction from dp starting at (i,j)=(0,0): walk forward through prefixes, at each step compare dp values to decide match/sub/insert/delete and emit operations immediately (so indices refer to the current string). This yields correct positions for inserts/deletes without needing index adjustment after reversing.

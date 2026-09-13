@@ -1,0 +1,9 @@
+GOAL: Implement a complete, robust Bencode encoder/decoder in Python.
+
+STATE: Core encoder/decoder functions are implemented and passing all provided tests. The code handles ints, bytes, strings, lists, and dicts with proper sorting. Error handling includes checks for leading zeros, invalid integers, and type validation.
+
+DONE: `bencode()` and `bdecode()` core logic is functional. Recursive internal decoder `_bdecode` with helper functions works correctly. Basic validation (e.g., dict key types, integer format) is in place.
+
+BROKEN: The decoder returns dictionary keys as `bytes`, but the Bencode spec and typical usage (e.g., in BitTorrent) often expect or prefer string keys. The encoder requires string keys, creating a potential asymmetry. The handling of boolean types (explicitly rejected) is correct but could be noted.
+
+NEXT: Modify `bdecode` (specifically `_decode_dict`) to automatically decode dictionary keys from `bytes` to `str` (UTF-8), ensuring round-trip compatibility with the encoder. This will make the API more intuitive and symmetric.

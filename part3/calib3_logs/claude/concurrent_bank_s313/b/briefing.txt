@@ -1,0 +1,33 @@
+# BRIEFING: concurrent_bank.py
+
+**GOAL:**
+Implement a thread-safe banking system supporting concurrent account operations (create, deposit, withdraw, transfer, balance) with atomic transactions and proper error handling.
+
+**STATE:**
+- Complete `Bank` class with 6 methods implemented
+- Uses `threading.Lock()` for synchronization
+- Stores accounts in `_accounts` dict (acc_id → balance)
+- All operations validate inputs and check preconditions before modifying state
+- Test suite reports: **All tests passed (PASS)**
+
+**DONE:**
+✓ Thread-safe account creation with duplicate detection  
+✓ Deposit/withdraw with positive amount validation  
+✓ Atomic transfers with bidirectional account existence checks  
+✓ Insufficient funds detection before any state change  
+✓ Balance queries under lock protection  
+✓ All operations fail atomically (no partial updates on error)  
+✓ Comprehensive error messages with account IDs  
+
+**BROKEN:**
+- Nothing identified. All tests passing.
+- Code appears production-ready for single-machine concurrent access.
+
+**NEXT:**
+**Verify test coverage is comprehensive.** Before declaring complete, confirm the test suite exercises:
+1. Concurrent deposits/withdrawals on same account (race condition safety)
+2. Concurrent transfers between multiple accounts
+3. Edge cases: zero/negative amounts, missing accounts, insufficient funds
+4. Deadlock scenarios (if any multi-account operations exist)
+
+If test coverage is confirmed adequate → **Task complete.** If gaps exist → add integration tests with `threading.Thread` to stress concurrent scenarios.

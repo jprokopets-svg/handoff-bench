@@ -1,0 +1,22 @@
+GOAL: Implement a correct, robust bencode/bdecode pair per the BitTorrent bencode rules: encode Python ints, bytes/str, lists, dicts (with string keys), and decode bytes into int, bytes, list, dict (with bytes keys). Validate malformed inputs and reject unsupported types.
+
+STATE: bencode and bdecode functions exist in bencode_codec.py. All provided unit tests currently pass. Code handles encoding/decoding of ints, byte strings, utf-8 strings, lists, and dicts; bdecode accepts bytes/bytearray input.
+
+DONE:
+- bencode:
+  - Encodes ints, bytes, str (UTF-8), lists, dicts.
+  - Rejects bool explicitly and non-str dict keys.
+  - Dict keys are encoded to UTF-8 and sorted by raw encoded bytes before output.
+- bdecode:
+  - Parses integers with strict checks (no leading zeros, no -0, digits only).
+  - Parses byte strings with length validation.
+  - Parses nested lists and dicts; dict keys are returned as bytes.
+  - Checks for unterminated structures, trailing data, and many malformed cases.
+- Basic safety: bdecode converts bytearray input to bytes; raises ValueError on malformed inputs.
+
+BROKEN / UNKNOWN:
+- bdecode does NOT enforce dictionary key ordering (the bencode spec requires keys in sorted order). It also does not detect or reject duplicate keys — duplicates currently overwrite previous entries.
+- bencode does not accept bytearray, memoryview, or other bytes-like types (maybe desirable).
+- No cycle detection: encoding recursive structures will recurse indefinitely.
+- No explicit limits/guards for extremely large lengths or integers (possible DoS/memory exhaustion).
+- No property

@@ -1,0 +1,9 @@
+GOAL: Build a calculator parser that evaluates infix arithmetic expressions with operators: **, *, /, %, +, -, and parentheses.
+
+STATE: Code implements tokenization, shunting-yard algorithm for RPN conversion, and RPN evaluation. Unary operators are handled (converted to 'u+'/'u-').
+
+DONE: Basic expression evaluation works. Tokenization and RPN conversion appear functional.
+
+BROKEN: The test failure indicates `evaluate('1 2')` should raise a ValueError (invalid expression), but currently does not. The tokenizer likely accepts the space but joins tokens without it, making "12" a valid number, thus no error.
+
+NEXT: Fix tokenization to reject invalid characters/spacing. Ensure `'1 2'` (space between numbers) raises ValueError. Adjust regex or add validation to catch such malformed expressions.

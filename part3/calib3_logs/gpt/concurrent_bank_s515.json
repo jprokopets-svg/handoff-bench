@@ -1,0 +1,71 @@
+{
+  "family": "gpt",
+  "task": "concurrent_bank",
+  "seed": 515,
+  "model": "openai/gpt-5-mini",
+  "excluded": false,
+  "a": {
+    "passed": true,
+    "turns": 4,
+    "cost": 0.0024128500000000002,
+    "tool_summary": {
+      "counts": {
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 4
+    },
+    "retry_events": []
+  },
+  "brief": {
+    "tokens": 382,
+    "cost": 0.0016,
+    "text": "GOAL: Maintain a thread-safe in-memory Bank supporting create_account, deposit, withdraw, transfer, and balance while ensuring correctness under concurrency.\n\nSTATE: Implementation in concurrent_bank.py uses a single threading.RLock() protecting a dict of account_id -> float balance. All public methods acquire the lock for their critical section. Unit tests present have passed.\n\nDONE:\n- create_account, deposit, withdraw, transfer, balance implemented.\n- All operations validate positive amounts and account existence.\n- Operations executed under a global RLock, so atomicity and basic thread-safety ensured.\n- Current test suite: All tests passed.\n\nBROKEN / UNKNOWN:\n- Concurrency behaviour under heavy, real concurrent load not validated (only unit tests ran).\n- Performance: single global lock serializes all operations and may be a bottleneck for many threads.\n- Deadlock risk low now, but if switching to per-account locks must ensure consistent lock ordering.\n- Monetary correctness: using float may cause rounding errors; NaN/inf not checked.\n- No persistence, logging, or transaction history; no tests for stress, fairness, or timeouts.\n\nNEXT: Run targeted multithreaded stress tests (many threads doing random deposits/withdrawals/transfers) that assert invariants: total system balance preserved for transfers, no negative balances, and no uncaught exceptions or deadlocks. Use those tests to decide whether to keep the global lock or implement per-account locks with strict ordering and/or replace float with Decimal."
+  },
+  "b": {
+    "passed": true,
+    "turns": 5,
+    "cost": 0.00343925,
+    "tool_summary": {
+      "counts": {
+        "read_briefing": 1,
+        "read_file": 1,
+        "write_file": 1,
+        "run_tests": 1,
+        "finish": 1
+      },
+      "unknown_tools": [],
+      "malformed_args": 0,
+      "path_sanitized": 0,
+      "call_order": [
+        "read_briefing",
+        "read_file",
+        "write_file",
+        "run_tests",
+        "finish"
+      ],
+      "total_calls": 5
+    },
+    "retry_events": [],
+    "code": "import threading\n\nclass Bank:\n    def __init__(self):\n        # single re-entrant lock protecting the accounts dict\n        self._lock = threading.RLock()\n        self._accounts = {}  # acc_id -> float balance\n\n    def create_account(self, acc_id: str) -> None:\n        with self._lock:\n            if acc_id in self._accounts:\n                raise ValueError(\"account already exists\")\n            self._accounts[acc_id] = 0.0\n\n    def deposit(self, acc_id: str, amount: float) -> None:\n        if amount <= 0:\n            raise ValueError(\"deposit amount must be positive\")\n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(\"account does not exist\")\n            self._accounts[acc_id] += float(amount)\n\n    def withdraw(self, acc_id: str, amount: float) -> None:\n        if amount <= 0:\n            raise ValueError(\"withdraw amount must be positive\")\n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(\"account does not exist\")\n            if self._accounts[acc_id] < amount:\n                raise ValueError(\"insufficient funds\")\n            self._accounts[acc_id] -= float(amount)\n\n    def transfer(self, from_id: str, to_id: str, amount: float) -> None:\n        if amount <= 0:\n            raise ValueError(\"transfer amount must be positive\")\n        with self._lock:\n            if from_id not in self._accounts or to_id not in self._accounts:\n                raise ValueError(\"account does not exist\")\n            if self._accounts[from_id] < amount:\n                raise ValueError(\"insufficient funds\")\n            # perform transfer atomically\n            self._accounts[from_id] -= float(amount)\n            self._accounts[to_id] += float(amount)\n\n    def balance(self, acc_id: str) -> float:\n        with self._lock:\n            if acc_id not in self._accounts:\n                raise ValueError(\"account does not exist\")\n            return float(self._accounts[acc_id])\n"
+  },
+  "a_passed_at_interrupt": true,
+  "consumption": {
+    "verdict": "CONSUMED",
+    "first_read_briefing": 0,
+    "first_solution_write": 2
+  },
+  "transport_complete": true,
+  "cost": 0.0074521
+}

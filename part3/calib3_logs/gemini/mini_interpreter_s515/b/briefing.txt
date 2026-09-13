@@ -1,0 +1,3 @@
+GOAL: To create a working interpreter for a simple procedural language. The language supports integer variables, arithmetic/comparison operators, `if`/`else`, `while` loops, `print()` statements, and `input()`.
+
+STATE: The code contains a `run_program` function that attempts to interpret a given source string. It includes a shunting-yard based expression evaluator (`

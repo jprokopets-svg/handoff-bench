@@ -1,0 +1,26 @@
+GOAL: Parse, transform, sort, and reserialize CSV input with support for quoted fields and escaped quotes; drop rows with status=='skip', optionally sort by "sort" column (numeric-first), and emit normalized CSV with trailing newline.
+
+STATE: The repository has csv_pipeline.py containing a CSV parser/serializer implementing:
+- row/field parsing with quoted fields and "" escapes
+- header validation (consistent column counts)
+- transform: drop rows where status == 'skip'
+- sort: numeric-first stable sort on "sort" column
+- serialization with quoting when needed
+All current unit tests pass.
+
+DONE:
+- Parsing of quoted fields and escaped quotes works.
+- Handles EOF and empty-input errors.
+- Row-length validation implemented.
+- status-based filtering and numeric-first sorting implemented and stable.
+- Serialization quotes fields containing , " or newline and appends final \n.
+- Tests currently pass.
+
+BROKEN / UNKNOWN:
+- CRLF handling is ad-hoc: code accepts '\r\n' only immediately after a closing quote (special-cased), but otherwise '\r' is treated as a normal character inside unquoted fields — behavior for Windows-style newlines (CRLF) is inconsistent/unclear.
+- Handling of stray '\r' characters inside unquoted fields or at row ends is untested.
+- Behavior on blank lines, leading/trailing whitespace, and various newline conventions (CR, LF, CRLF mixed) is unverified.
+- Performance and memory with large inputs untested.
+- Unicode/encoding edge cases not explicitly considered.
+
+NEXT: Create a focused unit test for CRLF input (rows terminated by '\r\n' and cases with '\r' in unquot
